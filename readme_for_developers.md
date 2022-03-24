@@ -6,10 +6,14 @@
 - **Classes and enums:** `PascalCase`
 - **Variables and other identifiers:** `camelCase`
 
-## Organization
-- Custom widgets should be placed in the `widgets` directory.
+- Prefer single quotes `' '` over double quotes `" "`
+
+## Project Structure Notes
+- Shared widgets should be placed in the `widgets` directory.
+- Screens should be created in folder inside `screens` directory and you can include any custome widget.
+- Add a postfix `_screen` for each file created as a screen. **i.e.** `tweet_screen`. 
 - Custom classes should be placed in the `models` directory.
-- `main.dart` file should be as clean and short as possible.
+
 ---
 # Git Notes
 - `dev` branch is for developing any feature or page, and once finished, it will be merged to `main` branch.   
