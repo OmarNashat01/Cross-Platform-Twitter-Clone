@@ -2,9 +2,11 @@
 
 // Flutter packages
 import 'package:flutter/material.dart';
+import 'screens/welcome_screen/welcome_screen.dart';
 
 // Other imports
-import 'routes.dart'
+import 'routes.dart';
+
 void main() {
   runApp(TwitterApp());
 }
@@ -15,8 +17,9 @@ class TwitterApp extends StatelessWidget {
     return MaterialApp(
       title: 'Twitter',
       theme: null,
-      initialRoute: null,
+      home: WelcomeScreen(),
       routes: routes,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
