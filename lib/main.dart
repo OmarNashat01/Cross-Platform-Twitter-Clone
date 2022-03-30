@@ -3,6 +3,7 @@
 // Flutter packages
 import 'package:flutter/material.dart';
 import 'screens/welcome_screen/welcome_screen.dart';
+import 'screens/timeline_screen/timeline.dart';
 
 // Other imports
 import 'routes.dart';
@@ -17,7 +18,7 @@ class TwitterApp extends StatelessWidget {
     return MaterialApp(
       title: 'Twitter',
       theme: null,
-      home: WelcomeScreen(),
+      home: Timeline(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
