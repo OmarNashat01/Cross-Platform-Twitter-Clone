@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:twitter/screens/signin_screen/signin_screen.dart';
+
+import '../auth_welcome_screen/auth_welcome_screen.dart';
 
 import '../../constants.dart';
 
@@ -12,9 +13,10 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  //! Needs to choose between signin screen or the home page according to cookies
   void _switchToSignInScreen() async {
     await Future.delayed(const Duration(milliseconds: 1500));
-    Navigator.of(context).pushReplacementNamed(SigninScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(AuthWelcomeScreen.routeName);
   }
 
   @override
@@ -26,7 +28,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kSecondaryColor,
       body: Center(
         child: Container(
           color: Colors.transparent,
@@ -34,7 +36,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           width: 100,
           child: SvgPicture.asset(
             kLogoPath,
-            color: Colors.white,
+            color: kPrimaryColor,
             alignment: Alignment.center,
           ),
         ),

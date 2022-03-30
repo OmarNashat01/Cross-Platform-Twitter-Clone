@@ -16,7 +16,26 @@ class TwitterApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Twitter',
-      theme: null,
+      theme: ThemeData(
+        backgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
+        colorScheme: const ColorScheme(
+          brightness: Brightness.light,
+          primary: Colors.white,
+          onPrimary: Colors.black,
+          secondary: Color(0xFF1D9BF0),
+          onSecondary: Colors.white,
+          error: Colors.white,
+          onError: Colors.redAccent,
+          background: Colors.white,
+          onBackground: Colors.black,
+          surface: Colors.white,
+          onSurface: Colors.black,
+        ),
+      ),
       home: WelcomeScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
