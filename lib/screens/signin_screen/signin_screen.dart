@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants.dart';
 
 class SigninScreen extends StatelessWidget {
-  static const routeName = '/signin-screen';
+  static const routeName = 'signin-screen';
 
   @override
   Widget build(BuildContext context) {
