@@ -17,7 +17,7 @@ class ProfilePicture extends StatelessWidget {
         ),
         child: CircleAvatar(
           radius: profilePictureSize,
-          backgroundImage: AssetImage('assets/icons/profilepic.jpeg'),
+          backgroundImage: const AssetImage('assets/icons/profilepic.jpeg'),
         ),
       ),
     );

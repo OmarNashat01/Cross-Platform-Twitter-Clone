@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter/constants.dart';
 import 'timeline_components/profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'timeline_components/navigation_drawer.dart';
 
 // ignore_for_file: prefer_const_constructors
 class Timeline extends StatelessWidget {
@@ -84,10 +85,12 @@ class Timeline extends StatelessWidget {
     'a7a',
     'a7a',
   ];
-    final controller=ScrollController();
+  final controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer:
+          NavigationDrawer(), //to open profile content when user press the profile picture in the timeline appbar
       backgroundColor: Colors.white,
       //here i make twitter own app bar which appears and disappears depending on user scrolling
       body: SafeArea(
@@ -103,24 +106,25 @@ class Timeline extends StatelessWidget {
               backgroundColor: Colors.white,
               forceElevated: innerBoxIsScrolled,
               shadowColor: Colors.white,
+              automaticallyImplyLeading: false,
               title: TextButton(
-                onPressed: ()
-                {
+                onPressed: () {
                   //this makes when i press on the bar it goes to the first tweet in timeline
-                  controller.animateTo(0.0, curve: Curves.easeIn, duration: Duration(seconds: 1));
+                  controller.animateTo(0.0,
+                      curve: Curves.easeIn, duration: Duration(seconds: 1));
                 },
                 style: ButtonStyle(
-                  overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
+                  overlayColor: MaterialStateColor.resolveWith(
+                      (states) => Colors.transparent),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     //profile picture in timeline appbar
                     ProfilePicture(
-                      profilePictureFunctionality: ()
-                          {
-
-                          },
+                      profilePictureFunctionality: () {
+                        Scaffold.of(context).openDrawer();
+                      },
                       profilePicturePath: myProfilePicturePath,
                       profilePictureSize: timelineProfilePicSize,
                     ),
@@ -133,10 +137,7 @@ class Timeline extends StatelessWidget {
                     ),
                     //sparkle icon in the appbar
                     GestureDetector(
-                      onTap: ()
-                      {
-
-                      },
+                      onTap: () {},
                       child: FaIcon(
                         Icons.star_outline_sharp,
                         color: Colors.black,
@@ -161,5 +162,3 @@ class Timeline extends StatelessWidget {
     );
   }
 }
-
-

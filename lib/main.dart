@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'screens/welcome_screen/welcome_screen.dart';
 import 'screens/timeline_screen/timeline.dart';
 import 'screens/signin_screen/signin_screen.dart';
-
 // Other imports
 import 'routes.dart';
 
@@ -22,7 +21,7 @@ class TwitterApp extends StatelessWidget {
       home: Timeline(),
       routes: {
         SigninScreen.routeName: (context) => SigninScreen(),
-        Timeline.routeName: (context) => Timeline()
+        Timeline.routeName: (context) => Timeline(),
       },
       debugShowCheckedModeBanner: false,
     );
