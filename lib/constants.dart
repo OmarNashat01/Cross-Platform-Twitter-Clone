@@ -18,7 +18,7 @@ const TextStyle boldName=TextStyle(
 );
 const TextStyle titleName=TextStyle(
     fontSize: 16,
-    color: Colors.grey
+    color: Color(0xff757575),
 );
 //reservedTexts
 const Text followingString=Text(

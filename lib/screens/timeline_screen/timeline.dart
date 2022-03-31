@@ -63,27 +63,6 @@ class Timeline extends StatelessWidget {
     'hello',
     'hello',
     'hello',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
-    'a7a',
   ];
   final controller = ScrollController();
   @override
@@ -149,6 +128,7 @@ class Timeline extends StatelessWidget {
             ),
           ],
           body: ListView.builder(
+            physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 18),
             itemBuilder: (context, index) {
               return ListTile(
