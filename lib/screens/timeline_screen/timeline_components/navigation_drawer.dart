@@ -9,6 +9,7 @@ import 'package:twitter/constants.dart';
 import 'package:twitter/users/users_data.dart';
 import 'package:provider/provider.dart';
 import 'opacity_data.dart';
+import 'package:twitter/screens/profile_screen/profile_screen.dart';
 
 //this navigation drawer is made for whenever the user press on his profile picture in the time line drawer is popped up
 class NavigationDrawer extends StatelessWidget {
@@ -34,7 +35,11 @@ class NavigationDrawer extends StatelessWidget {
                     children: [
                       //profile picture of navigation drawer
                       ProfilePicture(
-                        profilePictureFunctionality: () {},
+                        profilePictureFunctionality: ()
+                        {
+                          //go to profile screen upon pressing it
+                          Navigator.pushNamed(context, ProfileScreen.routeName);
+                        },
                         profilePicturePath: myProfilePicturePath,
                         profilePictureSize: navigationDrawerProfilePicSize,
                       ),
@@ -83,6 +88,7 @@ class NavigationDrawer extends StatelessWidget {
                   ChangeNotifierProvider(
                     create: (context) => OpacityValue(),
                     child: NavigationDrawerLabels(
+                      jumpToProfile: true,
                       widget: Text(
                         UsersData.getMyData().name,
                         style: boldName,
@@ -94,6 +100,7 @@ class NavigationDrawer extends StatelessWidget {
                   ChangeNotifierProvider(
                     create: (context) => OpacityValue(),
                     child: NavigationDrawerLabels(
+                      jumpToProfile: true,
                       widget: Text(
                         UsersData.getMyData().title,
                         style: titleName,
@@ -157,162 +164,184 @@ class NavigationDrawer extends StatelessWidget {
             //now the lower code is the buttons and its functionality
             //-------------------------------------------------------------------------------------------------------
             Expanded(
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  //profile button
-                  //------------------------------------------------------------
-                  NavigationDrawerButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.user,
-                      size: 20,
-                      color: Colors.black,
+              child: Scrollbar(
+                isAlwaysShown: true,
+                child: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    //------------------------------------------------------------
+                    //profile button
+                    NavigationDrawerButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.user,
+                        size: 20,
+                        color: Colors.black,
+                      ),
+                      text: const Text(
+                        'Profile',
+                        style: titleName,
+                      ),
+                      onPressed: () {},
                     ),
-                    text: const Text(
-                      'Profile',
-                      style: titleName,
+                    //------------------------------------------------------------
+                    //lists button
+                    NavigationDrawerButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.rectangleList,
+                        size: 20,
+                        color: Colors.black,
+                      ),
+                      text: const Text(
+                        'Lists',
+                        style: titleName,
+                      ),
+                      onPressed: () {},
                     ),
-                    onPressed: () {},
-                  ),
-                  //lists button
-                  //------------------------------------------------------------
-                  NavigationDrawerButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.rectangleList,
-                      size: 20,
-                      color: Colors.black,
+                    //------------------------------------------------------------
+                    //topics button
+                    NavigationDrawerButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.rocketchat,
+                        size: 20,
+                        color: Colors.black,
+                      ),
+                      text: const Text(
+                        'Topics',
+                        style: titleName,
+                      ),
+                      onPressed: () {},
                     ),
-                    text: const Text(
-                      'Lists',
-                      style: titleName,
+                    //------------------------------------------------------------
+                    //bookmarks button
+                    NavigationDrawerButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.bookmark,
+                        size: 20,
+                        color: Colors.black,
+                      ),
+                      text: const Text(
+                        'Bookmarks',
+                        style: titleName,
+                      ),
+                      onPressed: () {},
                     ),
-                    onPressed: () {},
-                  ),
-                  //topics button
-                  //------------------------------------------------------------
-                  NavigationDrawerButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.rocketchat,
-                      size: 20,
-                      color: Colors.black,
+                    //------------------------------------------------------------
+                    //Moments button
+                    NavigationDrawerButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.boltLightning,
+                        size: 20,
+                        color: Colors.black,
+                      ),
+                      text: const Text(
+                        'Moments',
+                        style: titleName,
+                      ),
+                      onPressed: () {},
                     ),
-                    text: const Text(
-                      'Topics',
-                      style: titleName,
+                    //------------------------------------------------------------
+                    //purchases button
+                    NavigationDrawerButton(
+                      icon: const Icon(
+                        Icons.shopping_cart_outlined,
+                        size: 20,
+                        color: Colors.black,
+                      ),
+                      text: const Text(
+                        'Purchases',
+                        style: titleName,
+                      ),
+                      onPressed: () {},
                     ),
-                    onPressed: () {},
-                  ),
-                  //bookmarks button
-                  //------------------------------------------------------------
-                  NavigationDrawerButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.bookmark,
-                      size: 20,
-                      color: Colors.black,
+                    //------------------------------------------------------------
+                    //monetization button
+                    NavigationDrawerButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.moneyBills,
+                        size: 20,
+                        color: Colors.black,
+                      ),
+                      text: const Text(
+                        'Monetization',
+                        style: titleName,
+                      ),
+                      onPressed: () {},
                     ),
-                    text: const Text(
-                      'Bookmarks',
-                      style: titleName,
+                    //------------------------------------------------------------
+                    //twitter for professional button
+                    const Divider(
+                      color: Color(0xffcfd8dc),
+                      thickness: 0.5,
                     ),
-                    onPressed: () {},
-                  ),
-                  //Moments button
-                  //------------------------------------------------------------
-                  NavigationDrawerButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.boltLightning,
-                      size: 20,
-                      color: Colors.black,
+                    NavigationDrawerButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.rocket,
+                        size: 20,
+                        color: Colors.black,
+                      ),
+                      text: const Text(
+                        'Twitter for Professionals',
+                        style: titleName,
+                      ),
+                      onPressed: () {},
                     ),
-                    text: const Text(
-                      'Moments',
-                      style: titleName,
+                    const Divider(
+                      color: Color(0xffcfd8dc),
+                      thickness: 0.5,
                     ),
-                    onPressed: () {},
-                  ),
-                  //purchases button
-                  //------------------------------------------------------------
-                  NavigationDrawerButton(
-                    icon: const Icon(
-                      Icons.shopping_cart_outlined,
-                      size: 20,
-                      color: Colors.black,
+                    //------------------------------------------------------------
+                    //settings and privacy button
+                    TextButton(
+                      onPressed: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 15, bottom: 4, left: 13, right: 20),
+                        child: Row(
+                          children: const [
+                            Text(
+                              'Settings and Privacy',
+                              style: titleName,
+                            ),
+                          ],
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.blueGrey.shade100),
+                      ),
                     ),
-                    text: const Text(
-                      'Purchases',
-                      style: titleName,
+                    //------------------------------------------------------------
+                    //help center button
+                    TextButton(
+                      onPressed: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 15, bottom: 4, left: 13, right: 20),
+                        child: Row(
+                          children: const [
+                            Text(
+                              'Help Center',
+                              style: titleName,
+                            ),
+                          ],
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.blueGrey.shade100),
+                      ),
                     ),
-                    onPressed: () {},
-                  ),
-                  //lists button
-                  //------------------------------------------------------------
-                  NavigationDrawerButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.user,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                    text: const Text(
-                      'Profile',
-                      style: titleName,
-                    ),
-                    onPressed: () {},
-                  ),
-                  //monetization button
-                  //------------------------------------------------------------
-                  NavigationDrawerButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.moneyBills,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                    text: const Text(
-                      'Monetization',
-                      style: titleName,
-                    ),
-                    onPressed: () {},
-                  ),
-                  //twitter for professionals button
-                  //------------------------------------------------------------
-                  const Divider(
-                    color: Colors.grey,
-                    thickness: 0.5,
-                  ),
-                  NavigationDrawerButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.user,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                    text: const Text(
-                      'Profile',
-                      style: titleName,
-                    ),
-                    onPressed: () {},
-                  ),
-                  //lists button
-                  //------------------------------------------------------------
-                  NavigationDrawerButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.user,
-                      size: 20,
-                      color: Colors.black,
-                    ),
-                    text: const Text(
-                      'Profile',
-                      style: titleName,
-                    ),
-                    onPressed: () {},
-                  ),
-
-                ],
+                  ],
+                ),
               ),
             ),
             //-------------------------------------------------------------------------------
             //light bulb and qr code in the bottom bar of the navigator
             BottomAppBar(
+              color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.only(top: 15, bottom: 10, left: 20, right: 20),
+                padding: const EdgeInsets.only(
+                    top: 15, bottom: 10, left: 20, right: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -324,14 +353,14 @@ class NavigationDrawer extends StatelessWidget {
                         ),
                       ),
                     ),
-                   ChangeNotifierProvider(
-                     create: (context) => OpacityValue(),
-                     child: NavigationDrawerLabels(
-                       widget: Icon(
-                         FontAwesomeIcons.qrcode,
-                       ),
-                     ),
-                   )
+                    ChangeNotifierProvider(
+                      create: (context) => OpacityValue(),
+                      child: NavigationDrawerLabels(
+                        widget: Icon(
+                          FontAwesomeIcons.qrcode,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

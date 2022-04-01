@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 class NavigationDrawerButton extends StatelessWidget {
-  NavigationDrawerButton({required this.text,required this.onPressed,required this.icon});
+  NavigationDrawerButton({ required this.text,required this.onPressed, required this.icon,});
   final void Function() onPressed;
   Widget icon;
   Widget text;
@@ -9,7 +9,7 @@ class NavigationDrawerButton extends StatelessWidget {
     return TextButton(
         onPressed:onPressed,
         child: Padding(
-          padding: const EdgeInsets.only(top: 15, bottom: 10, left: 13, right: 20),
+          padding: const EdgeInsets.only(top: 15, bottom: 2, left: 13, right: 20),
           child: Row(
             children: [
               icon,

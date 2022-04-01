@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter/constants.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 import 'timeline_components/profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'timeline_components/navigation_drawer.dart';
@@ -68,8 +69,18 @@ class Timeline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:
-          NavigationDrawer(), //to open profile content when user press the profile picture in the timeline appbar
+      floatingActionButton: FloatingActionButton(
+        onPressed: ()
+        {
+
+        },
+        backgroundColor: Colors.blue,
+        child: Icon(
+          FontAwesomeIcons.plus,
+          size: 20,
+        ),
+      ),
+      drawer: NavigationDrawer(), //to open profile content when user press the profile picture in the timeline appbar
       backgroundColor: Colors.white,
       //here i make twitter own app bar which appears and disappears depending on user scrolling
       body: SafeArea(
@@ -127,18 +138,29 @@ class Timeline extends StatelessWidget {
               ),
             ),
           ],
-          body: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 18),
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(test[index]),
-              );
-            },
-            itemCount: test.length,
+          //--------------------------------------------------------------------
+          //tweets list viewer
+          body: Scrollbar(
+            radius: Radius.circular(30),
+            isAlwaysShown: true,
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.symmetric(horizontal: 18),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(test[index]),
+                );
+              },
+              itemCount: test.length,
+            ),
           ),
         ),
       ),
+      //------------------------------------------------------------------------
+      //bottom appbar where each icon has its own function
+      bottomNavigationBar:
+      TimelineBottomBar(controller: controller),
     );
   }
 }
+
