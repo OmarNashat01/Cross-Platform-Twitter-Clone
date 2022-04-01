@@ -181,7 +181,9 @@ class NavigationDrawer extends StatelessWidget {
                         'Profile',
                         style: titleName,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, ProfileScreen.routeName);
+                      },
                     ),
                     //------------------------------------------------------------
                     //lists button
