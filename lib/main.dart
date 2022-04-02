@@ -17,6 +17,8 @@ class TwitterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+
       title: 'Twitter',
       theme: ThemeData(
         backgroundColor: Colors.white,
@@ -39,9 +41,8 @@ class TwitterApp extends StatelessWidget {
           onSurface: Colors.black,
         ),
       ),
-      home: WelcomeScreen(),
+      home: Timeline(),
       routes: routes,
-      debugShowCheckedModeBanner: false,
     );
   }
 }

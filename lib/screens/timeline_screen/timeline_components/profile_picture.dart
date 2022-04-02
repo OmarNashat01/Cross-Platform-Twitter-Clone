@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:twitter/constants.dart';
+
 class ProfilePicture extends StatelessWidget {
   @override
-  ProfilePicture({required this.profilePictureFunctionality,required this.profilePicturePath,required this.profilePictureSize});
+  ProfilePicture({
+    required this.profilePictureFunctionality,
+    required this.profilePicturePath,
+    required this.profilePictureSize,
+  });
   final void Function() profilePictureFunctionality;
   final String profilePicturePath;
   final double profilePictureSize;
@@ -13,14 +18,15 @@ class ProfilePicture extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,
-          boxShadow: [BoxShadow(blurRadius: 0.5, color: Colors.grey, spreadRadius: 0.4)],
+          boxShadow: [
+            BoxShadow(blurRadius: 0.5, color: Colors.grey, spreadRadius: 0.4)
+          ],
         ),
         child: CircleAvatar(
           radius: profilePictureSize,
-          backgroundImage: const AssetImage('assets/profiles/profilepic.jpeg'),
+          backgroundImage: const AssetImage(myProfilePicturePath),
         ),
       ),
     );
   }
 }
-

@@ -6,7 +6,7 @@ import 'navigation_drawer_button.dart';
 import 'navigation_drawer_labels.dart';
 import 'profile_picture.dart';
 import 'package:twitter/constants.dart';
-import 'package:twitter/users/users_data.dart';
+import 'package:twitter/dummy/users_data.dart';
 import 'package:provider/provider.dart';
 import 'opacity_data.dart';
 import 'package:twitter/screens/profile_screen/profile_screen.dart';
@@ -35,8 +35,7 @@ class NavigationDrawer extends StatelessWidget {
                     children: [
                       //profile picture of navigation drawer
                       ProfilePicture(
-                        profilePictureFunctionality: ()
-                        {
+                        profilePictureFunctionality: () {
                           //go to profile screen upon pressing it
                           Navigator.pushNamed(context, ProfileScreen.routeName);
                         },
