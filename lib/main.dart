@@ -3,7 +3,9 @@
 // Flutter packages
 import 'package:flutter/material.dart';
 import 'screens/welcome_screen/welcome_screen.dart';
-
+import 'screens/timeline_screen/timeline.dart';
+import 'screens/signin_screen/signin_screen.dart';
+import 'screens/profile_screen/profile_screen.dart';
 // Other imports
 import 'routes.dart';
 
@@ -18,6 +20,7 @@ class TwitterApp extends StatelessWidget {
       title: 'Twitter',
       theme: ThemeData(
         backgroundColor: Colors.white,
+        highlightColor: Color(0xff757575),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           elevation: 0,
