@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+
+import 'signup_button.dart';
 
 import '../../../constants.dart';
 
@@ -15,37 +14,45 @@ class SignupForm extends StatefulWidget {
 
 class _SignupFormState extends State<SignupForm> {
   final _formKey = GlobalKey<FormState>();
-  final _dateOfBirth = TextEditingController();
+  final _nameFieldController = TextEditingController();
+  final _emailFieldController = TextEditingController();
+  final _dateOfBirthFieldController = TextEditingController();
 
-  //! is to be changed
-  String? _validateName(value) {}
+
+  String? _validateName(value) {
+    if (value.isEmpty) return 'Please enter your name.';
+    return null;
+  }
 
   String? _validateEmail(value) {
     // TODO: add a validation to check whether the email is already been taken
     // if (exists(value)) return 'Email has already been taken.'
 
-    if (value.isEmpty) return null;
     if (!EmailValidator.validate(value)) return 'Please enter a valid email.';
     return null;
   }
 
-  String? _validateDob(value) {}
+  String? _validateDob(value) {
+    if (value.isEmpty) return 'Please enter your date of birth.';
+    return null;
+  }
 
   _updateDate(DateTime date) {
     setState(() {
-      _dateOfBirth.text = DateFormat.yMMMd().format(date);
+      _dateOfBirthFieldController.text = DateFormat.yMMMd().format(date);
     });
   }
 
   void _showDatePicker() {
     DatePicker.showDatePicker(
       context,
+      showTitleActions: false,
       maxTime: DateTime.now(),
       minTime: DateTime(1900),
       onChanged: _updateDate,
-      currentTime: _dateOfBirth.text == ''
+      currentTime: _dateOfBirthFieldController.text == ''
           ? DateTime.now()
-          : DateFormat.yMMMd().parse(_dateOfBirth.text),
+          : DateFormat.yMMMd().parse(_dateOfBirthFieldController.text),
       onConfirm: null,
     );
   }
@@ -66,45 +73,53 @@ class _SignupFormState extends State<SignupForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
       key: _formKey,
       child: Column(
         children: [
-          TextFormField(
-            cursorColor: Theme.of(context).colorScheme.secondary,
-            cursorWidth: 2,
-            maxLength: 50,
-            validator: _validateName,
-            keyboardType: TextInputType.name,
-            style: const TextStyle(fontSize: 20),
-            decoration: _decorateFields('Name'),
+          Expanded(
+            flex: 4,
+            child: Column(
+              children: [
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  cursorColor: Theme.of(context).colorScheme.secondary,
+                  cursorWidth: 2,
+                  maxLength: 50,
+                  textInputAction: TextInputAction.next,
+                  validator: _validateName,
+                  controller: _nameFieldController,
+                  keyboardType: TextInputType.name,
+                  style: const TextStyle(fontSize: 20),
+                  decoration: _decorateFields('Name'),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  cursorColor: Theme.of(context).colorScheme.secondary,
+                  cursorWidth: 2,
+                  style: const TextStyle(fontSize: 20),
+                  validator: _validateEmail,
+                  controller: _emailFieldController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: _decorateFields('Email'),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  style: const TextStyle(fontSize: 20),
+                  readOnly: true,
+                  validator: _validateDob,
+                  controller: _dateOfBirthFieldController,
+                  onTap: _showDatePicker,
+                  decoration: _decorateFields('Date of birth'),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 20),
-
-          TextFormField(
-            cursorColor: Theme.of(context).colorScheme.secondary,
-            cursorWidth: 2,
-            style: const TextStyle(fontSize: 20),
-            validator: _validateEmail,
-            keyboardType: TextInputType.emailAddress,
-            decoration: _decorateFields('Email'),
+          Expanded(
+            flex: 1,
+            child: SignUpButton(_formKey),
           ),
-          const SizedBox(height: 20),
-
-          TextFormField(
-            style: const TextStyle(fontSize: 20),
-            readOnly: true,
-            validator: _validateDob,
-            controller: _dateOfBirth,
-            onTap: _showDatePicker,
-            decoration: _decorateFields('Date of birth'),
-          ),
-
-          //   onPressed: () {
-          //     if (_formKey.currentState!.validate()) {}
-          //   },
-          //   child: Text('Sign Up'),
-          // ),
         ],
       ),
     );

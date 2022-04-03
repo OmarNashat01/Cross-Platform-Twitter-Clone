@@ -32,7 +32,10 @@ class SignupScreen extends StatelessWidget {
                   child: Text(
                     'Create your account',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -40,6 +43,7 @@ class SignupScreen extends StatelessWidget {
                 flex: 4,
                 child: SignupForm(),
               ),
+              
             ],
           ),
         ),
