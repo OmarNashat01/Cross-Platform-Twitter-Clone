@@ -7,8 +7,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'timeline_components/navigation_drawer.dart';
 
 // ignore_for_file: prefer_const_constructors
-class Timeline extends StatelessWidget {
-  static const routeName = 'timeline-screen';
+class TimelineScreen extends StatelessWidget {
+  static const routeName = '/timeline-screen';
   List<String> test = [
     'hello',
     'hello',

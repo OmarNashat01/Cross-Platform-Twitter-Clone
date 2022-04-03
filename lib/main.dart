@@ -2,8 +2,9 @@
 
 // Flutter packages
 import 'package:flutter/material.dart';
+import 'package:twitter/screens/signup_screen/signup_screen.dart';
 import 'screens/welcome_screen/welcome_screen.dart';
-import 'screens/timeline_screen/timeline.dart';
+import 'screens/timeline_screen/timeline_screen.dart';
 import 'screens/signin_screen/signin_screen.dart';
 import 'screens/profile_screen/profile_screen.dart';
 // Other imports
@@ -18,7 +19,6 @@ class TwitterApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
       title: 'Twitter',
       theme: ThemeData(
         backgroundColor: Colors.white,
@@ -41,7 +41,7 @@ class TwitterApp extends StatelessWidget {
           onSurface: Colors.black,
         ),
       ),
-      home: Timeline(),
+      home: SignupScreen(),
       routes: routes,
     );
   }

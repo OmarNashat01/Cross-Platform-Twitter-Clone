@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../screens/timeline_screen/timeline.dart';
+import '../timeline_screen/timeline_screen.dart';
 import '../../screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 import '../../screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
-  static const routeName = 'profile-screen';
+  static const routeName = '/profile-screen';
   final controller = ScrollController();
   @override
   Widget build(BuildContext context) {
