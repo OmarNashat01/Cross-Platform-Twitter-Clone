@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:twitter/constants.dart';
-
+import 'package:twitter/dummy/users_data.dart';
 class ProfilePicture extends StatelessWidget {
   @override
   ProfilePicture({
     required this.profilePictureFunctionality,
-    required this.profilePicturePath,
+    required this.profilePictureImage,
     required this.profilePictureSize,
   });
   final void Function() profilePictureFunctionality;
-  final String profilePicturePath;
+  final String profilePictureImage;
   final double profilePictureSize;
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -24,7 +24,7 @@ class ProfilePicture extends StatelessWidget {
         ),
         child: CircleAvatar(
           radius: profilePictureSize,
-          backgroundImage: const AssetImage(myProfilePicturePath),
+          backgroundImage:  AssetImage(profilePictureImage),
         ),
       ),
     );

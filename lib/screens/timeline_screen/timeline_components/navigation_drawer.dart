@@ -39,7 +39,7 @@ class NavigationDrawer extends StatelessWidget {
                           //go to profile screen upon pressing it
                           Navigator.pushNamed(context, ProfileScreen.routeName);
                         },
-                        profilePicturePath: myProfilePicturePath,
+                        profilePictureImage: UsersData.getMyData().profilePicture,
                         profilePictureSize: navigationDrawerProfilePicSize,
                       ),
 

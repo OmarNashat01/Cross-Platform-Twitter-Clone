@@ -23,7 +23,7 @@ class TimelineBottomBar extends StatelessWidget {
               onTap: ()
               {
                 controller.animateTo(0.0,
-                    curve: Curves.easeIn, duration: Duration(seconds: 1));
+                    curve: Curves.easeIn, duration: const Duration(seconds: 1));
               },
               onLongPress: ()
               {
@@ -35,7 +35,7 @@ class TimelineBottomBar extends StatelessWidget {
                       ),
                 );
               },
-              child: Icon(
+              child: const Icon(
                 FontAwesomeIcons.house,
               ),
             ),
@@ -44,18 +44,18 @@ class TimelineBottomBar extends StatelessWidget {
               {
                 print('searching');
               },
-              child: Icon(
+              child: const Icon(
                 Icons.search_outlined,
                 size: 30,
               ),
             ),
-            Icon(
+            const Icon(
               FontAwesomeIcons.microphone,
             ),
-            Icon(
+            const Icon(
               FontAwesomeIcons.bell,
             ),
-            Icon(
+            const Icon(
               Icons.mail_outline_outlined,
             ),
           ],

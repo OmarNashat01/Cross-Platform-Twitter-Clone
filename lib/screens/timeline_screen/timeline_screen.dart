@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter/constants.dart';
+import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 import 'timeline_components/profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -115,7 +116,7 @@ class TimelineScreen extends StatelessWidget {
                       profilePictureFunctionality: () {
                         Scaffold.of(context).openDrawer();
                       },
-                      profilePicturePath: myProfilePicturePath,
+                      profilePictureImage: UsersData.getMyData().profilePicture,
                       profilePictureSize: timelineProfilePicSize,
                     ),
                     //twitter icon in the appbar
