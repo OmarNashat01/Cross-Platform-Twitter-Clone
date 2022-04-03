@@ -1,38 +1,46 @@
 import 'package:twitter/models/profile_data.dart';
-
+import '';
 class UsersData {
   static final ProfileData _myData = ProfileData(
       name: 'abdallah ahmed',
       title: '@bodzz',
+      profilePicture: 'assets/images/myProfilepic.jpeg',
       followersNumber: 1000,
       followingNumber: 500);
-  List<ProfileData> usersData = [
+  static final List<ProfileData> _usersData = [
     ProfileData(
-        name: 'mahmoud',
-        title: '@hoda',
+        name: 'Mahmoud',
+        title: '@Hoda',
+        profilePicture: 'assets/images/mahmoud.jpg',
         followersNumber: 200,
         followingNumber: 100),
     ProfileData(
-        name: 'ahmed',
-        title: '@abohmed',
-        followersNumber: 400,
+        name: 'Zendaya',
+        title: '@Zend',
+        profilePicture: 'assets/images/zendaya.jpg',
+        followersNumber: 100000,
         followingNumber: 200),
     ProfileData(
-        name: 'waseem',
-        title: '@abdallahwael',
+        name: 'Waseem',
+        title: '@Abdallahwael',
+        profilePicture: 'assets/images/waseem.jpg',
         followersNumber: 500,
         followingNumber: 200),
     ProfileData(
-        name: 'ziad',
-        title: '@ziko',
+        name: 'Ziad',
+        title: '@Ziko',
+        profilePicture: 'assets/images/ziad.jpeg',
         followersNumber: 1000,
         followingNumber: 100),
   ];
   void addUser(ProfileData user) {
-    usersData.add(user);
+    _usersData.add(user);
   }
 
   static ProfileData getMyData() {
     return _myData;
   }
+  static List<ProfileData> getOtherUsersData() {
+    return _usersData;
+    }
 }
