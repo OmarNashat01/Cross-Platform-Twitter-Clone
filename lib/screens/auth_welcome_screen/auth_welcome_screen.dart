@@ -6,6 +6,7 @@ import 'widgets/signup_buttons.dart';
 import '../signin_screen/signin_screen.dart';
 
 import '../../constants.dart';
+import '../../themes.dart';
 
 class AuthWelcomeScreen extends StatelessWidget {
   static const routeName = '/auth-welcome-screen';
@@ -18,16 +19,7 @@ class AuthWelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      appBar: AppBar(
-        centerTitle: true,
-        title: SvgPicture.asset(
-          kLogoPath,
-          color: kSecondaryColor,
-          width: 20,
-          height: 20,
-        ),
-      ),
+      appBar: CustomeAppBars.welcomeAppBar,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50),

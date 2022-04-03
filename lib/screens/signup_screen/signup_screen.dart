@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'widgets/signup_form.dart';
 
+import '../../themes.dart';
 import '../../constants.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -11,16 +12,7 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      appBar: AppBar(
-        centerTitle: true,
-        title: SvgPicture.asset(
-          kLogoPath,
-          color: kSecondaryColor,
-          width: 20,
-          height: 20,
-        ),
-      ),
+      appBar: CustomeAppBars.welcomeAppBar,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50),

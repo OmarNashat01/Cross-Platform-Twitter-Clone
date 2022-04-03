@@ -4,6 +4,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 
 import 'signup_button.dart';
+import '../../../models/user_model.dart';
 
 import '../../../constants.dart';
 
@@ -13,11 +14,12 @@ class SignupForm extends StatefulWidget {
 }
 
 class _SignupFormState extends State<SignupForm> {
+  UserModel _user = UserModel(name: '', email: '', dob: DateTime.now());
+
   final _formKey = GlobalKey<FormState>();
   final _nameFieldController = TextEditingController();
   final _emailFieldController = TextEditingController();
   final _dateOfBirthFieldController = TextEditingController();
-
 
   String? _validateName(value) {
     if (value.isEmpty) return 'Please enter your name.';
@@ -88,6 +90,7 @@ class _SignupFormState extends State<SignupForm> {
                   textInputAction: TextInputAction.next,
                   validator: _validateName,
                   controller: _nameFieldController,
+                  onSaved: (name) => _user.name = name as String,
                   keyboardType: TextInputType.name,
                   style: const TextStyle(fontSize: 20),
                   decoration: _decorateFields('Name'),
@@ -100,6 +103,7 @@ class _SignupFormState extends State<SignupForm> {
                   style: const TextStyle(fontSize: 20),
                   validator: _validateEmail,
                   controller: _emailFieldController,
+                  onSaved: (email) => _user.email = email as String,
                   keyboardType: TextInputType.emailAddress,
                   decoration: _decorateFields('Email'),
                 ),
@@ -110,6 +114,7 @@ class _SignupFormState extends State<SignupForm> {
                   readOnly: true,
                   validator: _validateDob,
                   controller: _dateOfBirthFieldController,
+                  onSaved: (dob) => _user.dob = DateFormat.yMMMd().parse(dob as String),
                   onTap: _showDatePicker,
                   decoration: _decorateFields('Date of birth'),
                 ),
@@ -118,7 +123,7 @@ class _SignupFormState extends State<SignupForm> {
           ),
           Expanded(
             flex: 1,
-            child: SignUpButton(_formKey),
+            child: SignUpButton(_formKey, _user),
           ),
         ],
       ),

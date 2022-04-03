@@ -21,6 +21,7 @@ class TwitterApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Twitter',
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
         backgroundColor: Colors.white,
         highlightColor: Color(0xff757575),
         appBarTheme: const AppBarTheme(

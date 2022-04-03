@@ -11,7 +11,6 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       //here a nested scroll view widget needs ti be done
 
-      backgroundColor: Colors.white,
       body: NestedScrollView(
         controller: controller,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) =>
