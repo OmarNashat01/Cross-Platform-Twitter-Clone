@@ -1,21 +1,23 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../providers/user_provider.dart';
 import '../../password_screen/password_screen.dart';
 
 
 import '../../../themes.dart';
 import '../../../constants.dart';
 
-class SignUpButton extends StatelessWidget {
+class NextButton extends StatelessWidget {
   final _formKey;
-  final _user;
-  const SignUpButton(this._formKey, this._user);
+  const NextButton(this._formKey);
 
-  void _pressSignupButton(context) {
+  void _pressNextButton(context) {
     if (_formKey.currentState!.validate()) {
       log('passed');
       _formKey.currentState!.save();
-      _user.save();
+      Provider.of<UserProvider>(context, listen: false).save();
       Navigator.of(context).pushNamed(PasswordScreen.routeName);
     } else {
       log('failed');
@@ -27,7 +29,7 @@ class SignUpButton extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: ElevatedButton(
-        onPressed: () => _pressSignupButton(context),
+        onPressed: () => _pressNextButton(context),
         style: CustomButtons.blackButton(),
         child: const Text('Next'),
       ),

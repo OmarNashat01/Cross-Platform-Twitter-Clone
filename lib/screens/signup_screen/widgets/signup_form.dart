@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-import 'signup_button.dart';
-import '../../../models/user_model.dart';
+import 'next_button.dart';
+import '../../../providers/user_provider.dart';
 
 import '../../../constants.dart';
 
@@ -14,7 +15,6 @@ class SignupForm extends StatefulWidget {
 }
 
 class _SignupFormState extends State<SignupForm> {
-  UserModel _user = UserModel(name: '', email: '', dob: DateTime.now());
 
   final _formKey = GlobalKey<FormState>();
   final _nameFieldController = TextEditingController();
@@ -90,7 +90,7 @@ class _SignupFormState extends State<SignupForm> {
                   textInputAction: TextInputAction.next,
                   validator: _validateName,
                   controller: _nameFieldController,
-                  onSaved: (name) => _user.name = name as String,
+                  onSaved: (name) => Provider.of<UserProvider>(context, listen: false).name = name,
                   keyboardType: TextInputType.name,
                   style: const TextStyle(fontSize: 20),
                   decoration: _decorateFields('Name'),
@@ -103,7 +103,7 @@ class _SignupFormState extends State<SignupForm> {
                   style: const TextStyle(fontSize: 20),
                   validator: _validateEmail,
                   controller: _emailFieldController,
-                  onSaved: (email) => _user.email = email as String,
+                  onSaved: (email) => Provider.of<UserProvider>(context, listen: false).email = email,
                   keyboardType: TextInputType.emailAddress,
                   decoration: _decorateFields('Email'),
                 ),
@@ -114,7 +114,7 @@ class _SignupFormState extends State<SignupForm> {
                   readOnly: true,
                   validator: _validateDob,
                   controller: _dateOfBirthFieldController,
-                  onSaved: (dob) => _user.dob = DateFormat.yMMMd().parse(dob as String),
+                  onSaved: (dob) => Provider.of<UserProvider>(context, listen: false).dob = DateFormat.yMMMd().parse(dob as String),
                   onTap: _showDatePicker,
                   decoration: _decorateFields('Date of birth'),
                 ),
@@ -123,7 +123,7 @@ class _SignupFormState extends State<SignupForm> {
           ),
           Expanded(
             flex: 1,
-            child: SignUpButton(_formKey, _user),
+            child: NextButton(_formKey),
           ),
         ],
       ),

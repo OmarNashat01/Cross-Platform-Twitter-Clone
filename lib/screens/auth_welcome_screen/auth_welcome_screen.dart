@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/signup_buttons.dart';
-
+import '../../providers/user_provider.dart';
 import '../signin_screen/signin_screen.dart';
 
 import '../../constants.dart';
@@ -11,10 +11,9 @@ import '../../themes.dart';
 class AuthWelcomeScreen extends StatelessWidget {
   static const routeName = '/auth-welcome-screen';
 
-   void _switchToSigninScreen(context) {
+  void _switchToSigninScreen(context) {
     Navigator.of(context).pushNamed(SigninScreen.routeName);
   }
-
 
   @override
   Widget build(BuildContext context) {

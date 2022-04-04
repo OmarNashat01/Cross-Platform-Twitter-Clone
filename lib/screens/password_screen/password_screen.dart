@@ -1,5 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/user_provider.dart';
 
 import '../../themes.dart';
 import '../../constants.dart';
@@ -28,7 +31,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
     if (_formKey.currentState!.validate()) {
       log('passed');
       _formKey.currentState!.save();
-      // _user.save();
+      Provider.of<UserProvider>(context, listen: false).save();
     } else {
       log('failed');
     }
@@ -90,7 +93,9 @@ class _PasswordScreenState extends State<PasswordScreen> {
                       style: const TextStyle(fontSize: 20),
                       validator: _validatePassword,
                       controller: _passwordFieldController,
-                      // onSaved: (password) => _user.password = password as String,
+                      onSaved: (pass) =>
+                          Provider.of<UserProvider>(context, listen: false)
+                              .password = pass,
                       onFieldSubmitted: _pressSignupButton,
                       keyboardType: TextInputType.visiblePassword,
                       decoration: _decoratePasswordField('Password'),
