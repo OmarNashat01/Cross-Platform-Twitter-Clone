@@ -1,87 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:twitter/constants.dart';
+import 'package:twitter/dummy/tweets_list.dart';
 import 'package:twitter/dummy/users_data.dart';
+import 'package:twitter/models/tweet_card_data.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
 import 'timeline_components/profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'timeline_components/navigation_drawer.dart';
+import 'package:twitter/models/tweet_card_data.dart';
 
 // ignore_for_file: prefer_const_constructors
 class TimelineScreen extends StatelessWidget {
   static const routeName = '/timeline-screen';
-  List<String> test = [
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-    'hello',
-  ];
+
   final controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: ()
-        {
-
-        },
+        onPressed: () {},
         backgroundColor: Colors.blue,
         child: Icon(
           FontAwesomeIcons.plus,
           size: 20,
         ),
       ),
-      drawer: NavigationDrawer(), //to open profile content when user press the profile picture in the timeline appbar
+      drawer:
+          NavigationDrawer(), //to open profile content when user press the profile picture in the timeline appbar
       backgroundColor: Colors.white,
       //here i make twitter own app bar which appears and disappears depending on user scrolling
       body: SafeArea(
@@ -146,22 +94,17 @@ class TimelineScreen extends StatelessWidget {
             isAlwaysShown: true,
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: 18),
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(test[index]),
-                );
+                return TweetCard(index: index);
               },
-              itemCount: test.length,
+              itemCount: TweetsList.getTweetsNumbers(),
             ),
           ),
         ),
       ),
       //------------------------------------------------------------------------
       //bottom appbar where each icon has its own function
-      bottomNavigationBar:
-      TimelineBottomBar(controller: controller),
+      bottomNavigationBar: TimelineBottomBar(controller: controller),
     );
   }
 }
-

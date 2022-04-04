@@ -29,7 +29,7 @@ class UsersData {
     ProfileData(
         name: 'Ziad',
         title: '@Ziko',
-        profilePicture: 'assets/images/ziad.jpeg',
+        profilePicture: 'assets/images/ziad.jpg',
         followersNumber: 1000,
         followingNumber: 100),
   ];
