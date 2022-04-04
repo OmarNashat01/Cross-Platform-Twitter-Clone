@@ -25,11 +25,11 @@ class SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.center,
+      alignment: Alignment.centerRight,
       child: ElevatedButton(
         onPressed: () => _pressSignupButton(context),
-        style: CustomButtons.blueButton(isFit: false),
-        child: const Text('Sign Up'),
+        style: CustomButtons.blackButton(),
+        child: const Text('Next'),
       ),
     );
   }
