@@ -9,7 +9,7 @@ class PasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomeAppBars.welcomeAppBar,
+      appBar: CustomAppBars.welcomeAppBar,
       body: const Center(
         child: Text('Create Password'),
       ),

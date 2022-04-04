@@ -19,7 +19,7 @@ class AuthWelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomeAppBars.welcomeAppBar,
+      appBar: CustomAppBars.welcomeAppBar,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50),
