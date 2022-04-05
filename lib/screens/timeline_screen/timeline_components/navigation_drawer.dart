@@ -10,7 +10,7 @@ import 'package:twitter/dummy/users_data.dart';
 import 'package:provider/provider.dart';
 import 'opacity_data.dart';
 import 'package:twitter/screens/profile_screen/profile_screen.dart';
-
+import 'package:twitter/widgets/custom_page_route.dart';
 //this navigation drawer is made for whenever the user press on his profile picture in the time line drawer is popped up
 class NavigationDrawer extends StatelessWidget {
   @override
@@ -37,7 +37,7 @@ class NavigationDrawer extends StatelessWidget {
                       ProfilePicture(
                         profilePictureFunctionality: () {
                           //go to profile screen upon pressing it
-                          Navigator.pushNamed(context, ProfileScreen.routeName);
+                          Navigator.of(context).push(CustomPageRoute(child:ProfileScreen(),beginX: 1,beginY: 0),);
                         },
                         profilePictureImage: UsersData.getMyData().profilePicture,
                         profilePictureSize: navigationDrawerProfilePicSize,

@@ -4,7 +4,7 @@ import 'package:twitter/constants.dart';
 import 'opacity_data.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/screens/profile_screen/profile_screen.dart';
-
+import 'package:twitter/widgets/custom_page_route.dart';
 //this class is for the navigation drawer details like name ,title ,followers which all has actions on getting pressed
 class NavigationDrawerLabels extends StatelessWidget {
   NavigationDrawerLabels({this.widget, this.jumpToProfile = false});
@@ -19,7 +19,7 @@ class NavigationDrawerLabels extends StatelessWidget {
         Provider.of<OpacityValue>(context, listen: false).setOpacity(0.6);
         if (jumpToProfile == true) {
           //go to profile screen upon pressing it
-          Navigator.pushNamed(context, ProfileScreen.routeName);
+          Navigator.of(context).push(CustomPageRoute(child:ProfileScreen(),beginX: 1,beginY: 0),);
           Provider.of<OpacityValue>(context, listen: false).setOpacity(1);
         }
       },

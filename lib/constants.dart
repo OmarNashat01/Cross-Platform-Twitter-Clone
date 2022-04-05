@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 //profile pictures sizes
 const double timelineProfilePicSize = 15;
+const double addTweetProfilePicSize = 17;
 const double navigationDrawerProfilePicSize = 20;
 
 // asset paths

@@ -7,6 +7,8 @@ import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/models/tweet_card_data.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
+import '../../widgets/custom_page_route.dart';
+import '../add_tweet_screen.dart';
 import 'timeline_components/profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'timeline_components/navigation_drawer.dart';
@@ -21,7 +23,9 @@ class TimelineScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(CustomPageRoute(child:AddTweetScreen(),beginX: 0,beginY: 1),);
+        },
         backgroundColor: Colors.blue,
         child: Icon(
           FontAwesomeIcons.plus,
