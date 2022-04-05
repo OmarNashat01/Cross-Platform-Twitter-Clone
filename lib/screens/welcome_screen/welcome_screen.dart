@@ -36,7 +36,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           width: 100,
           child: SvgPicture.asset(
             kLogoPath,
-            color: kPrimaryColor,
+            color: kOnSecondaryColor,
             alignment: Alignment.center,
           ),
         ),

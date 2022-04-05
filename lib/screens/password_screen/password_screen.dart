@@ -11,16 +11,16 @@ class PasswordScreen extends StatefulWidget {
   static const routeName = '/password-screen';
 
   @override
-  State<PasswordScreen> createState() => _PasswordScreenState();
+  State<PasswordScreen> createState() => PasswordScreenState();
 }
 
-class _PasswordScreenState extends State<PasswordScreen> {
+class PasswordScreenState extends State<PasswordScreen> {
   bool _isObscure = true;
   final _formKey = GlobalKey<FormState>();
 
   final _passwordFieldController = TextEditingController();
 
-  String? _validatePassword(pass) {
+  String? validatePassword(pass) {
     if (pass == null || pass.isEmpty || pass.length < 8) {
       return 'Your password needs to be at least 8 characters.\nPlease enter a longer one.';
     }
@@ -91,7 +91,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                       cursorColor: Theme.of(context).colorScheme.secondary,
                       cursorWidth: 2,
                       style: const TextStyle(fontSize: 20),
-                      validator: _validatePassword,
+                      validator: validatePassword,
                       controller: _passwordFieldController,
                       onSaved: (pass) =>
                           Provider.of<UserProvider>(context, listen: false)
