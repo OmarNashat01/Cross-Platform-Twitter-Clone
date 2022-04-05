@@ -17,7 +17,7 @@ class UserProvider with ChangeNotifier {
   String get password => _password;
 
   // Todo: should save the data in the DB provided by the backend
-  void save() {
+  void signUp() {
     print(_name);
     print(_email);
     print(_dob);

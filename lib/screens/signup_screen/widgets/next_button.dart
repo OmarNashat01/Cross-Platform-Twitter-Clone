@@ -17,7 +17,7 @@ class NextButton extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       log('passed');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).save();
+      Provider.of<UserProvider>(context, listen: false).signUp();
       Navigator.of(context).pushNamed(PasswordScreen.routeName);
     } else {
       log('failed');

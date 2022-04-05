@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'constants.dart';
 
-// =========== App bars ===============
+// =============== App bars ===============
 class CustomAppBars {
   static AppBar welcomeAppBar = AppBar(
     centerTitle: true,
@@ -16,7 +16,7 @@ class CustomAppBars {
   );
 }
 
-// Button Styles
+// =============== Button Styles ===============
 class CustomButtons {
   static ButtonStyle blueButton({bool isFit = true}) {
     return ElevatedButton.styleFrom(

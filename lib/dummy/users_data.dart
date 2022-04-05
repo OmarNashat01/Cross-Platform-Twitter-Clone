@@ -1,5 +1,4 @@
 import 'package:twitter/models/profile_data.dart';
-import '';
 class UsersData {
   static final ProfileData _myData = ProfileData(
       name: 'abdallah ahmed',

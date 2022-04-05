@@ -31,7 +31,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
     if (_formKey.currentState!.validate()) {
       log('passed');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).save();
+      Provider.of<UserProvider>(context, listen: false).signUp();
     } else {
       log('failed');
     }
@@ -96,7 +96,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                       onSaved: (pass) =>
                           Provider.of<UserProvider>(context, listen: false)
                               .password = pass,
-                      onFieldSubmitted: _pressSignupButton,
+                      onFieldSubmitted: (_) => _pressSignupButton(context),
                       keyboardType: TextInputType.visiblePassword,
                       decoration: _decoratePasswordField('Password'),
                     ),

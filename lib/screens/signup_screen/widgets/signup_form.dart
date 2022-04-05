@@ -11,30 +11,29 @@ import '../../../constants.dart';
 
 class SignupForm extends StatefulWidget {
   @override
-  State<SignupForm> createState() => _SignupFormState();
+  State<SignupForm> createState() => SignupFormState();
 }
 
-class _SignupFormState extends State<SignupForm> {
-
+class SignupFormState extends State<SignupForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameFieldController = TextEditingController();
   final _emailFieldController = TextEditingController();
   final _dateOfBirthFieldController = TextEditingController();
 
-  String? _validateName(value) {
+  String? validateName(value) {
     if (value.isEmpty) return 'Please enter your name.';
     return null;
   }
 
-  String? _validateEmail(value) {
-    // TODO: add a validation to check whether the email is already been taken
+  String? validateEmail(value) {
+    // Todo: add a validation to check whether the email has already been taken
     // if (exists(value)) return 'Email has already been taken.'
 
     if (!EmailValidator.validate(value)) return 'Please enter a valid email.';
     return null;
   }
 
-  String? _validateDob(value) {
+  String? validateDob(value) {
     if (value.isEmpty) return 'Please enter your date of birth.';
     return null;
   }
@@ -83,14 +82,17 @@ class _SignupFormState extends State<SignupForm> {
             child: Column(
               children: [
                 TextFormField(
+                  autofocus: true,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   cursorWidth: 2,
                   maxLength: 50,
                   textInputAction: TextInputAction.next,
-                  validator: _validateName,
+                  validator: validateName,
                   controller: _nameFieldController,
-                  onSaved: (name) => Provider.of<UserProvider>(context, listen: false).name = name,
+                  onSaved: (name) =>
+                      Provider.of<UserProvider>(context, listen: false).name =
+                          name,
                   keyboardType: TextInputType.name,
                   style: const TextStyle(fontSize: 20),
                   decoration: _decorateFields('Name'),
@@ -101,9 +103,11 @@ class _SignupFormState extends State<SignupForm> {
                   cursorColor: Theme.of(context).colorScheme.secondary,
                   cursorWidth: 2,
                   style: const TextStyle(fontSize: 20),
-                  validator: _validateEmail,
+                  validator: validateEmail,
                   controller: _emailFieldController,
-                  onSaved: (email) => Provider.of<UserProvider>(context, listen: false).email = email,
+                  onSaved: (email) =>
+                      Provider.of<UserProvider>(context, listen: false).email =
+                          email,
                   keyboardType: TextInputType.emailAddress,
                   decoration: _decorateFields('Email'),
                 ),
@@ -112,9 +116,11 @@ class _SignupFormState extends State<SignupForm> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   style: const TextStyle(fontSize: 20),
                   readOnly: true,
-                  validator: _validateDob,
+                  validator: validateDob,
                   controller: _dateOfBirthFieldController,
-                  onSaved: (dob) => Provider.of<UserProvider>(context, listen: false).dob = DateFormat.yMMMd().parse(dob as String),
+                  onSaved: (dob) =>
+                      Provider.of<UserProvider>(context, listen: false).dob =
+                          DateFormat.yMMMd().parse(dob as String),
                   onTap: _showDatePicker,
                   decoration: _decorateFields('Date of birth'),
                 ),

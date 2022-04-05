@@ -16,22 +16,23 @@ import 'providers/user_provider.dart';
 // Other imports
 import 'routes.dart';
 
-void main() {
-  runApp(TwitterApp());
-}
+void main() => runApp(TwitterApp());
 
 class TwitterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => UserProvider(),
+    return MultiProvider(
+      // Add providers as needed
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Twitter',
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           backgroundColor: Colors.white,
-          highlightColor: Color(0xff757575),
+          highlightColor: const Color(0xff757575),
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.white,
             elevation: 0,
