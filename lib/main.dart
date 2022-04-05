@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/providers/user_provider.dart';
+import 'package:twitter/screens/bio_screen/bio_screen.dart';
 import 'package:twitter/screens/password_screen/password_screen.dart';
 import 'package:twitter/screens/signup_screen/signup_screen.dart';
 
@@ -51,7 +52,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: TimelineScreen(),
+        home: WelcomeScreen(),
         routes: routes,
       ),
     );

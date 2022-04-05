@@ -58,7 +58,7 @@ class SignupFormState extends State<SignupForm> {
     );
   }
 
-  InputDecoration _decorateFields(String hint) {
+  InputDecoration _decorateField(String hint) {
     return InputDecoration(
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(
@@ -95,7 +95,7 @@ class SignupFormState extends State<SignupForm> {
                           name,
                   keyboardType: TextInputType.name,
                   style: const TextStyle(fontSize: 20),
-                  decoration: _decorateFields('Name'),
+                  decoration: _decorateField('Name'),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -109,7 +109,7 @@ class SignupFormState extends State<SignupForm> {
                       Provider.of<UserProvider>(context, listen: false).email =
                           email,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: _decorateFields('Email'),
+                  decoration: _decorateField('Email'),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -122,7 +122,7 @@ class SignupFormState extends State<SignupForm> {
                       Provider.of<UserProvider>(context, listen: false).dob =
                           DateFormat.yMMMd().parse(dob as String),
                   onTap: _showDatePicker,
-                  decoration: _decorateFields('Date of birth'),
+                  decoration: _decorateField('Date of birth'),
                 ),
               ],
             ),
