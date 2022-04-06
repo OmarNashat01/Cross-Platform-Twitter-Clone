@@ -52,7 +52,7 @@ class AddTweetScreen extends StatelessWidget {
                 child: Text(
                   'Tweet',
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: Colors.blue[600],
                   ),
                 ),
               ),
@@ -82,7 +82,7 @@ class AddTweetScreen extends StatelessWidget {
                   autofocus: true,
                   showCursor: true,
                   cursorHeight: 20,
-                  cursorColor: Colors.blue,
+                  cursorColor: Colors.blue[600],
                   keyboardType: TextInputType.multiline,
                   maxLines: 100,
                   onChanged: (value) => title = value,
