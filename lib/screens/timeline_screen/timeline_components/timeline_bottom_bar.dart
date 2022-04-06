@@ -23,7 +23,7 @@ class TimelineBottomBar extends StatelessWidget {
               onTap: ()
               {
                 controller.animateTo(0.0,
-                    curve: Curves.easeIn, duration: const Duration(seconds: 1));
+                    curve: Curves.easeIn, duration: const Duration(milliseconds: 200));
               },
               onLongPress: ()
               {

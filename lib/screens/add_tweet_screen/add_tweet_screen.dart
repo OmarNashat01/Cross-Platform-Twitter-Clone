@@ -7,20 +7,11 @@ import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/models/tweet_card_data.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'package:extended_text_field/extended_text_field.dart';
-class AddTweetScreen extends StatefulWidget {
-  @override
-  State<AddTweetScreen> createState() => _AddTweetScreenState();
-}
+class AddTweetScreen extends StatelessWidget {
 
-class _AddTweetScreenState extends State<AddTweetScreen> {
   final controller = ScrollController();
   String? title;
   String text = "No Value Entered";
-  void _setText() {
-    setState(() {
-      text = title!;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +38,7 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    _setText();
+                    text=title!;
                     Provider.of<TweetsList>(context,listen: false).addTweet(TweetCardData(name: UsersData.getMyData().name, title: UsersData.getMyData().title, profilePicture: UsersData.getMyData().profilePicture, imageType: TweetImage.nothing, existence: TextExistence.exist,text: text));
                     print(Provider.of<TweetsList>(context,listen: false).getTweetsList().length);
                    Navigator.pop(context);
