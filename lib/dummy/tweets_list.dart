@@ -1,10 +1,11 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:twitter/models/tweet_card_data.dart';
 import 'package:twitter/dummy/users_data.dart';
-class TweetsList
+class TweetsList extends ChangeNotifier
 {
 
- static final List<TweetCardData>_tweetsList=
+   static List<TweetCardData>_tweetsList=
     [
       TweetCardData(name: UsersData.getOtherUsersData()[0].name, title: UsersData.getOtherUsersData()[0].title, profilePicture: UsersData.getOtherUsersData()[0].profilePicture, imageType: TweetImage.picture, existence: TextExistence.exist,text:'lovely nature' ,imageURL:'assets/tweets_images/nature.jpg' ),
       TweetCardData(name: UsersData.getOtherUsersData()[2].name, title: UsersData.getOtherUsersData()[2].title, profilePicture: UsersData.getOtherUsersData()[2].profilePicture, imageType: TweetImage.picture, existence: TextExistence.exist,text:'dogs are beautiful' ,imageURL:'assets/tweets_images/dog.jpeg' ),
@@ -14,16 +15,19 @@ class TweetsList
 
     ];
 
-    static List<TweetCardData>getTweetsList()
+     static List<TweetCardData>getTweetsList()
     {
       return _tweetsList;
     }
-    static int getTweetsNumbers()
+     static int  getTweetsNumbers()
     {
       return _tweetsList.length;
     }
-    void addTweet(TweetCardData newTweet)
+      void addTweet(TweetCardData newTweet)
     {
       _tweetsList.add(newTweet);
+      print(_tweetsList);
+      print(_tweetsList.length.toString());
+      notifyListeners();
     }
 }

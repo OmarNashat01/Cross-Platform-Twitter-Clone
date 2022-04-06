@@ -14,7 +14,6 @@ import 'package:twitter/screens/timeline_screen/timeline_components/profile_pict
 class TweetCard extends StatelessWidget {
   TweetCard({required this.index});
   final int index;
-
   @override
 
   Widget build(BuildContext context) {
@@ -31,7 +30,7 @@ class TweetCard extends StatelessWidget {
                   ProfilePicture(
                       profilePictureFunctionality: () {},
                       profilePictureImage:
-                          TweetsList.getTweetsList()[index].profilePicture,
+                      TweetsList.getTweetsList()[index].profilePicture,
                       profilePictureSize: navigationDrawerProfilePicSize),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
@@ -39,7 +38,7 @@ class TweetCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //here is the name and title of the one who tweeted
-                        Text(TweetsList.getTweetsList()[index].name,
+                        Text( TweetsList.getTweetsList()[index].name,
                             style: boldName),
                         Text(TweetsList.getTweetsList()[index].title,
                             style: titleName),
@@ -57,7 +56,7 @@ class TweetCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                            TweetsList.getTweetsList()[index].text!,
+                          TweetsList.getTweetsList()[index].text!,
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                             //max lines of writing a tweet is 8 like in the main twitter
@@ -76,7 +75,7 @@ class TweetCard extends StatelessWidget {
         //--here is the image of the tweet
         TweetsList.getTweetsList()[index].imageType == TweetImage.picture
             ? Image.asset(
-                TweetsList.getTweetsList()[index].imageURL!,
+          TweetsList.getTweetsList()[index].imageURL!,
           fit: BoxFit.cover,
           width: double.infinity,
           alignment: Alignment.center,
@@ -120,7 +119,7 @@ class TweetCard extends StatelessWidget {
                       size: 18,
                     ),
                     SizedBox(width: 10,),
-                    TweetsList.getTweetsList()[index].nRetweets>0?Text( TweetsList.getTweetsList()[index].nRetweets.toString(),style: titleName,):const SizedBox.shrink()
+                    TweetsList.getTweetsList()[index].nRetweets>0?Text(  TweetsList.getTweetsList()[index].nRetweets.toString(),style: titleName,):const SizedBox.shrink()
                   ],
                 ),
               ),
@@ -129,8 +128,8 @@ class TweetCard extends StatelessWidget {
               Row(
                 children:[
                    LikeButton(
-                    isLiked: TweetsList.getTweetsList()[index].isLiked,
-                     likeCount: TweetsList.getTweetsList()[index].nLove,
+                    isLiked:  TweetsList.getTweetsList()[index].isLiked,
+                     likeCount:  TweetsList.getTweetsList()[index].nLove,
                      likeBuilder: (isLiked)
                      {
                        final color=isLiked?Colors.red:Colors.grey.shade500;

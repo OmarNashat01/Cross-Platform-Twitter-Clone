@@ -17,14 +17,19 @@ import 'package:twitter/models/tweet_card_data.dart';
 // ignore_for_file: prefer_const_constructors
 class TimelineScreen extends StatelessWidget {
   static const routeName = '/timeline-screen';
-
   final controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(CustomPageRoute(child:AddTweetScreen(),beginX: 0,beginY: 1),);
+          Navigator.of(context).push(
+            CustomPageRoute
+            (child:ChangeNotifierProvider(
+              create: (context)=>TweetsList(),
+                child: AddTweetScreen()),beginX: 0,beginY: 1),
+          );
         },
         backgroundColor: Colors.blue,
         child: Icon(
@@ -99,9 +104,10 @@ class TimelineScreen extends StatelessWidget {
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
+                print(TweetsList.getTweetsList().length.toString());
                 return TweetCard(index: index);
               },
-              itemCount: TweetsList.getTweetsNumbers(),
+              itemCount:TweetsList.getTweetsNumbers(),
             ),
           ),
         ),
