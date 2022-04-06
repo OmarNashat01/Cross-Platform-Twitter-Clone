@@ -43,7 +43,7 @@ dependencies:
   flutter_datetime_picker: ^1.5.1
   intl: ^0.17.0
   like_button: ^2.0.4
-
+  extended_text_field: ^10.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

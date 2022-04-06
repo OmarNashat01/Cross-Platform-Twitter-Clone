@@ -6,6 +6,7 @@ import 'package:twitter/dummy/tweets_list.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/models/tweet_card_data.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
+import 'package:extended_text_field/extended_text_field.dart';
 class AddTweetScreen extends StatefulWidget {
   @override
   State<AddTweetScreen> createState() => _AddTweetScreenState();
@@ -48,6 +49,7 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
                   onPressed: () {
                     _setText();
                     Provider.of<TweetsList>(context,listen: false).addTweet(TweetCardData(name: UsersData.getMyData().name, title: UsersData.getMyData().title, profilePicture: UsersData.getMyData().profilePicture, imageType: TweetImage.nothing, existence: TextExistence.exist,text: text));
+                    print(Provider.of<TweetsList>(context,listen: false).getTweetsList().length);
                    Navigator.pop(context);
                   },
                   child: Text('Tweet',style:TextStyle(color: Colors.white),),
@@ -74,7 +76,7 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
                 padding: EdgeInsets.only(left: 15,right: 15),
                 child: TextField(
                   decoration: const InputDecoration(
-                    hintText:"'What's happening?",
+                    hintText:"What's happening?",
                   ),
                   autofocus: true,
                   showCursor: true,

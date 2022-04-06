@@ -30,7 +30,7 @@ class TweetCard extends StatelessWidget {
                   ProfilePicture(
                       profilePictureFunctionality: () {},
                       profilePictureImage:
-                      TweetsList.getTweetsList()[index].profilePicture,
+                      Provider.of<TweetsList>(context).getTweetsList()[index].profilePicture,
                       profilePictureSize: navigationDrawerProfilePicSize),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
@@ -38,9 +38,9 @@ class TweetCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //here is the name and title of the one who tweeted
-                        Text( TweetsList.getTweetsList()[index].name,
+                        Text( Provider.of<TweetsList>(context).getTweetsList()[index].name,
                             style: boldName),
-                        Text(TweetsList.getTweetsList()[index].title,
+                        Text(Provider.of<TweetsList>(context).getTweetsList()[index].title,
                             style: titleName),
                       ],
                     ),
@@ -51,12 +51,12 @@ class TweetCard extends StatelessWidget {
               //--for decoration sized box
               SizedBox(height: 5,),
               //--here is the text of the tweet
-              TweetsList.getTweetsList()[index].existence == TextExistence.exist
+              Provider.of<TweetsList>(context).getTweetsList()[index].existence == TextExistence.exist
                   ? Row(
                     children: [
                       Expanded(
                         child: Text(
-                          TweetsList.getTweetsList()[index].text!,
+                          Provider.of<TweetsList>(context).getTweetsList()[index].text!,
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                             //max lines of writing a tweet is 8 like in the main twitter
@@ -73,9 +73,9 @@ class TweetCard extends StatelessWidget {
              //--for decoration sized box
              SizedBox(height: 5,),
         //--here is the image of the tweet
-        TweetsList.getTweetsList()[index].imageType == TweetImage.picture
+        Provider.of<TweetsList>(context).getTweetsList()[index].imageType == TweetImage.picture
             ? Image.asset(
-          TweetsList.getTweetsList()[index].imageURL!,
+          Provider.of<TweetsList>(context).getTweetsList()[index].imageURL!,
           fit: BoxFit.cover,
           width: double.infinity,
           alignment: Alignment.center,
@@ -101,7 +101,7 @@ class TweetCard extends StatelessWidget {
                       size: 18,
                     ),
                     SizedBox(width: 10,),
-                    TweetsList.getTweetsList()[index].nComments>0?Text( TweetsList.getTweetsList()[index].nComments.toString(),style: titleName,):const SizedBox.shrink()
+                    Provider.of<TweetsList>(context).getTweetsList()[index].nComments>0?Text( Provider.of<TweetsList>(context).getTweetsList()[index].nComments.toString(),style: titleName,):const SizedBox.shrink()
                   ],
                 ),
 
@@ -119,7 +119,7 @@ class TweetCard extends StatelessWidget {
                       size: 18,
                     ),
                     SizedBox(width: 10,),
-                    TweetsList.getTweetsList()[index].nRetweets>0?Text(  TweetsList.getTweetsList()[index].nRetweets.toString(),style: titleName,):const SizedBox.shrink()
+                    Provider.of<TweetsList>(context).getTweetsList()[index].nRetweets>0?Text(  Provider.of<TweetsList>(context).getTweetsList()[index].nRetweets.toString(),style: titleName,):const SizedBox.shrink()
                   ],
                 ),
               ),
@@ -128,8 +128,8 @@ class TweetCard extends StatelessWidget {
               Row(
                 children:[
                    LikeButton(
-                    isLiked:  TweetsList.getTweetsList()[index].isLiked,
-                     likeCount:  TweetsList.getTweetsList()[index].nLove,
+                    isLiked:  Provider.of<TweetsList>(context).getTweetsList()[index].isLiked,
+                     likeCount:  Provider.of<TweetsList>(context).getTweetsList()[index].nLove,
                      likeBuilder: (isLiked)
                      {
                        final color=isLiked?Colors.red:Colors.grey.shade500;
@@ -138,7 +138,7 @@ class TweetCard extends StatelessWidget {
                      countBuilder: (count,isLiked,text)
                        {
                          final color=isLiked?Colors.black:Colors.grey;
-                         return TweetsList.getTweetsList()[index].nLove>0?Text( text,style: titleName,):const SizedBox.shrink();
+                         return Provider.of<TweetsList>(context).getTweetsList()[index].nLove>0?Text( text,style: titleName,):const SizedBox.shrink();
 
                        },
                      onTap: (isLiked)async

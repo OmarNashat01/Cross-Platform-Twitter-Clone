@@ -1,10 +1,8 @@
-// Dart packages
-
-// Flutter packages
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/dummy/tweets_list.dart';
 import 'package:twitter/providers/user_provider.dart';
+import 'package:twitter/screens/bio_screen/bio_screen.dart';
 import 'package:twitter/screens/password_screen/password_screen.dart';
 import 'package:twitter/screens/signup_screen/signup_screen.dart';
 
@@ -26,6 +24,7 @@ class TwitterApp extends StatelessWidget {
       // Add providers as needed
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context)=>TweetsList()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -52,10 +51,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: ChangeNotifierProvider(
-          create: (context)=>TweetsList(),
-            child: TimelineScreen(),
-        ),
+        home: TimelineScreen(),
         routes: routes,
       ),
     );

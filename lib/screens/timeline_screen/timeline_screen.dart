@@ -26,9 +26,7 @@ class TimelineScreen extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             CustomPageRoute
-            (child:ChangeNotifierProvider(
-              create: (context)=>TweetsList(),
-                child: AddTweetScreen()),beginX: 0,beginY: 1),
+            (child:AddTweetScreen(),beginX: 0,beginY: 1),
           );
         },
         backgroundColor: Colors.blue,
@@ -59,7 +57,7 @@ class TimelineScreen extends StatelessWidget {
                 onPressed: () {
                   //this makes when i press on the bar it goes to the first tweet in timeline
                   controller.animateTo(0.0,
-                      curve: Curves.easeIn, duration: Duration(seconds: 1));
+                      curve: Curves.easeIn, duration: Duration(milliseconds: 200));
                 },
                 style: ButtonStyle(
                   overlayColor: MaterialStateColor.resolveWith(
@@ -101,13 +99,16 @@ class TimelineScreen extends StatelessWidget {
           body: Scrollbar(
             radius: Radius.circular(30),
             isAlwaysShown: true,
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                print(TweetsList.getTweetsList().length.toString());
-                return TweetCard(index: index);
-              },
-              itemCount:TweetsList.getTweetsNumbers(),
+            child: RefreshIndicator(
+              color: Colors.grey,
+              onRefresh: ()=>Provider.of<TweetsList>(context,listen: false).addRandomTweetOnRefresh(),
+              child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return TweetCard(index: index);
+                },
+                itemCount:Provider.of<TweetsList>(context).getTweetsList().length,
+              ),
             ),
           ),
         ),
