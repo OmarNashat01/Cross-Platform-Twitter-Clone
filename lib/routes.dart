@@ -9,9 +9,9 @@ import 'screens/timeline_screen/timeline_screen.dart';
 import 'screens/profile_screen/profile_screen.dart';
 import 'screens/password_screen/password_screen.dart';
 import 'screens/bio_screen/bio_screen.dart';
-import 'screens/profile_screen/EditProfileScreen.dart';
-import 'screens/NotificationsScreen/NotificationsScreen.dart';
-import 'screens/SearchScreen/SearchScreen.dart';
+import 'screens/profile_screen/edit_profile_screen.dart';
+import 'screens/notifications_screen/NotificationsScreen.dart';
+import 'screens/search_screen/SearchScreen.dart';
 
 Map<String, WidgetBuilder> routes = {
   AuthWelcomeScreen.routeName: (context) => AuthWelcomeScreen(),

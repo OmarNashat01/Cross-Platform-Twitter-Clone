@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 import '../timeline_screen/timeline_components/profile_picture.dart';
-import 'package:twitter/screens/profile_screen/EditProfileScreen.dart';
+import 'package:twitter/screens/profile_screen/edit_profile_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 
 class ProfileScreen extends StatefulWidget {
