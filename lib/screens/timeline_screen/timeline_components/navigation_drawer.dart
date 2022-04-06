@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'navigation_drawer_button.dart';
 import 'navigation_drawer_labels.dart';
@@ -11,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'opacity_data.dart';
 import 'package:twitter/screens/profile_screen/profile_screen.dart';
 import 'package:twitter/widgets/custom_page_route.dart';
+
 //this navigation drawer is made for whenever the user press on his profile picture in the time line drawer is popped up
 class NavigationDrawer extends StatelessWidget {
   @override
@@ -181,7 +181,12 @@ class NavigationDrawer extends StatelessWidget {
                         style: titleName,
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, ProfileScreen.routeName);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context){ return ProfileScreen(); },
+                          ),
+                        );
                       },
                     ),
                     //------------------------------------------------------------

@@ -6,7 +6,6 @@ import 'package:twitter/dummy/tweets_list.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/models/tweet_card_data.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
-import 'package:extended_text_field/extended_text_field.dart';
 class AddTweetScreen extends StatelessWidget {
 
   final controller = ScrollController();
@@ -26,15 +25,15 @@ class AddTweetScreen extends StatelessWidget {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
-                  child: const Text(
-                    'Cancel',
-                    style: titleName,
-                  ),
-                  onTap: ()
-                  {
+                ElevatedButton(
+                  onPressed: () {
                     Navigator.pop(context);
                   },
+                  child: Text('Cancel',style:TextStyle(color: Colors.white),),
+                  style: ElevatedButton.styleFrom(
+                    shape: StadiumBorder(),
+                    primary: Colors.blue,
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -57,7 +56,7 @@ class AddTweetScreen extends StatelessWidget {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 15,),
+                  padding: const EdgeInsets.only(left: 15, top:20),
                   child: ProfilePicture(profilePictureFunctionality: (){}, profilePictureImage: UsersData.getMyData().profilePicture, profilePictureSize: navigationDrawerProfilePicSize),
                 ),
               ],

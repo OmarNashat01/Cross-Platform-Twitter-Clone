@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:twitter/screens/NotificationsScreen/NotificationsScreen.dart';
+import 'package:twitter/screens/SearchScreen/SearchScreen.dart';
+import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 class TimelineBottomBar extends StatelessWidget {
   const TimelineBottomBar({
     Key? key,
@@ -23,7 +26,7 @@ class TimelineBottomBar extends StatelessWidget {
               onTap: ()
               {
                 controller.animateTo(0.0,
-                    curve: Curves.easeIn, duration: const Duration(milliseconds: 200));
+                    curve: Curves.easeIn, duration: const Duration(seconds: 1));
               },
               onLongPress: ()
               {
@@ -35,26 +38,37 @@ class TimelineBottomBar extends StatelessWidget {
                       ),
                 );
               },
-              child: const Icon(
-                FontAwesomeIcons.house,
-              ),
+              child: IconButton(onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context){ return TimelineScreen(); },
+                  ),
+                );
+              }, icon: Icon(FontAwesomeIcons.house,
+              ),),
             ),
-            GestureDetector(
-              onTap: ()
-              {
-                print('searching');
-              },
-              child: const Icon(
-                Icons.search_outlined,
-                size: 30,
-              ),
-            ),
+            IconButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context){ return SearchScreen(); },
+                ),
+              );
+            }, icon: Icon(Icons.search, size: 30,
+            ),),
             const Icon(
               FontAwesomeIcons.microphone,
             ),
-            const Icon(
-              FontAwesomeIcons.bell,
-            ),
+            IconButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context){ return NotificationsScreen(); },
+                ),
+              );
+            }, icon: Icon(FontAwesomeIcons.bell,
+            ),),
             const Icon(
               Icons.mail_outline_outlined,
             ),
