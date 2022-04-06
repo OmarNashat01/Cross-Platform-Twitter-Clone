@@ -2,46 +2,45 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../bio_screen/bio_screen.dart';
-
 import '../../providers/user_provider.dart';
 
 import '../../themes.dart';
 import '../../constants.dart';
 
-class PasswordScreen extends StatefulWidget {
-  static const routeName = '/password-screen';
+class BioScreen extends StatefulWidget {
+  static const routeName = '/bio-screen';
 
   @override
-  State<PasswordScreen> createState() => PasswordScreenState();
+  State<BioScreen> createState() => BioScreenState();
 }
 
-class PasswordScreenState extends State<PasswordScreen> {
-  bool _isObscure = true;
+class BioScreenState extends State<BioScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final _passwordFieldController = TextEditingController();
+  final bioFieldController = TextEditingController();
 
-  String? validatePassword(pass) {
-    if (pass == null || pass.isEmpty || pass.length < 8) {
-      return 'Your password needs to be at least 8 characters.\nPlease enter a longer one.';
+  String? validateBio(bio) {
+    if (bio == null || bio.isEmpty) {
+      return 'Please describe yourself, or you can just skip\n this for now';
     }
     return null;
   }
 
-  void _pressSignupButton(context) {
+  void _pressNextButton(context) {
     if (_formKey.currentState!.validate()) {
       log('passed');
       _formKey.currentState!.save();
       Provider.of<UserProvider>(context, listen: false).signUp();
-      Navigator.of(context)..pop()..pop();
-      Navigator.of(context).pushReplacementNamed(BioScreen.routeName);
     } else {
       log('failed');
     }
   }
 
-  InputDecoration _decoratePasswordField(String hint) {
+  void _pressSkipButton(context) {
+    // Todo: skip by navigating to the "@username" screen
+  }
+
+  InputDecoration _decorateBioField(String hint) {
     return InputDecoration(
       focusedBorder: const UnderlineInputBorder(
         borderSide: BorderSide(
@@ -51,13 +50,6 @@ class PasswordScreenState extends State<PasswordScreen> {
       ),
       hintText: hint,
       counterStyle: const TextStyle(fontSize: 16),
-      suffixIcon: IconButton(
-        onPressed: () => setState(() => _isObscure = !_isObscure),
-        icon: Icon(
-          _isObscure ? Icons.visibility_off : Icons.visibility,
-        ),
-        color: Colors.grey,
-      ),
     );
   }
 
@@ -78,7 +70,7 @@ class PasswordScreenState extends State<PasswordScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 5),
                       child: Text(
-                        'You\'ll need a password',
+                        'Describe yourself',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -86,29 +78,25 @@ class PasswordScreenState extends State<PasswordScreen> {
                       ),
                     ),
                   ),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 10, bottom: 25),
-                      child: Text(' Make sure it\'s 8 characters or more.'),
-                    ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 25),
+                    child: Text('What makes you special? Don\'t think too hard, just have fun with it.'),
                   ),
                   Form(
                     key: _formKey,
                     child: TextFormField(
                       autofocus: true,
-                      obscureText: _isObscure,
                       cursorColor: Theme.of(context).colorScheme.secondary,
                       cursorWidth: 2,
+                      maxLength: 160,
                       style: const TextStyle(fontSize: 20),
-                      validator: validatePassword,
-                      controller: _passwordFieldController,
-                      onSaved: (pass) =>
+                      validator: validateBio,
+                      controller: bioFieldController,
+                      onSaved: (bio) =>
                           Provider.of<UserProvider>(context, listen: false)
-                              .password = pass,
-                      onFieldSubmitted: (_) => _pressSignupButton(context),
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: _decoratePasswordField('Password'),
+                              .bio = bio, 
+                      onFieldSubmitted: (_) => _pressNextButton(context),
+                      decoration: _decorateBioField('Your bio'),
                     ),
                   ),
                 ],
@@ -117,11 +105,21 @@ class PasswordScreenState extends State<PasswordScreen> {
             Expanded(
               flex: 2,
               child: Align(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: () => _pressSignupButton(context),
-                  style: CustomButtons.blueButton(isFit: false),
-                  child: const Text('Sign Up'),
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () => _pressSkipButton(context),
+                      style: CustomButtons.whiteButton(),
+                      child: const Text('Skip for now'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _pressNextButton(context),
+                      style: CustomButtons.blackButton(),
+                      child: const Text('Next'),
+                    ),
+                  ],
                 ),
               ),
             ),
