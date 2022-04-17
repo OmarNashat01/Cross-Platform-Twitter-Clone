@@ -1,46 +1,50 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
-import '../bio_screen/bio_screen.dart';
+import 'package:twitter/screens/password_screen/password_screen.dart';
 
 import '../../providers/user_provider.dart';
 
 import '../../themes.dart';
 import '../../constants.dart';
 
-class PasswordScreen extends StatefulWidget {
-  static const routeName = '/password-screen';
+class VerificationScreen extends StatefulWidget {
+  static const routeName = '/verification-screen';
 
   @override
-  State<PasswordScreen> createState() => PasswordScreenState();
+  State<VerificationScreen> createState() => VerificationScreenState();
 }
 
-class PasswordScreenState extends State<PasswordScreen> {
-  bool _isObscure = true;
+class VerificationScreenState extends State<VerificationScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final _passwordFieldController = TextEditingController();
+  final _verificationFieldController = TextEditingController();
 
-  String? validatePassword(pass) {
-    if (pass == null || pass.isEmpty || pass.length < 8) {
-      return 'Your password needs to be at least 8 characters.\nPlease enter a longer one.';
-    }
-    return null;
+  String? validateVerificationCode(pass) {
+    // if (pass == null || pass.isEmpty || pass.length < 8) {
+    //   return 'Your password needs to be at least 8 characters.\nPlease enter a longer one.';
+    // }
+    // return null;
   }
 
-  void _pressSignupButton(context) {
+  void _pressNextButton(context) {
     if (_formKey.currentState!.validate()) {
-      log('Password: PASSED');
+      log('Verification PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).signUp();
-      Navigator.of(context).pushReplacementNamed(BioScreen.routeName);
+      Provider.of<UserProvider>(context, listen: false).verifyCode();
+      // Todo: Check for the response of verifyCode() to confirm that the code is written correctly
+      // Todo: Display the verification code expiration time (elapsed time)
+      Navigator.of(context)
+        ..pop()
+        ..pop();
+      Navigator.of(context).pushReplacementNamed(PasswordScreen.routeName);
     } else {
-      log('Password: FAILED');
+      log('Verification FAILED');
     }
   }
 
-  InputDecoration _decoratePasswordField(String hint) {
+  InputDecoration _decorateVerificationField(String hint) {
     return InputDecoration(
       focusedBorder: const UnderlineInputBorder(
         borderSide: BorderSide(
@@ -50,13 +54,6 @@ class PasswordScreenState extends State<PasswordScreen> {
       ),
       hintText: hint,
       counterStyle: const TextStyle(fontSize: 16),
-      suffixIcon: IconButton(
-        onPressed: () => setState(() => _isObscure = !_isObscure),
-        icon: Icon(
-          _isObscure ? Icons.visibility_off : Icons.visibility,
-        ),
-        color: Colors.grey,
-      ),
     );
   }
 
@@ -77,7 +74,7 @@ class PasswordScreenState extends State<PasswordScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 5),
                       child: Text(
-                        'You\'ll need a password',
+                        'We sent you a code',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -85,29 +82,32 @@ class PasswordScreenState extends State<PasswordScreen> {
                       ),
                     ),
                   ),
-                  const Align(
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 10, bottom: 25),
-                      child: Text(' Make sure it\'s 8 characters or more.'),
+                      padding: const EdgeInsets.only(top: 10, bottom: 25),
+                      child: Text(
+                        ' Enter it below to verify ${Provider.of<UserProvider>(context, listen: false).email}',
+                      ),
                     ),
                   ),
                   Form(
                     key: _formKey,
                     child: TextFormField(
                       autofocus: true,
-                      obscureText: _isObscure,
                       cursorColor: Theme.of(context).colorScheme.secondary,
                       cursorWidth: 2,
                       style: const TextStyle(fontSize: 20),
-                      validator: validatePassword,
-                      controller: _passwordFieldController,
-                      onSaved: (pass) =>
+                      validator: validateVerificationCode,
+                      controller: _verificationFieldController,
+                      onSaved: (code) =>
                           Provider.of<UserProvider>(context, listen: false)
-                              .password = pass,
-                      onFieldSubmitted: (_) => _pressSignupButton(context),
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: _decoratePasswordField('Password'),
+                              .verificationCode = code,
+                      onFieldSubmitted: (_) => _pressNextButton(context),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration:
+                          _decorateVerificationField('Verification code'),
                     ),
                   ),
                 ],
@@ -118,8 +118,8 @@ class PasswordScreenState extends State<PasswordScreen> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
-                  onPressed: () => _pressSignupButton(context),
-                  style: CustomButtons.blueButton(isFit: false),
+                  onPressed: () => _pressNextButton(context),
+                  style: CustomButtons.blackButton(),
                   child: const Text('Next'),
                 ),
               ),

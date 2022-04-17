@@ -4,7 +4,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import 'next_button.dart';
+import 'signup_button.dart';
 import '../../../providers/user_provider.dart';
 
 import '../../../constants.dart';
@@ -129,7 +129,7 @@ class SignupFormState extends State<SignupForm> {
           ),
           Expanded(
             flex: 1,
-            child: NextButton(_formKey),
+            child: SignupButton(_formKey),
           ),
         ],
       ),
