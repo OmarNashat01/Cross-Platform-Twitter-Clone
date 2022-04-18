@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 
 class UserProvider with ChangeNotifier {
@@ -6,6 +7,7 @@ class UserProvider with ChangeNotifier {
   DateTime _dob = DateTime.now();
   String _verificationCode = '';
   String _profilePic = ''; //! image local path, to be changed later
+  String _username = '';
   String _password = '';
   String _bio = '';
 
@@ -14,6 +16,7 @@ class UserProvider with ChangeNotifier {
   set dob(dob) => _dob = dob;
   set verificationCode(code) => _verificationCode = code;
   set profilePic(pic) => _profilePic = pic;
+  set username(name) => _username = name;
   set password(password) => _password = password;
   set bio(bio) => _bio = bio;
 
@@ -22,6 +25,7 @@ class UserProvider with ChangeNotifier {
   DateTime get dob => _dob;
   String get verificationCode => _verificationCode;
   String get profilePic => _profilePic;
+  String get username => _username;
   String get password => _password;
   String get bio => _bio;
 
@@ -37,12 +41,13 @@ class UserProvider with ChangeNotifier {
 
   // Todo: Send basic user data to the backend
   void signUp() {
-    print(_name);
-    print(_email);
-    print(_dob);
-    print(_verificationCode);
-    print(_profilePic);
-    print(_password);
-    print(_bio);
+    log('name: $_name');
+    log('email: $_email');
+    log('dob: ${_dob.toString()}');
+    log('code: $_verificationCode');
+    log('pic path: $_profilePic');
+    log('username: $_username');
+    log('pass: $_password');
+    log('bio: $_bio');
   }
 }

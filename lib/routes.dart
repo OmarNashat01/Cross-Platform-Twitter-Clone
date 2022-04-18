@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 import 'screens/auth_welcome_screen/auth_welcome_screen.dart';
@@ -11,6 +9,7 @@ import 'screens/profile_screen/profile_screen.dart';
 import 'screens/password_screen/password_screen.dart';
 import 'screens/profile_pic_screen/profile_pic_screen.dart';
 import 'screens/bio_screen/bio_screen.dart';
+import 'screens/username_screen/username_screen.dart';
 import 'screens/profile_screen/edit_profile_screen.dart';
 import 'screens/notifications_screen/NotificationsScreen.dart';
 import 'screens/search_screen/SearchScreen.dart';
@@ -24,6 +23,7 @@ Map<String, WidgetBuilder> routes = {
   PasswordScreen.routeName: (context) => PasswordScreen(),
   ProfilePicScreen.routeName: (context) => ProfilePicScreen(),
   BioScreen.routeName: (context) => BioScreen(),
+  UsernameScreen.routeName: (context) => UsernameScreen(),
   VerificationScreen.routeName: (context) => VerificationScreen(),
   NotificationsScreen.routeName: (context) => NotificationsScreen(),
   SearchScreen.routeName: (context) => SearchScreen(),

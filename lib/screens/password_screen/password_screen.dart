@@ -65,7 +65,7 @@ class PasswordScreenState extends State<PasswordScreen> {
     return Scaffold(
       appBar: CustomAppBars.welcomeAppBar,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           children: [
             Expanded(
@@ -119,7 +119,7 @@ class PasswordScreenState extends State<PasswordScreen> {
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: () => _pressSignupButton(context),
-                  style: CustomButtons.blueButton(isFit: false),
+                  style: CustomButtons.blackButton(),
                   child: const Text('Next'),
                 ),
               ),

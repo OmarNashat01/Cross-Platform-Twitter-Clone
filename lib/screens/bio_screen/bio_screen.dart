@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:twitter/screens/username_screen/username_screen.dart';
 
 import '../../providers/user_provider.dart';
 
@@ -28,16 +29,18 @@ class BioScreenState extends State<BioScreen> {
 
   void _pressNextButton(context) {
     if (_formKey.currentState!.validate()) {
-      log('passed');
+      log('Bio: PASSED');
       _formKey.currentState!.save();
       Provider.of<UserProvider>(context, listen: false).signUp();
+      Navigator.of(context).pushReplacementNamed(UsernameScreen.routeName);
     } else {
-      log('failed');
+      log('Bio: FAILED');
     }
   }
 
   void _pressSkipButton(context) {
-    // Todo: skip by navigating to the "@username" screen
+    Navigator.of(context).pushReplacementNamed(UsernameScreen.routeName);
+
   }
 
   InputDecoration _decorateBioField(String hint) {
@@ -58,7 +61,7 @@ class BioScreenState extends State<BioScreen> {
     return Scaffold(
       appBar: CustomAppBars.welcomeAppBar,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           children: [
             Expanded(
@@ -80,7 +83,8 @@ class BioScreenState extends State<BioScreen> {
                   ),
                   const Padding(
                     padding: EdgeInsets.only(top: 10, bottom: 25),
-                    child: Text('What makes you special? Don\'t think too hard, just have fun with it.'),
+                    child: Text(
+                        'What makes you special? Don\'t think too hard, just have fun with it.'),
                   ),
                   Form(
                     key: _formKey,
@@ -94,7 +98,7 @@ class BioScreenState extends State<BioScreen> {
                       controller: bioFieldController,
                       onSaved: (bio) =>
                           Provider.of<UserProvider>(context, listen: false)
-                              .bio = bio, 
+                              .bio = bio,
                       onFieldSubmitted: (_) => _pressNextButton(context),
                       decoration: _decorateBioField('Your bio'),
                     ),

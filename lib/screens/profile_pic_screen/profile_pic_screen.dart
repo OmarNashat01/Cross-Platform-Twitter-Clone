@@ -20,10 +20,6 @@ class ProfilePicScreen extends StatefulWidget {
 }
 
 class ProfilePicScreenState extends State<ProfilePicScreen> {
-  final _formKey = GlobalKey<FormState>();
-
-  final bioFieldController = TextEditingController();
-
   // String? validateBio(bio) {
   //   if (bio == null || bio.isEmpty) {
   //     return 'Please describe yourself, or you can just skip\n this for now';
@@ -32,8 +28,14 @@ class ProfilePicScreenState extends State<ProfilePicScreen> {
   // }
 
   void _pressNextButton(context) {
-    log('passed');
+    if (Provider.of<UserProvider>(context, listen: false).profilePic.isEmpty) {
+      // Todo: add error msg
+      return;
+    }
+
+    log('Pic: PASSED');
     Provider.of<UserProvider>(context, listen: false).signUp();
+    Navigator.of(context).pushReplacementNamed(BioScreen.routeName);
   }
 
   void _pressSkipButton(context) {
@@ -41,32 +43,19 @@ class ProfilePicScreenState extends State<ProfilePicScreen> {
     Navigator.of(context).pushReplacementNamed(BioScreen.routeName);
   }
 
-  InputDecoration _decorateBioField(String hint) {
-    return InputDecoration(
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: kSecondaryColor,
-          width: 3,
-        ),
-      ),
-      hintText: hint,
-      counterStyle: const TextStyle(fontSize: 16),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBars.welcomeAppBar,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           children: [
             Expanded(
               flex: 8,
               child: Column(
-                children: [
-                  const Align(
+                children: const [
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 5),
@@ -79,7 +68,7 @@ class ProfilePicScreenState extends State<ProfilePicScreen> {
                       ),
                     ),
                   ),
-                  const Align(
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: EdgeInsets.only(top: 10, bottom: 25),

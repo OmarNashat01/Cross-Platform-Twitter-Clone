@@ -1,50 +1,46 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:twitter/screens/password_screen/password_screen.dart';
 
 import '../../providers/user_provider.dart';
 
 import '../../themes.dart';
 import '../../constants.dart';
 
-class VerificationScreen extends StatefulWidget {
-  static const routeName = '/verification-screen';
+class UsernameScreen extends StatefulWidget {
+  static const routeName = '/username-screen';
 
   @override
-  State<VerificationScreen> createState() => VerificationScreenState();
+  State<UsernameScreen> createState() => UsernameScreenState();
 }
 
-class VerificationScreenState extends State<VerificationScreen> {
+class UsernameScreenState extends State<UsernameScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final _verificationFieldController = TextEditingController();
+  final usernameFieldController = TextEditingController();
 
-  String? validateVerificationCode(code) {
-    if (code == null || code.isEmpty) {
-      return '';
+  String? validateUsername(username) {
+    if (username == null || username.isEmpty) {
+      return 'Please enter your username';
     }
     return null;
   }
 
   void _pressNextButton(context) {
     if (_formKey.currentState!.validate()) {
-      log('Verification PASSED');
+      log('username: PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).verifyCode();
-      // Todo: Check for the response of verifyCode() to confirm that the code is written correctly
-      // Todo: Display the verification code expiration time (elapsed time)
-      Navigator.of(context)
-        ..pop()
-        ..pop();
-      Navigator.of(context).pushReplacementNamed(PasswordScreen.routeName);
+      Provider.of<UserProvider>(context, listen: false).signUp();
     } else {
-      log('Verification FAILED');
+      log('username: FAILED');
     }
   }
 
-  InputDecoration _decorateVerificationField(String hint) {
+  void _pressSkipButton(context) {
+    // Todo:
+  }
+
+  InputDecoration _decorateField(String hint) {
     return InputDecoration(
       focusedBorder: const UnderlineInputBorder(
         borderSide: BorderSide(
@@ -53,6 +49,7 @@ class VerificationScreenState extends State<VerificationScreen> {
         ),
       ),
       hintText: hint,
+      prefix: const Text('@ '),
       counterStyle: const TextStyle(fontSize: 16),
     );
   }
@@ -74,7 +71,7 @@ class VerificationScreenState extends State<VerificationScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 5),
                       child: Text(
-                        'We sent you a code',
+                        'What should we call you?',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -82,32 +79,27 @@ class VerificationScreenState extends State<VerificationScreen> {
                       ),
                     ),
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 25),
-                      child: Text(
-                        ' Enter it below to verify ${Provider.of<UserProvider>(context, listen: false).email}',
-                      ),
+                      padding: EdgeInsets.only(top: 10, bottom: 25),
+                      child: Text('Your @username is unique. You can always change it later.'),
                     ),
                   ),
                   Form(
                     key: _formKey,
                     child: TextFormField(
                       autofocus: true,
-                      cursorColor: Theme.of(context).colorScheme.secondary,
+                      cursorColor: kSecondaryColor,
                       cursorWidth: 2,
                       style: const TextStyle(fontSize: 20),
-                      validator: validateVerificationCode,
-                      controller: _verificationFieldController,
-                      onSaved: (code) =>
+                      validator: validateUsername,
+                      controller: usernameFieldController,
+                      onSaved: (username) =>
                           Provider.of<UserProvider>(context, listen: false)
-                              .verificationCode = code,
+                              .username = username, 
                       onFieldSubmitted: (_) => _pressNextButton(context),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration:
-                          _decorateVerificationField('Verification code'),
+                      decoration: _decorateField('username'),
                     ),
                   ),
                 ],
@@ -117,10 +109,20 @@ class VerificationScreenState extends State<VerificationScreen> {
               flex: 2,
               child: Align(
                 alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: () => _pressNextButton(context),
-                  style: CustomButtons.blackButton(),
-                  child: const Text('Next'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () => _pressSkipButton(context),
+                      style: CustomButtons.whiteButton(),
+                      child: const Text('Skip'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _pressNextButton(context),
+                      style: CustomButtons.blackButton(),
+                      child: const Text('Next'),
+                    ),
+                  ],
                 ),
               ),
             ),
