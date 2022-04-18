@@ -27,7 +27,11 @@ class UserProvider with ChangeNotifier {
   String get profilePic => _profilePic;
   String get username => _username;
   String get password => _password;
-  String get bio => _bio;
+
+  void setProfilePic(pic) {
+    _profilePic = pic;
+    notifyListeners();
+  }
 
   // Todo: Send the email to the backend for verification and OTP
   void verifyEmail() {

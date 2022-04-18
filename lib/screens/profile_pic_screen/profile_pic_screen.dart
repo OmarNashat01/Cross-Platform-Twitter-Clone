@@ -7,7 +7,7 @@ import '../bio_screen/bio_screen.dart';
 
 import '../../providers/user_provider.dart';
 
-import 'widgets/upload_image_button.dart';
+import 'widgets/image_holder.dart';
 
 import '../../themes.dart';
 import '../../constants.dart';
@@ -75,7 +75,7 @@ class ProfilePicScreenState extends State<ProfilePicScreen> {
                       child: Text('Have a favorite selfie? Upload it now.'),
                     ),
                   ),
-                  UploadImageButton(),
+                  ImageHolder(),
                 ],
               ),
             ),
