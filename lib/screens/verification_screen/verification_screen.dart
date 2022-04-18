@@ -21,11 +21,11 @@ class VerificationScreenState extends State<VerificationScreen> {
 
   final _verificationFieldController = TextEditingController();
 
-  String? validateVerificationCode(pass) {
-    // if (pass == null || pass.isEmpty || pass.length < 8) {
-    //   return 'Your password needs to be at least 8 characters.\nPlease enter a longer one.';
-    // }
-    // return null;
+  String? validateVerificationCode(code) {
+    if (code == null || code.isEmpty) {
+      return '';
+    }
+    return null;
   }
 
   void _pressNextButton(context) {

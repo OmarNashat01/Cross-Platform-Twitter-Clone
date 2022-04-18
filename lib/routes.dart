@@ -9,6 +9,7 @@ import 'screens/verification_screen/verification_screen.dart';
 import 'screens/timeline_screen/timeline_screen.dart';
 import 'screens/profile_screen/profile_screen.dart';
 import 'screens/password_screen/password_screen.dart';
+import 'screens/profile_pic_screen/profile_pic_screen.dart';
 import 'screens/bio_screen/bio_screen.dart';
 import 'screens/profile_screen/edit_profile_screen.dart';
 import 'screens/notifications_screen/NotificationsScreen.dart';
@@ -21,6 +22,7 @@ Map<String, WidgetBuilder> routes = {
   TimelineScreen.routeName: (context) => TimelineScreen(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
   PasswordScreen.routeName: (context) => PasswordScreen(),
+  ProfilePicScreen.routeName: (context) => ProfilePicScreen(),
   BioScreen.routeName: (context) => BioScreen(),
   VerificationScreen.routeName: (context) => VerificationScreen(),
   NotificationsScreen.routeName: (context) => NotificationsScreen(),

@@ -44,6 +44,8 @@ dependencies:
   intl: ^0.17.0
   like_button: ^2.0.4
   extended_text_field: ^10.0.0
+  image_picker: ^0.8.5
+  dotted_border: ^2.0.0+2
 dev_dependencies:
   flutter_test:
     sdk: flutter

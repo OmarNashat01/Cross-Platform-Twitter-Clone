@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../bio_screen/bio_screen.dart';
+import '../profile_pic_screen/profile_pic_screen.dart';
 
 import '../../providers/user_provider.dart';
 
@@ -34,7 +34,7 @@ class PasswordScreenState extends State<PasswordScreen> {
       log('Password: PASSED');
       _formKey.currentState!.save();
       Provider.of<UserProvider>(context, listen: false).signUp();
-      Navigator.of(context).pushReplacementNamed(BioScreen.routeName);
+      Navigator.of(context).pushReplacementNamed(ProfilePicScreen.routeName);
     } else {
       log('Password: FAILED');
     }

@@ -5,6 +5,7 @@ class UserProvider with ChangeNotifier {
   String _email = '';
   DateTime _dob = DateTime.now();
   String _verificationCode = '';
+  String _profilePic = ''; //! image local path, to be changed later
   String _password = '';
   String _bio = '';
 
@@ -12,6 +13,7 @@ class UserProvider with ChangeNotifier {
   set email(email) => _email = email;
   set dob(dob) => _dob = dob;
   set verificationCode(code) => _verificationCode = code;
+  set profilePic(pic) => _profilePic = pic;
   set password(password) => _password = password;
   set bio(bio) => _bio = bio;
 
@@ -19,6 +21,7 @@ class UserProvider with ChangeNotifier {
   String get email => _email;
   DateTime get dob => _dob;
   String get verificationCode => _verificationCode;
+  String get profilePic => _profilePic;
   String get password => _password;
   String get bio => _bio;
 
@@ -38,6 +41,7 @@ class UserProvider with ChangeNotifier {
     print(_email);
     print(_dob);
     print(_verificationCode);
+    print(_profilePic);
     print(_password);
     print(_bio);
   }

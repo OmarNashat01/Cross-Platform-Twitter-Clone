@@ -4,6 +4,7 @@ import 'package:twitter/dummy/tweets_list.dart';
 import 'package:twitter/providers/user_provider.dart';
 import 'package:twitter/screens/bio_screen/bio_screen.dart';
 import 'package:twitter/screens/password_screen/password_screen.dart';
+import 'package:twitter/screens/profile_pic_screen/profile_pic_screen.dart';
 import 'package:twitter/screens/signup_screen/signup_screen.dart';
 
 import 'screens/welcome_screen/welcome_screen.dart';
@@ -51,7 +52,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: PasswordScreen(),
+        home: ProfilePicScreen(),
         routes: routes,
       ),
     );
