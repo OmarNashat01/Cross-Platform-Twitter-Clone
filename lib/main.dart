@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:twitter/dummy/tweets_list.dart';
 import 'package:twitter/providers/user_provider.dart';
 import 'package:twitter/screens/bio_screen/bio_screen.dart';
+import 'package:twitter/screens/login_email_screen/login_email_screen.dart';
 import 'package:twitter/screens/password_screen/password_screen.dart';
 import 'package:twitter/screens/profile_pic_screen/profile_pic_screen.dart';
 import 'package:twitter/screens/profile_pic_screen/widgets/image_holder.dart';
@@ -11,7 +12,6 @@ import 'package:twitter/screens/username_screen/username_screen.dart';
 
 import 'screens/welcome_screen/welcome_screen.dart';
 import 'screens/timeline_screen/timeline_screen.dart';
-import 'screens/signin_screen/signin_screen.dart';
 import 'screens/profile_screen/profile_screen.dart';
 
 import 'providers/user_provider.dart';
@@ -54,7 +54,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: ProfilePicScreen(),
+        home: WelcomeScreen(),
         routes: routes,
       ),
     );
