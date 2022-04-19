@@ -15,7 +15,7 @@ class UserProvider with ChangeNotifier {
   set email(email) => _email = email;
   set dob(dob) => _dob = dob;
   set verificationCode(code) => _verificationCode = code;
-  set profilePic(pic) => _profilePic = pic;
+  set profilePic(pic) => _profilePic = pic; // if you need to set it without rerendering
   set username(name) => _username = name;
   set password(password) => _password = password;
   set bio(bio) => _bio = bio;
@@ -35,12 +35,17 @@ class UserProvider with ChangeNotifier {
 
   // Todo: Send the email to the backend for verification and OTP
   void verifyEmail() {
-    print(_email);
+    log(_email);
   }
 
   // Todo: Send the verification code (OTP) and email to the backend
   void verifyCode() {
-    print(_verificationCode);
+    log(_verificationCode);
+  }
+
+  // Todo: Send the username to the backend to check its existance
+  void verifyUsername() {
+    log(_username);
   }
 
   // Todo: Send basic user data to the backend

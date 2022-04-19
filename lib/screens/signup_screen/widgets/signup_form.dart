@@ -60,9 +60,9 @@ class SignupFormState extends State<SignupForm> {
 
   InputDecoration _decorateField(String hint) {
     return InputDecoration(
-      focusedBorder: UnderlineInputBorder(
+      focusedBorder: const UnderlineInputBorder(
         borderSide: BorderSide(
-          color: Theme.of(context).colorScheme.secondary,
+          color: kSecondaryColor,
           width: 3,
         ),
       ),

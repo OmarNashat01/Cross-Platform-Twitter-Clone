@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 
 import '../../providers/user_provider.dart';
 
@@ -20,8 +21,8 @@ class UsernameScreenState extends State<UsernameScreen> {
   final usernameFieldController = TextEditingController();
 
   String? validateUsername(username) {
-    if (username == null || username.isEmpty) {
-      return 'Please enter your username';
+    if (username == null || username.isEmpty || username.length <= 4) {
+      return 'Username should be more than 4 characters.';
     }
     return null;
   }
@@ -30,14 +31,19 @@ class UsernameScreenState extends State<UsernameScreen> {
     if (_formKey.currentState!.validate()) {
       log('username: PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).signUp();
+      Provider.of<UserProvider>(context, listen: false).verifyUsername();
+      // Todo: check if the response is that the username is already exist
+      // 'Username has already been taken'
+      Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
     } else {
       log('username: FAILED');
     }
   }
 
   void _pressSkipButton(context) {
-    // Todo:
+    // To gurantee empty username
+    Provider.of<UserProvider>(context, listen: false).username = '';
+    Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
   }
 
   InputDecoration _decorateField(String hint) {
@@ -83,13 +89,15 @@ class UsernameScreenState extends State<UsernameScreen> {
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: EdgeInsets.only(top: 10, bottom: 25),
-                      child: Text('Your @username is unique. You can always change it later.'),
+                      child: Text(
+                          'Your @username is unique. You can always change it later.'),
                     ),
                   ),
                   Form(
                     key: _formKey,
                     child: TextFormField(
                       autofocus: true,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       cursorColor: kSecondaryColor,
                       cursorWidth: 2,
                       style: const TextStyle(fontSize: 20),
@@ -97,9 +105,9 @@ class UsernameScreenState extends State<UsernameScreen> {
                       controller: usernameFieldController,
                       onSaved: (username) =>
                           Provider.of<UserProvider>(context, listen: false)
-                              .username = username, 
+                              .username = username,
                       onFieldSubmitted: (_) => _pressNextButton(context),
-                      decoration: _decorateField('username'),
+                      decoration: _decorateField('Username'),
                     ),
                   ),
                 ],
