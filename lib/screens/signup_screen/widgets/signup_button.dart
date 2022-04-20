@@ -1,10 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../../../providers/user_provider.dart';
 import '../../verification_screen/verification_screen.dart';
-
 
 import '../../../themes.dart';
 
@@ -15,10 +16,21 @@ class SignupButton extends StatelessWidget {
   void _pressSignupButton(context) {
     if (_formKey.currentState!.validate()) {
       log('Name, email, dob: PASSED');
-      _formKey.currentState!.save();  // to save name, email, dob in user_provider
-      Provider.of<UserProvider>(context, listen: false).verifyEmail();
+      _formKey.currentState!
+          .save(); // to save name, email, dob in user_provider
+      Provider.of<UserProvider>(context, listen: false)
+          .verifyEmail()
+          .then((res) {
+        final data = jsonDecode(res.body);
+        log(data.toString());
+        if (data.isEmpty) {
+          log('Does not exist');
+        } else {
+          log('Exists: $data');
+        }
+      });
       // Todo: Check for the "already taken emails" from the response of verifyEmail()
-      
+
       Navigator.of(context).pushNamed(VerificationScreen.routeName);
     } else {
       log('Name, email, dob: FAILED');

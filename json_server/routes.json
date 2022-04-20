@@ -1,0 +1,4 @@
+{
+    "/verify": "/users",
+    "/verify/:email": "/users?email=:email"
+}
