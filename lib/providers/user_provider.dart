@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class UserProvider with ChangeNotifier {
   String _name = '';
@@ -15,7 +17,8 @@ class UserProvider with ChangeNotifier {
   set email(email) => _email = email;
   set dob(dob) => _dob = dob;
   set verificationCode(code) => _verificationCode = code;
-  set profilePic(pic) => _profilePic = pic; // if you need to set it without rerendering
+  set profilePic(pic) =>
+      _profilePic = pic; // if you need to set it without rerendering
   set username(name) => _username = name;
   set password(password) => _password = password;
   set bio(bio) => _bio = bio;
@@ -34,8 +37,13 @@ class UserProvider with ChangeNotifier {
   }
 
   // Todo: Send the email to the backend for verification and OTP
-  void verifyEmail() {
+  Future<http.Response> verifyEmail() async {
     log(_email);
+
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2:8000/verify/$_email'),
+    );
+    return response;
   }
 
   // Todo: Send the verification code (OTP) and email to the backend

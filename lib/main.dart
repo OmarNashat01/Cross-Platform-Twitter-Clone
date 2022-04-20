@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/dummy/tweets_list.dart';
 import 'package:twitter/providers/user_provider.dart';
@@ -23,12 +24,17 @@ void main() => runApp(TwitterApp());
 class TwitterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MultiProvider(
       // Add providers as needed
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => TweetsList()),
       ],
+
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Twitter',
