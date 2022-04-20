@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'widgets/signup_buttons.dart';
 import '../../providers/user_provider.dart';
-import '../signin_screen/signin_screen.dart';
+import '../login_email_screen/login_email_screen.dart';
 
 import '../../constants.dart';
 import '../../themes.dart';
@@ -12,7 +12,7 @@ class AuthWelcomeScreen extends StatelessWidget {
   static const routeName = '/auth-welcome-screen';
 
   void _switchToSigninScreen(context) {
-    Navigator.of(context).pushNamed(SigninScreen.routeName);
+    Navigator.of(context).pushNamed(LoginEmailScreen.routeName);
   }
 
   @override

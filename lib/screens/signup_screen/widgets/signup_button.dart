@@ -1,45 +1,37 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import '../../password_screen/password_screen.dart';
+import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
+import '../../../providers/user_provider.dart';
+import '../../verification_screen/verification_screen.dart';
 
-class SignUpButton extends StatelessWidget {
+
+import '../../../themes.dart';
+
+class SignupButton extends StatelessWidget {
   final _formKey;
-  final _user;
-  const SignUpButton(this._formKey, this._user);
+  const SignupButton(this._formKey);
 
   void _pressSignupButton(context) {
     if (_formKey.currentState!.validate()) {
-      log('passed');
-      _formKey.currentState!.save();
-      _user.save();
-      Navigator.of(context).pushNamed(PasswordScreen.routeName);
+      log('Name, email, dob: PASSED');
+      _formKey.currentState!.save();  // to save name, email, dob in user_provider
+      Provider.of<UserProvider>(context, listen: false).verifyEmail();
+      // Todo: Check for the "already taken emails" from the response of verifyEmail()
+      
+      Navigator.of(context).pushNamed(VerificationScreen.routeName);
     } else {
-      log('failed');
+      log('Name, email, dob: FAILED');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.center,
+      alignment: Alignment.centerRight,
       child: ElevatedButton(
         onPressed: () => _pressSignupButton(context),
-        style: ElevatedButton.styleFrom(
-          primary: Theme.of(context).colorScheme.secondary,
-          onPrimary: Theme.of(context).colorScheme.onSecondary,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
-          ),
-          shadowColor: Colors.white,
-          minimumSize: const Size(double.infinity, 50),
-          textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        style: CustomButtons.blueButton(isFit: false),
         child: const Text('Sign Up'),
       ),
     );

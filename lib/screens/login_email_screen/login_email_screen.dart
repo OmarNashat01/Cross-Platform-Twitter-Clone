@@ -1,49 +1,49 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:twitter/screens/username_screen/username_screen.dart';
+import 'package:twitter/screens/password_screen/password_screen.dart';
+import '../login_password_screen/login_password_screen.dart';
 
 import '../../providers/user_provider.dart';
 
 import '../../themes.dart';
 import '../../constants.dart';
 
-class BioScreen extends StatefulWidget {
-  static const routeName = '/bio-screen';
+class LoginEmailScreen extends StatefulWidget {
+  static const routeName = '/login-email-screen';
 
   @override
-  State<BioScreen> createState() => BioScreenState();
+  State<LoginEmailScreen> createState() => LoginEmailScreenState();
 }
 
-class BioScreenState extends State<BioScreen> {
+class LoginEmailScreenState extends State<LoginEmailScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final bioFieldController = TextEditingController();
+  final _emailFieldController = TextEditingController();
 
-  String? validateBio(bio) {
-    if (bio == null || bio.isEmpty) {
-      return 'Please describe yourself, or you can just skip\n this for now';
+  String? validateEmail(email) {
+    if (email == null || email.isEmpty) {
+      return '';
     }
     return null;
   }
 
   void _pressNextButton(context) {
     if (_formKey.currentState!.validate()) {
-      log('Bio: PASSED');
+      log('Login Email PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).signUp();
-      Navigator.of(context).pushReplacementNamed(UsernameScreen.routeName);
+      Navigator.of(context).pushReplacementNamed(LoginPasswordScreen.routeName);
     } else {
-      log('Bio: FAILED');
+      log('Login Email FAILED');
     }
   }
 
-  void _pressSkipButton(context) {
-    Navigator.of(context).pushReplacementNamed(UsernameScreen.routeName);
-
+  void _pressForgotPassButton(context) {
+    // Todo
   }
 
-  InputDecoration _decorateBioField(String hint) {
+  InputDecoration _decorateField(String hint) {
     return InputDecoration(
       focusedBorder: const UnderlineInputBorder(
         borderSide: BorderSide(
@@ -71,9 +71,9 @@ class BioScreenState extends State<BioScreen> {
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 20, bottom: 5),
+                      padding: EdgeInsets.only(top: 20, bottom: 25),
                       child: Text(
-                        'Describe yourself',
+                        'To get started, first enter your email or @username',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -81,26 +81,22 @@ class BioScreenState extends State<BioScreen> {
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 25),
-                    child: Text(
-                        'What makes you special? Don\'t think too hard, just have fun with it.'),
-                  ),
                   Form(
                     key: _formKey,
                     child: TextFormField(
                       autofocus: true,
-                      cursorColor: Theme.of(context).colorScheme.secondary,
+                      cursorColor: kSecondaryColor,
                       cursorWidth: 2,
-                      maxLength: 160,
                       style: const TextStyle(fontSize: 20),
-                      validator: validateBio,
-                      controller: bioFieldController,
-                      onSaved: (bio) =>
+                      validator: validateEmail,
+                      controller: _emailFieldController,
+                      onSaved: (email) =>
                           Provider.of<UserProvider>(context, listen: false)
-                              .bio = bio,
+                              .email = email,
                       onFieldSubmitted: (_) => _pressNextButton(context),
-                      decoration: _decorateBioField('Your bio'),
+                      keyboardType: TextInputType.text,
+                      decoration:
+                          _decorateField('Email or username'),
                     ),
                   ),
                 ],
@@ -114,9 +110,9 @@ class BioScreenState extends State<BioScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     OutlinedButton(
-                      onPressed: () => _pressSkipButton(context),
+                      onPressed: () => _pressForgotPassButton(context),
                       style: CustomButtons.whiteButton(),
-                      child: const Text('Skip for now'),
+                      child: const Text('Forgot password?'),
                     ),
                     ElevatedButton(
                       onPressed: () => _pressNextButton(context),

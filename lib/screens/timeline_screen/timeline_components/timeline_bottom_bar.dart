@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:twitter/screens/NotificationsScreen/NotificationsScreen.dart';
-import 'package:twitter/screens/SearchScreen/SearchScreen.dart';
+import 'package:twitter/screens/notifications_screen/NotificationsScreen.dart';
+import 'package:twitter/screens/search_screen/SearchScreen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 class TimelineBottomBar extends StatelessWidget {
   const TimelineBottomBar({

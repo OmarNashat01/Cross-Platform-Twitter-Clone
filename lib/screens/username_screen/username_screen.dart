@@ -1,49 +1,52 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:twitter/screens/username_screen/username_screen.dart';
+import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 
 import '../../providers/user_provider.dart';
 
 import '../../themes.dart';
 import '../../constants.dart';
 
-class BioScreen extends StatefulWidget {
-  static const routeName = '/bio-screen';
+class UsernameScreen extends StatefulWidget {
+  static const routeName = '/username-screen';
 
   @override
-  State<BioScreen> createState() => BioScreenState();
+  State<UsernameScreen> createState() => UsernameScreenState();
 }
 
-class BioScreenState extends State<BioScreen> {
+class UsernameScreenState extends State<UsernameScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final bioFieldController = TextEditingController();
+  final usernameFieldController = TextEditingController();
 
-  String? validateBio(bio) {
-    if (bio == null || bio.isEmpty) {
-      return 'Please describe yourself, or you can just skip\n this for now';
+  String? validateUsername(username) {
+    if (username == null || username.isEmpty || username.length <= 4) {
+      return 'Username should be more than 4 characters.';
     }
     return null;
   }
 
   void _pressNextButton(context) {
     if (_formKey.currentState!.validate()) {
-      log('Bio: PASSED');
+      log('username: PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).signUp();
-      Navigator.of(context).pushReplacementNamed(UsernameScreen.routeName);
+      Provider.of<UserProvider>(context, listen: false).verifyUsername();
+      // Todo: check if the response is that the username is already exist
+      // 'Username has already been taken'
+      Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
     } else {
-      log('Bio: FAILED');
+      log('username: FAILED');
     }
   }
 
   void _pressSkipButton(context) {
-    Navigator.of(context).pushReplacementNamed(UsernameScreen.routeName);
-
+    // To gurantee empty username
+    Provider.of<UserProvider>(context, listen: false).username = '';
+    Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
   }
 
-  InputDecoration _decorateBioField(String hint) {
+  InputDecoration _decorateField(String hint) {
     return InputDecoration(
       focusedBorder: const UnderlineInputBorder(
         borderSide: BorderSide(
@@ -52,6 +55,7 @@ class BioScreenState extends State<BioScreen> {
         ),
       ),
       hintText: hint,
+      prefix: const Text('@ '),
       counterStyle: const TextStyle(fontSize: 16),
     );
   }
@@ -73,7 +77,7 @@ class BioScreenState extends State<BioScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 5),
                       child: Text(
-                        'Describe yourself',
+                        'What should we call you?',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -81,26 +85,29 @@ class BioScreenState extends State<BioScreen> {
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 25),
-                    child: Text(
-                        'What makes you special? Don\'t think too hard, just have fun with it.'),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10, bottom: 25),
+                      child: Text(
+                          'Your @username is unique. You can always change it later.'),
+                    ),
                   ),
                   Form(
                     key: _formKey,
                     child: TextFormField(
                       autofocus: true,
-                      cursorColor: Theme.of(context).colorScheme.secondary,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      cursorColor: kSecondaryColor,
                       cursorWidth: 2,
-                      maxLength: 160,
                       style: const TextStyle(fontSize: 20),
-                      validator: validateBio,
-                      controller: bioFieldController,
-                      onSaved: (bio) =>
+                      validator: validateUsername,
+                      controller: usernameFieldController,
+                      onSaved: (username) =>
                           Provider.of<UserProvider>(context, listen: false)
-                              .bio = bio,
+                              .username = username,
                       onFieldSubmitted: (_) => _pressNextButton(context),
-                      decoration: _decorateBioField('Your bio'),
+                      decoration: _decorateField('Username'),
                     ),
                   ),
                 ],
@@ -116,7 +123,7 @@ class BioScreenState extends State<BioScreen> {
                     OutlinedButton(
                       onPressed: () => _pressSkipButton(context),
                       style: CustomButtons.whiteButton(),
-                      child: const Text('Skip for now'),
+                      child: const Text('Skip'),
                     ),
                     ElevatedButton(
                       onPressed: () => _pressNextButton(context),
