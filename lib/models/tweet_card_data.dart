@@ -11,7 +11,7 @@ enum TextExistence {
 }
 class TweetCardData
 {
- TweetCardData({required this.name,required this.title,required this.profilePicture,this.imageURL,required this.imageType,this.text,required this.existence,this.nComments=5,this.nRetweets=0,this.nLove=1});
+ TweetCardData({required this.name,required this.title,required this.profilePicture,this.imageURL,required this.imageType,this.text,required this.existence,this.nComments=0,this.nRetweets=0,this.nLove=0});
  String name;
  String title;
  String profilePicture;
@@ -27,19 +27,5 @@ int nRetweets;
 int nLove;
 bool isLiked=false;
 
-void reactLove()
-{
- if(isLiked==false)
-  {
-   nLove++;
-   isLiked=true;
-  }
- else
-  {
-   nLove--;
-   isLiked=false;
-  }
-
-}
 
 }
