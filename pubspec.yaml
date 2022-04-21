@@ -48,6 +48,7 @@ dependencies:
   dotted_border: ^2.0.0+2
   dio: ^4.0.6
   http: ^0.13.4
+  palette_generator: ^0.3.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

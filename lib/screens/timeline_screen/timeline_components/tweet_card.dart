@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/dummy/tweets_list.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/models/tweet_card_data.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
+
+import 'custom_page_route.dart';
+import 'image_detail_screen.dart';
 
 //TweetCard class is the widget responsible for rendering the tweet card at the timeline and any needed place
 //the tweet need information to be rendered
@@ -15,7 +20,6 @@ class TweetCard extends StatelessWidget {
   TweetCard({required this.index});
   final int index;
   @override
-
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -72,105 +76,35 @@ class TweetCard extends StatelessWidget {
         ),
              //--for decoration sized box
              SizedBox(height: 5,),
+
         //--here is the image of the tweet
         Provider.of<TweetsList>(context).getTweetsList()[index].imageType == TweetImage.picture
-            ? Image.asset(
+            ? GestureDetector(
+          onTap: ()
+          {
+            Navigator.of(context).push(
+              CustomPageRoute
+                (child:ImageDetailScreen(
+                index: index,
+              ),beginX: 0,beginY: 1),
+            );
+          },
+              child: Image.asset(
           Provider.of<TweetsList>(context).getTweetsList()[index].imageURL!,
           fit: BoxFit.cover,
           width: double.infinity,
           alignment: Alignment.center,
-              )
+                ),
+            )
             : const SizedBox.shrink(),
 
         //the row of icons for your reactions on the tweet
-        Padding(
-          padding: const EdgeInsets.only(left: 26,right: 26),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              //comment button on tweet
-              GestureDetector(
-                onTap: ()
-                {
-
-                },
-                child: Row(
-                  children: [
-                    const Icon(
-                      FontAwesomeIcons.comment,
-                      size: 18,
-                    ),
-                    SizedBox(width: 10,),
-                    Provider.of<TweetsList>(context).getTweetsList()[index].nComments>0?Text( Provider.of<TweetsList>(context).getTweetsList()[index].nComments.toString(),style: titleName,):const SizedBox.shrink()
-                  ],
-                ),
-
-              ),
-              //retweet button on tweet
-              GestureDetector(
-                onTap: ()
-                {
-
-                },
-                child: Row(
-                  children: [
-                    const Icon(
-                      FontAwesomeIcons.retweet,
-                      size: 18,
-                    ),
-                    SizedBox(width: 10,),
-                    Provider.of<TweetsList>(context).getTweetsList()[index].nRetweets>0?Text(  Provider.of<TweetsList>(context).getTweetsList()[index].nRetweets.toString(),style: titleName,):const SizedBox.shrink()
-                  ],
-                ),
-              ),
-
-              //--this is functionality of the love button on the tweets
-              Row(
-                children:[
-                   LikeButton(
-                    isLiked:  Provider.of<TweetsList>(context).getTweetsList()[index].isLiked,
-                     likeCount:  Provider.of<TweetsList>(context).getTweetsList()[index].nLove,
-                     likeBuilder: (isLiked)
-                     {
-                       final color=isLiked?Colors.red:Colors.grey.shade500;
-                       return(Icon(Icons.favorite,color:color));
-                     },
-                     countBuilder: (count,isLiked,text)
-                       {
-                         final color=isLiked?Colors.black:Colors.grey;
-                         return Provider.of<TweetsList>(context).getTweetsList()[index].nLove>0?Text( text,style: titleName,):const SizedBox.shrink();
-
-                       },
-                     onTap: (isLiked)async
-                       {
-                         return !isLiked;
-                       },
-                  ),
-                  SizedBox(width: 10,),
-                ],
-              ),
-              //--share tweet
-              GestureDetector(
-                onTap: ()
-                {
-
-                },
-                child: const Icon(
-                  FontAwesomeIcons.arrowUpFromBracket,
-                  size: 18,
-                ),
-              ),
-
-              //-----------------------------------------------------------------
-
-            ],
-          ),
-        ),
+        TweetBottomBar(index: index,iconsBoundry: Colors.grey.shade600,),
 
 
         //decoration of tweet at the bottom (divider)
         const SizedBox(
-          height: 8,
+          height: 5,
         ),
         //decoration of tweet at the bottom (divider)
         const Divider(
@@ -183,3 +117,5 @@ class TweetCard extends StatelessWidget {
     );
   }
 }
+
+

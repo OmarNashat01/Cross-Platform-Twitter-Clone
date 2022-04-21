@@ -52,4 +52,20 @@ class TweetsList extends ChangeNotifier
      TweetCardData randomTweet = randomTweets[_random.nextInt(randomTweets.length)];
      addTweet(randomTweet);
    }
+   ///////////////////////////////////////////
+   void reactLove(bool liked,int index)
+   {
+     if(liked==true)
+     {
+       getTweetsList()[index].nLove++;
+       getTweetsList()[index].isLiked=true;
+     }
+     else
+     {
+       getTweetsList()[index].nLove--;
+       getTweetsList()[index]. isLiked=false;
+     }
+     notifyListeners();
+   }
+
 }

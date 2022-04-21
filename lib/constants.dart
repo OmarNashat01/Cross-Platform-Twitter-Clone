@@ -29,6 +29,10 @@ const TextStyle titleName = TextStyle(
   fontSize: 16,
   color: Color(0xff757575),
 );
+const TextStyle loved = TextStyle(
+  fontSize: 16,
+  color: Colors.red,
+);
 
 //reservedTexts
 const Text followingString = Text(
