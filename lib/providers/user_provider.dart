@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:twitter/constants.dart';
 
 class UserProvider with ChangeNotifier {
   String _name = '';
@@ -12,6 +13,8 @@ class UserProvider with ChangeNotifier {
   String _username = '';
   String _password = '';
   String _bio = '';
+
+  bool _isEmailTaken = false;
 
   set name(name) => _name = name;
   set email(email) => _email = email;
@@ -31,8 +34,15 @@ class UserProvider with ChangeNotifier {
   String get username => _username;
   String get password => _password;
 
+  bool get isEmailTaken => _isEmailTaken;
+
   void setProfilePic(pic) {
     _profilePic = pic;
+    notifyListeners();
+  }
+
+  void setIsEmailTaken(check) {
+    _isEmailTaken = check;
     notifyListeners();
   }
 
@@ -40,8 +50,9 @@ class UserProvider with ChangeNotifier {
   Future<http.Response> verifyEmail() async {
     log(_email);
 
-    final response = await http.get(
-      Uri.parse('http://10.0.2.2:8000/verify/$_email'),
+    final response = await http.post(
+      Uri.parse('$kMockBaseUrl/verify'),
+      body: {"email": _email},
     );
     return response;
   }

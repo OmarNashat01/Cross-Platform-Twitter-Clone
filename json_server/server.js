@@ -9,6 +9,18 @@ const middlewares = jsonServer.defaults();
 
 server.use(jsonServer.bodyParser);
 server.use(middlewares);
+
+// server.post('/users', function (req, res, next) {
+//   req.method = 'GET';
+//   req.query = req.body;
+//   next();
+//   console.log(res.);
+// });
+
+server.post('/verify', function (req, res, next) {
+  res.status(200).json({ "OTP Sent": true, "OTP": "1312" });
+});
+
 server.use(jsonServer.rewriter(routes));
 server.use(router);
 

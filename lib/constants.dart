@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
-//profile pictures sizes
+// API constants
+const String kBaseUrl = '';
+const String kMockBaseUrl = 'http://10.0.2.2:8000';
+
+// Profile pictures sizes
 const double timelineProfilePicSize = 15;
 const double addTweetProfilePicSize = 17;
 const double navigationDrawerProfilePicSize = 20;
 
-// asset paths
+// Asset paths
 const String kLogoPath = 'assets/icons/twitter_logo.svg';
 const String kGoogleLogoPath = 'assets/icons/google_logo.svg';
 const String squareLogoPath = 'assets/images/square.png';
@@ -20,8 +24,7 @@ const Color kOnInvertedPrimaryColor = Colors.white;
 const Color kSecondaryColor = Color(0xFF1D9BF0);
 const Color kOnSecondaryColor = Colors.white;
 
-
-//textStyles
+// TextStyles
 const TextStyle tweetsTexts = TextStyle(fontSize: 17, color: Colors.black);
 const TextStyle boldName =
     TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black);
@@ -30,7 +33,7 @@ const TextStyle titleName = TextStyle(
   color: Color(0xff757575),
 );
 
-//reservedTexts
+// ReservedTexts
 const Text followingString = Text(
   ' Following  ',
   style: titleName,

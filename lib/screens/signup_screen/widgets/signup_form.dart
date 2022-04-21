@@ -26,10 +26,13 @@ class SignupFormState extends State<SignupForm> {
   }
 
   String? validateEmail(value) {
-    // Todo: add a validation to check whether the email has already been taken
-    // if (exists(value)) return 'Email has already been taken.'
+    if (Provider.of<UserProvider>(context, listen: false).isEmailTaken) {
+      return 'Email has already been taken.';
+    }
 
-    if (!EmailValidator.validate(value)) return 'Please enter a valid email.';
+    if (!EmailValidator.validate(value)) {
+      return 'Please enter a valid email.';
+    }
     return null;
   }
 
@@ -98,18 +101,20 @@ class SignupFormState extends State<SignupForm> {
                   decoration: _decorateField('Name'),
                 ),
                 const SizedBox(height: 20),
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  cursorWidth: 2,
-                  style: const TextStyle(fontSize: 20),
-                  validator: validateEmail,
-                  controller: _emailFieldController,
-                  onSaved: (email) =>
-                      Provider.of<UserProvider>(context, listen: false).email =
-                          email,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: _decorateField('Email'),
+                Consumer<UserProvider>(
+                  builder: (context, value, child) => TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    cursorColor: Theme.of(context).colorScheme.secondary,
+                    cursorWidth: 2,
+                    style: const TextStyle(fontSize: 20),
+                    validator: validateEmail,
+                    controller: _emailFieldController,
+                    onSaved: (email) =>
+                        Provider.of<UserProvider>(context, listen: false)
+                            .email = email,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: _decorateField('Email'),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(

@@ -1,4 +1,5 @@
 {
     "/verify": "/users",
-    "/verify/:email": "/users?email=:email"
+    "/verify?:filter": "/users?:filter"
+
 }
