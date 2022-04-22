@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/retweet_screen.dart';
 
 import '../../../constants.dart';
-import '../../../dummy/tweets_list.dart';
+import '../../../dummy/timeline_list.dart';
 
 class TweetBottomBar extends StatelessWidget {
   const TweetBottomBar({
@@ -37,12 +37,12 @@ class TweetBottomBar extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                Provider.of<TweetsList>(context)
+                Provider.of<TimelineList>(context)
                             .getTweetsList()[index]
                             .nComments >
                         0
                     ? Text(
-                        Provider.of<TweetsList>(context)
+                        Provider.of<TimelineList>(context)
                             .getTweetsList()[index]
                             .nComments
                             .toString(),
@@ -55,28 +55,29 @@ class TweetBottomBar extends StatelessWidget {
           //retweet button on tweet
           GestureDetector(
             onTap: () {
-              showModalBottomSheet(context: context, builder: (context)=>RetweetScreen(),);
-            },
+              Provider.of<TimelineList>(context,listen: false).getTweetsList()[index].isRetweeted==false?showModalBottomSheet(context: context, builder: (context)=>RetweetScreen(index: index,doOrUndo: 'do',),)
+              :showModalBottomSheet(context: context, builder: (context)=>RetweetScreen(index: index,doOrUndo: 'undo',),);
+              },
             child: Row(
               children: [
                  Icon(
                   FontAwesomeIcons.retweet,
-                  color: iconsBoundry,
+                  color: Provider.of<TimelineList>(context).getTweetsList()[index].isRetweeted==false?iconsBoundry:Colors.green,
                   size: 18,
                 ),
                 SizedBox(
                   width: 10,
                 ),
-                Provider.of<TweetsList>(context)
+                Provider.of<TimelineList>(context)
                             .getTweetsList()[index]
                             .nRetweets >
                         0
                     ? Text(
-                        Provider.of<TweetsList>(context)
+                        Provider.of<TimelineList>(context)
                             .getTweetsList()[index]
                             .nRetweets
                             .toString(),
-                        style: titleName,
+                        style:Provider.of<TimelineList>(context).getTweetsList()[index].isRetweeted==false?notRetweeted:retweeted,
                       )
                     : const SizedBox.shrink()
               ],
@@ -87,10 +88,10 @@ class TweetBottomBar extends StatelessWidget {
           Row(
             children: [
               LikeButton(
-                isLiked: Provider.of<TweetsList>(context)
+                isLiked: Provider.of<TimelineList>(context)
                     .getTweetsList()[index]
                     .isLiked,
-                likeCount: Provider.of<TweetsList>(context)
+                likeCount: Provider.of<TimelineList>(context)
                     .getTweetsList()[index]
                     .nLove,
                 likeBuilder: (isLiked) {
@@ -114,10 +115,10 @@ class TweetBottomBar extends StatelessWidget {
                   );
                 },
                 countBuilder: (count, isLiked, text) {
-                  return Provider.of<TweetsList>(context).getTweetsList()[index].nLove > 0 ? Text(text, style: isLiked?loved:titleName,) : const SizedBox.shrink();
+                  return Provider.of<TimelineList>(context).getTweetsList()[index].nLove > 0 ? Text(text, style: isLiked?loved:titleName,) : const SizedBox.shrink();
                 },
                 onTap: (isLiked) async {
-                  Provider.of<TweetsList>(context, listen: false)
+                  Provider.of<TimelineList>(context, listen: false)
                       .reactLove(!isLiked, index);
                   //Provider.of<TweetsList>(context,listen: false).getTweetsList()[index].nLove+= Provider.of<TweetsList>(context,listen: false).getTweetsList()[index].isLiked?1:-1;
                   return !isLiked;

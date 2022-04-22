@@ -17,6 +17,7 @@ class NavigationDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Drawer(
+        backgroundColor: Colors.white,
         child: Column(
           children: [
             Padding(

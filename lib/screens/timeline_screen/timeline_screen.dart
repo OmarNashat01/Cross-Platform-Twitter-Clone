@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/constants.dart';
-import 'package:twitter/dummy/tweets_list.dart';
+import 'package:twitter/dummy/timeline_list.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/models/tweet_card_data.dart';
-import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen/add_tweet_screen.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/quote_tweet_card.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
 import 'timeline_components/custom_page_route.dart';
@@ -26,7 +27,7 @@ class TimelineScreen extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(
             CustomPageRoute
-            (child:AddTweetScreen(),beginX: 0,beginY: 1),
+            (child:AddTweetScreen(quote: false,),beginX: 0,beginY: 1),
           );
         },
         backgroundColor: Colors.blue,
@@ -101,13 +102,14 @@ class TimelineScreen extends StatelessWidget {
             isAlwaysShown: true,
             child: RefreshIndicator(
               color: Colors.grey,
-              onRefresh: ()=>Provider.of<TweetsList>(context,listen: false).addRandomTweetOnRefresh(),
+              onRefresh: ()=>Provider.of<TimelineList>(context,listen: false).addRandomTweetOnRefresh(),
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return TweetCard(index: index);
+                  Provider.of<TimelineList>(context).getTweetsList()[index].haveInnerTweet==true?print('a7a'):print('lol');
+                  return Provider.of<TimelineList>(context).getTweetsList()[index].haveInnerTweet==true?QuoteTweetCard(index: index):TweetCard(index: index);
                 },
-                itemCount:Provider.of<TweetsList>(context).getTweetsList().length,
+                itemCount:Provider.of<TimelineList>(context).getTweetsList().length,
               ),
             ),
           ),

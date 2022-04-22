@@ -3,11 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:twitter/models/tweet_card_data.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'dart:math';
-class TweetsList extends ChangeNotifier
+class TimelineList extends ChangeNotifier
 {
 
   //these are the tweets that are shown to the user when he is connected to timeline
-   static final List<TweetCardData>_tweetsList=
+  static final List<TweetCardData>_retweetList=
+  [
+    TweetCardData(name: UsersData.getOtherUsersData()[0].name, title: UsersData.getOtherUsersData()[0].title, profilePicture: UsersData.getOtherUsersData()[0].profilePicture, imageType: TweetImage.picture, existence: TextExistence.exist,text:'lovely nature' ,imageURL:'assets/tweets_images/nature.jpg' ),
+    TweetCardData(name: UsersData.getOtherUsersData()[2].name, title: UsersData.getOtherUsersData()[2].title, profilePicture: UsersData.getOtherUsersData()[2].profilePicture, imageType: TweetImage.picture, existence: TextExistence.exist,text:'dogs are beautiful' ,imageURL:'assets/tweets_images/dog.jpeg' ),
+    TweetCardData(name: UsersData.getOtherUsersData()[1].name, title: UsersData.getOtherUsersData()[1].title, profilePicture: UsersData.getOtherUsersData()[1].profilePicture, imageType: TweetImage.picture, existence: TextExistence.exist,text:"Don't try so hard to fit in, and certainly don't try so hard to be different just try hard to be you.I don't mind if people look at me like I'm crazy. I'm just being me." ,imageURL:'assets/tweets_images/zendatweet.jpg' ),
+    TweetCardData(name: UsersData.getOtherUsersData()[3].name, title: UsersData.getOtherUsersData()[3].title, profilePicture: UsersData.getOtherUsersData()[3].profilePicture, imageType: TweetImage.picture, existence: TextExistence.exist,text:"In nature, nothing is perfect and everything is perfect. Trees can be contorted, bent in weird ways, and they're still beautiful." "Those who contemplate the beauty of the earth find reserves of strength that will endure as long as life lasts." ,imageURL:'assets/tweets_images/heaven.jpg' ),
+    TweetCardData(name: UsersData.getOtherUsersData()[3].name, title: UsersData.getOtherUsersData()[3].title, profilePicture: UsersData.getOtherUsersData()[3].profilePicture, imageType: TweetImage.picture, existence: TextExistence.exist,text:'nice one' ,imageURL:'assets/images/waseem.jpg' ),
+
+  ];
+   static final List<TweetCardData>_tweetList=
     [
       TweetCardData(name: UsersData.getOtherUsersData()[0].name, title: UsersData.getOtherUsersData()[0].title, profilePicture: UsersData.getOtherUsersData()[0].profilePicture, imageType: TweetImage.picture, existence: TextExistence.exist,text:'lovely nature' ,imageURL:'assets/tweets_images/nature.jpg' ),
       TweetCardData(name: UsersData.getOtherUsersData()[2].name, title: UsersData.getOtherUsersData()[2].title, profilePicture: UsersData.getOtherUsersData()[2].profilePicture, imageType: TweetImage.picture, existence: TextExistence.exist,text:'dogs are beautiful' ,imageURL:'assets/tweets_images/dog.jpeg' ),
@@ -34,17 +43,31 @@ class TweetsList extends ChangeNotifier
 
       List<TweetCardData>getTweetsList()
     {
-      return _tweetsList;
+      return _tweetList;
     }
      static int  getTweetsNumbers()
     {
-      return _tweetsList.length;
+      return _tweetList.length;
     }
       void addTweet(TweetCardData newTweet)
     {
-      _tweetsList.insert(0,newTweet);
+      _tweetList.insert(0,newTweet);
       notifyListeners();
     }
+   void retweet(int index)
+   {
+     _retweetList.insert(0,_tweetList[index]);
+     _tweetList[index].isRetweeted=true;
+     _tweetList[index].nRetweets++;
+     notifyListeners();
+   }
+  void undoRetweet(int index)
+  {
+    _retweetList.remove(_tweetList[index]);
+    _tweetList[index].isRetweeted=false;
+    _tweetList[index].nRetweets--;
+    notifyListeners();
+  }
    Future <void> addRandomTweetOnRefresh() async
    {
      await Future.delayed(const Duration(milliseconds: 500));

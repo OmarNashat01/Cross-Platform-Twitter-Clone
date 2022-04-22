@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
-import 'package:twitter/dummy/tweets_list.dart';
+import 'package:twitter/dummy/timeline_list.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter/dummy/users_data.dart';
@@ -138,7 +138,7 @@ class SearchScreen_state extends State<SearchScreen>{
                               itemBuilder: (context, index) {
                                 return TweetCard(index: index);
                               },
-                              itemCount: TweetsList.getTweetsNumbers(),
+                              itemCount: TimelineList.getTweetsNumbers(),
                             ),
                           ),
                         ),
@@ -152,7 +152,7 @@ class SearchScreen_state extends State<SearchScreen>{
                               itemBuilder: (context, index) {
                                 return TweetCard(index: index);
                               },
-                              itemCount: TweetsList.getTweetsNumbers(),
+                              itemCount: TimelineList.getTweetsNumbers(),
                             ),
                           ),
                         ),
