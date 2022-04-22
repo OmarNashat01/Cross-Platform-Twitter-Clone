@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,10 +21,13 @@ class VerificationScreenState extends State<VerificationScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final _verificationFieldController = TextEditingController();
+  final _snackBar = const SnackBar(
+    content: Text('The code you entered is incorrect. Please try again.'),
+  );
 
   String? validateVerificationCode(code) {
     if (code == null || code.isEmpty) {
-      return '';
+      return 'Please enter the verification code.';
     }
     return null;
   }
@@ -32,13 +36,20 @@ class VerificationScreenState extends State<VerificationScreen> {
     if (_formKey.currentState!.validate()) {
       log('Verification PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).verifyCode();
-      // Todo: Check for the response of verifyCode() to confirm that the code is written correctly
-      // Todo: Display the verification code expiration time (elapsed time)
-      Navigator.of(context)
-        ..pop()
-        ..pop();
-      Navigator.of(context).pushReplacementNamed(PasswordScreen.routeName);
+      Provider.of<UserProvider>(context, listen: false)
+          .verifyCode()
+          .then((res) {
+        final response = jsonDecode(res.body);
+        // email verified
+        if (res.statusCode == 200) {
+          Navigator.of(context)
+            ..pop()
+            ..pop();
+          Navigator.of(context).pushReplacementNamed(PasswordScreen.routeName);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+        }
+      });
     } else {
       log('Verification FAILED');
     }

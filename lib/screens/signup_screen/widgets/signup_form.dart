@@ -109,9 +109,7 @@ class SignupFormState extends State<SignupForm> {
                     style: const TextStyle(fontSize: 20),
                     validator: validateEmail,
                     controller: _emailFieldController,
-                    onSaved: (email) =>
-                        Provider.of<UserProvider>(context, listen: false)
-                            .email = email,
+                    onSaved: (email) => value.email = email,
                     keyboardType: TextInputType.emailAddress,
                     decoration: _decorateField('Email'),
                   ),

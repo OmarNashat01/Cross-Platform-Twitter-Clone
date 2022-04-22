@@ -1,6 +1,7 @@
+// // Add json files, and its mapping
 
-const users = require("mock_data/users.json");
+// const users = require("./mock_data/users.json");
 
-module.exports = {
-  users,
-};
+// module.exports = {
+//     users: users,
+// };

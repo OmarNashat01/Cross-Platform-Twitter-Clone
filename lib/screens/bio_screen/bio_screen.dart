@@ -31,7 +31,7 @@ class BioScreenState extends State<BioScreen> {
     if (_formKey.currentState!.validate()) {
       log('Bio: PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).signUp();
+      Provider.of<UserProvider>(context, listen: false).logAll();
       Navigator.of(context).pushReplacementNamed(UsernameScreen.routeName);
     } else {
       log('Bio: FAILED');

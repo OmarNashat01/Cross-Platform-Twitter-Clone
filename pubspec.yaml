@@ -49,6 +49,8 @@ dependencies:
   dio: ^4.0.6
   http: ^0.13.4
   palette_generator: ^0.3.3
+  dartdoc: ^5.0.1
+  crypto: ^3.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

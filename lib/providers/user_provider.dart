@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -15,13 +14,14 @@ class UserProvider with ChangeNotifier {
   String _bio = '';
 
   bool _isEmailTaken = false;
+  bool _isUsernameTaken = false;
 
   set name(name) => _name = name;
   set email(email) => _email = email;
   set dob(dob) => _dob = dob;
   set verificationCode(code) => _verificationCode = code;
-  set profilePic(pic) =>
-      _profilePic = pic; // if you need to set it without rerendering
+  // if you need to set it without rerendering
+  set profilePic(pic) => _profilePic = pic;
   set username(name) => _username = name;
   set password(password) => _password = password;
   set bio(bio) => _bio = bio;
@@ -35,6 +35,7 @@ class UserProvider with ChangeNotifier {
   String get password => _password;
 
   bool get isEmailTaken => _isEmailTaken;
+  bool get isUsernameTaken => _isUsernameTaken;
 
   void setProfilePic(pic) {
     _profilePic = pic;
@@ -46,29 +47,52 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Todo: Send the email to the backend for verification and OTP
+  void setIsUsernameTaken(check) {
+    _isUsernameTaken = check;
+    notifyListeners();
+  }
+
   Future<http.Response> verifyEmail() async {
     log(_email);
 
     final response = await http.post(
-      Uri.parse('$kMockBaseUrl/verify'),
-      body: {"email": _email},
+      Uri.parse('http://${Http().getBaseUrl()}/signup/verify'),
+      body: {'email': _email},
     );
     return response;
   }
 
-  // Todo: Send the verification code (OTP) and email to the backend
-  void verifyCode() {
+  Future<http.Response> verifyCode() async {
     log(_verificationCode);
+
+    final queryParameters = {
+      'OTP': _verificationCode,
+      'email': _email,
+    };
+    final uri =
+        Uri.http(Http().getBaseUrl(), '/signup/confirm_email', queryParameters);
+    final response = await http.get(uri);
+    return response;
   }
 
-  // Todo: Send the username to the backend to check its existance
-  void verifyUsername() {
+  Future<http.Response> signup() async {
     log(_username);
+
+    final response = await http.post(
+      Uri.parse('http://${Http().getBaseUrl()}/signup'),
+      body: {
+        "email": _email,
+        "password": _password,
+        "name": _name,
+        "date_of_birth": _dob.toString(),
+        "gender": "",
+        "username": _username
+      },
+    );
+    return response;
   }
 
-  // Todo: Send basic user data to the backend
-  void signUp() {
+  void logAll() {
     log('name: $_name');
     log('email: $_email');
     log('dob: ${_dob.toString()}');

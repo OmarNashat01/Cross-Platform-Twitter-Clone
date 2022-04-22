@@ -1,5 +1,7 @@
 {
-    "/verify": "/users",
-    "/verify?:filter": "/users?:filter"
+    "/signup/verify": "/users",
+    "/signup/confirm_email": "/OTPs",
+    "/signup/confirm_email?OTP=:otp&email=:mail": "/OTPs?OTP=:otp&email=:mail",
+    "/signup": "/users"
 
 }

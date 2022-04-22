@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
 
+bool isMock = true;
+
 // API constants
 const String kBaseUrl = '';
-const String kMockBaseUrl = 'http://10.0.2.2:8000';
+const String kMockBaseUrl = '10.0.2.2:8000';
+
+class Auth {
+  static String token = '';
+  static String refreshToken = '';
+  static String email = '';
+  static String password = '';
+}
+
+class Http {
+  static final Http _singleton = Http._internal();
+
+  factory Http() => _singleton;
+
+  Http._internal();
+
+  String getBaseUrl() => isMock == true ? kMockBaseUrl : kBaseUrl;
+}
 
 // Profile pictures sizes
 const double timelineProfilePicSize = 15;

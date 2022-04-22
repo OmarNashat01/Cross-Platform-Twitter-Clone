@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:crypto/crypto.dart';
 
 import '../profile_pic_screen/profile_pic_screen.dart';
 
@@ -33,11 +35,15 @@ class PasswordScreenState extends State<PasswordScreen> {
     if (_formKey.currentState!.validate()) {
       log('Password: PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).signUp();
+      Provider.of<UserProvider>(context, listen: false).logAll();
       Navigator.of(context).pushReplacementNamed(ProfilePicScreen.routeName);
     } else {
       log('Password: FAILED');
     }
+  }
+
+  String hashToMd5(String pass) {
+    return md5.convert(utf8.encode(pass)).toString();
   }
 
   InputDecoration _decoratePasswordField(String hint) {
@@ -104,7 +110,7 @@ class PasswordScreenState extends State<PasswordScreen> {
                       controller: _passwordFieldController,
                       onSaved: (pass) =>
                           Provider.of<UserProvider>(context, listen: false)
-                              .password = pass,
+                              .password = hashToMd5(pass as String),
                       onFieldSubmitted: (_) => _pressSignupButton(context),
                       keyboardType: TextInputType.visiblePassword,
                       decoration: _decoratePasswordField('Password'),

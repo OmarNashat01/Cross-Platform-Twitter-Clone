@@ -24,6 +24,9 @@ class UsernameScreenState extends State<UsernameScreen> {
     if (username == null || username.isEmpty || username.length <= 4) {
       return 'Username should be more than 4 characters.';
     }
+    if (Provider.of<UserProvider>(context, listen: false).isUsernameTaken) {
+      return 'Username has already been taken';
+    }
     return null;
   }
 
@@ -31,10 +34,16 @@ class UsernameScreenState extends State<UsernameScreen> {
     if (_formKey.currentState!.validate()) {
       log('username: PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).verifyUsername();
-      // Todo: check if the response is that the username is already exist
-      // 'Username has already been taken'
-      Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
+      Provider.of<UserProvider>(context, listen: false).signup().then((res) {
+        if (res.statusCode == 200) {
+          Provider.of<UserProvider>(context, listen: false)
+              .setIsEmailTaken(false);
+          Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
+        } else {
+          Provider.of<UserProvider>(context, listen: false)
+              .setIsUsernameTaken(true);
+        }
+      });
     } else {
       log('username: FAILED');
     }
@@ -93,22 +102,24 @@ class UsernameScreenState extends State<UsernameScreen> {
                           'Your @username is unique. You can always change it later.'),
                     ),
                   ),
-                  Form(
-                    key: _formKey,
-                    child: TextFormField(
-                      autofocus: true,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      cursorColor: kSecondaryColor,
-                      cursorWidth: 2,
-                      style: const TextStyle(fontSize: 20),
-                      validator: validateUsername,
-                      controller: usernameFieldController,
-                      onSaved: (username) =>
-                          Provider.of<UserProvider>(context, listen: false)
-                              .username = username,
-                      onFieldSubmitted: (_) => _pressNextButton(context),
-                      decoration: _decorateField('Username'),
-                    ),
+                  Consumer<UserProvider>(
+                    builder: (context, value, child) {
+                      return Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          autofocus: true,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          cursorColor: kSecondaryColor,
+                          cursorWidth: 2,
+                          style: const TextStyle(fontSize: 20),
+                          validator: validateUsername,
+                          controller: usernameFieldController,
+                          onSaved: (username) => value.username = username,
+                          onFieldSubmitted: (_) => _pressNextButton(context),
+                          decoration: _decorateField('Username'),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

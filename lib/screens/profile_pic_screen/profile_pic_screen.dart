@@ -29,12 +29,14 @@ class ProfilePicScreenState extends State<ProfilePicScreen> {
 
   void _pressNextButton(context) {
     if (Provider.of<UserProvider>(context, listen: false).profilePic.isEmpty) {
-      // Todo: add error msg
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Please upload your profile picture or skip for now.'),
+      ));
       return;
     }
 
     log('Pic: PASSED');
-    Provider.of<UserProvider>(context, listen: false).signUp();
+    Provider.of<UserProvider>(context, listen: false).logAll();
     Navigator.of(context).pushReplacementNamed(BioScreen.routeName);
   }
 
