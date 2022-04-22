@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import'package:twitter/dummy/tweets_list.dart';
+import'package:twitter/dummy/timeline_list.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
@@ -24,7 +24,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
   _updatePalette ()async
   {
     final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(
-      AssetImage(Provider.of<TweetsList>(context,listen: false).getTweetsList()[widget.index].imageURL!),
+      AssetImage(Provider.of<TimelineList>(context,listen: false).getTweetsList()[widget.index].imageURL!),
     );
     color=paletteGenerator.dominantColor;
     setState(() {
@@ -68,13 +68,40 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
               key: const Key('key'),
               onDismissed: (_) => Navigator.of(context).pop(),
               child: Image.asset(
-                Provider.of<TweetsList>(context).getTweetsList()[widget.index].imageURL!,
+                Provider.of<TimelineList>(context).getTweetsList()[widget.index].imageURL!,
                 fit: BoxFit.cover,
                 width: double.infinity,
                 alignment: Alignment.center,
               ),
             ),
-              TweetBottomBar(index: widget.index,iconsBoundry: Colors.white,),
+              Column(
+                children: [
+                  TweetBottomBar(index: widget.index,iconsBoundry: Colors.white,),
+                  TextField(
+                    scrollPadding: EdgeInsets.only(bottom:100,top: 100),
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(10.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Colors.white, width: 2),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Colors.white54, width: 1),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Colors.white54, width: 1),
+                        ),
+
+                        // filled: true,
+                        hintStyle: TextStyle(color: Colors.grey[800]),
+                        hintText: "Tweet your reply",
+                        fillColor: Colors.transparent),
+                  )
+                ],
+              ),
+
             ]
           ),
         ),

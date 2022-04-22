@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:twitter/dummy/tweets_list.dart';
+import 'package:twitter/dummy/timeline_list.dart';
 import 'package:twitter/providers/user_provider.dart';
 import 'package:twitter/screens/bio_screen/bio_screen.dart';
 import 'package:twitter/screens/login_email_screen/login_email_screen.dart';
@@ -32,13 +32,14 @@ class TwitterApp extends StatelessWidget {
       // Add providers as needed
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
-        ChangeNotifierProvider(create: (context) => TweetsList()),
+        ChangeNotifierProvider(create: (context) => TimelineList()),
       ],
 
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Twitter',
         theme: ThemeData(
+          canvasColor: Colors.transparent,
           scaffoldBackgroundColor: Colors.white,
           backgroundColor: Colors.white,
           highlightColor: const Color(0xff757575),

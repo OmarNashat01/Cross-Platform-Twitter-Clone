@@ -16,8 +16,8 @@ import 'image_detail_screen.dart';
 //TweetCard class is the widget responsible for rendering the tweet card at the timeline and any needed place
 //the tweet need information to be rendered
 //this information will come from class which is TweetCardData
-class TweetCard extends StatelessWidget {
-  TweetCard({required this.index});
+class QuoteTweetCard extends StatelessWidget {
+  QuoteTweetCard({required this.index});
   final int index;
   @override
   Widget build(BuildContext context) {
@@ -57,25 +57,25 @@ class TweetCard extends StatelessWidget {
               //--here is the text of the tweet
               Provider.of<TimelineList>(context).getTweetsList()[index].existence == TextExistence.exist
                   ? Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          Provider.of<TimelineList>(context).getTweetsList()[index].text!,
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
-                            //max lines of writing a tweet is 8 like in the main twitter
-                            maxLines: 8,
-                            style: tweetsTexts,
-                          ),
-                      ),
-                    ],
-                  )
+                children: [
+                  Expanded(
+                    child: Text(
+                      Provider.of<TimelineList>(context).getTweetsList()[index].text!,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
+                      //max lines of writing a tweet is 8 like in the main twitter
+                      maxLines: 8,
+                      style: tweetsTexts,
+                    ),
+                  ),
+                ],
+              )
                   : const SizedBox.shrink(),
             ],
           ),
         ),
-             //--for decoration sized box
-             SizedBox(height: 5,),
+        //--for decoration sized box
+        SizedBox(height: 5,),
 
         //--here is the image of the tweet
         Provider.of<TimelineList>(context).getTweetsList()[index].imageType == TweetImage.picture
@@ -89,15 +89,19 @@ class TweetCard extends StatelessWidget {
               ),beginX: 0,beginY: 1),
             );
           },
-              child: Image.asset(
-          Provider.of<TimelineList>(context).getTweetsList()[index].imageURL!,
-          fit: BoxFit.cover,
-          width: double.infinity,
-          alignment: Alignment.center,
-                ),
-            )
+          child: Image.asset(
+            Provider.of<TimelineList>(context).getTweetsList()[index].imageURL!,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            alignment: Alignment.center,
+          ),
+        )
             : const SizedBox.shrink(),
 
+        //here it will has inner tweet card to be drawn
+        Container(
+          color: Colors.black,
+            child: Provider.of<TimelineList>(context).getTweetsList()[index].innerTweet),
         //the row of icons for your reactions on the tweet
         TweetBottomBar(index: index,iconsBoundry: Colors.grey.shade600,),
 

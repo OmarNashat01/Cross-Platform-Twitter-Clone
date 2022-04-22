@@ -32,6 +32,14 @@ const TextStyle titleName = TextStyle(
   fontSize: 16,
   color: Color(0xff757575),
 );
+const TextStyle notRetweeted = TextStyle(
+  fontSize: 16,
+  color: Color(0xff757575),
+);
+const TextStyle retweeted = TextStyle(
+  fontSize: 16,
+  color: Colors.green,
+);
 const TextStyle loved = TextStyle(
   fontSize: 16,
   color: Colors.red,
