@@ -76,7 +76,6 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<http.Response> signup() async {
-    log(_username);
 
     final response = await http.post(
       Uri.parse('http://${Http().getBaseUrl()}/signup'),
@@ -87,6 +86,18 @@ class UserProvider with ChangeNotifier {
         "date_of_birth": _dob.toString(),
         "gender": "",
         "username": _username
+      },
+    );
+    return response;
+  }
+
+  Future<http.Response> login() async {
+
+    final response = await http.post(
+      Uri.parse('http://${Http().getBaseUrl()}/login'),
+      body: {
+        "email": _email,
+        "password": _password,
       },
     );
     return response;

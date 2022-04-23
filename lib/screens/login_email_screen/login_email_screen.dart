@@ -24,7 +24,7 @@ class LoginEmailScreenState extends State<LoginEmailScreen> {
 
   String? validateEmail(email) {
     if (email == null || email.isEmpty) {
-      return '';
+      return 'Please enter your email.';
     }
     return null;
   }
@@ -40,7 +40,7 @@ class LoginEmailScreenState extends State<LoginEmailScreen> {
   }
 
   void _pressForgotPassButton(context) {
-    // Todo
+    // Todo: Navigate to forgot password screen
   }
 
   InputDecoration _decorateField(String hint) {
@@ -73,7 +73,7 @@ class LoginEmailScreenState extends State<LoginEmailScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 25),
                       child: Text(
-                        'To get started, first enter your email or @username',
+                        'To get started, first enter your email',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -96,7 +96,7 @@ class LoginEmailScreenState extends State<LoginEmailScreen> {
                       onFieldSubmitted: (_) => _pressNextButton(context),
                       keyboardType: TextInputType.text,
                       decoration:
-                          _decorateField('Email or username'),
+                          _decorateField('Email'),
                     ),
                   ),
                 ],
