@@ -221,6 +221,54 @@
       "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTAyOTcyMzF9.DdWPd_j_wUjUYRrq2z1lRHmTOi_CCrJ5l3CIBcYY7Pc",
       "email": "fbimohammed@yahoo.com"
     }
+  ],
+  "tweets": [
+  {
+    "tweet_id": "1",
+    "user_id": "31424423241451",
+    "username": "abdallah fawzy",
+    "prof_pic_url": "assets/images/myProfilepic.jpeg",
+    "text": "hello",
+    "created_at": "2022-04-23T03:33:05.603Z",
+    "videos": [
+      {
+        "url": "string",
+        "alt_text": "string",
+        "height": 0,
+        "width": 0
+      }
+    ],
+    "images": [
+      {
+        "url": "assets/tweets_images/moon.jpg",
+        "alt_text": "string",
+        "height": 200,
+        "width": 200
+      }
+    ],
+    "like_count": 0,
+    "liker_ids": [
+      "string"
+    ],
+    "comment_count": 0,
+    "retweet_count": 0,
+    "comments": [
+      {
+        "user_id": "string",
+        "username": "string",
+        "prof_pic_url": "string",
+        "text": "string",
+        "created_at": "2022-04-23T03:33:05.603Z",
+        "replies": [
+          {
+            "user_id": "string",
+            "username": "string",
+            "Text": "string"
+          }
+        ]
+      }
+    ]
+  }
   ]
   
 }

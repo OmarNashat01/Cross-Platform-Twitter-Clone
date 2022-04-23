@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/timeline_list.dart';
 import 'package:twitter/dummy/users_data.dart';
-import 'package:twitter/models/tweet_card_data.dart';
+import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/quote_tweet_card.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
@@ -13,7 +13,7 @@ import 'timeline_components/custom_page_route.dart';
 import 'timeline_components/profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'timeline_components/navigation_drawer.dart';
-import 'package:twitter/models/tweet_card_data.dart';
+import 'package:twitter/models/tweet_model.dart';
 
 // ignore_for_file: prefer_const_constructors
 class TimelineScreen extends StatelessWidget {

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/timeline_list.dart';
 import 'package:twitter/dummy/users_data.dart';
-import 'package:twitter/models/tweet_card_data.dart';
+import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
 
@@ -49,20 +49,20 @@ class AddTweetScreen extends StatelessWidget {
                       text = title!;
                       //if i am adding a tweet from scratch do this without showing the inner tweet
                       quote==false?Provider.of<TimelineList>(context, listen: false).addTweet(
-                          TweetCardData(
-                              name: UsersData.getMyData().name,
+                          Tweet(
+                              username: UsersData.getMyData().name,
                               title: UsersData.getMyData().title,
-                              profilePicture: UsersData.getMyData().profilePicture,
+                              profilePicUrl: UsersData.getMyData().profilePicture,
                               imageType: TweetImage.nothing,
-                              existence: TextExistence.exist,
+                              textExistence: TextExistence.exist,
                               text: text))
                       //else i am adding a tweet from scratch having the inner tweet
-                      : TweetCardData(
-                          name: UsersData.getMyData().name,
+                      : Tweet(
+                          username: UsersData.getMyData().name,
                           title: UsersData.getMyData().title,
-                          profilePicture: UsersData.getMyData().profilePicture,
+                          profilePicUrl: UsersData.getMyData().profilePicture,
                           imageType: TweetImage.nothing,
-                          existence: TextExistence.exist,
+                          textExistence: TextExistence.exist,
                           text: text,
                         innerTweet: TweetCard(index: index!),
                         haveInnerTweet: true,

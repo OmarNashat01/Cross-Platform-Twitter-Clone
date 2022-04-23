@@ -376,7 +376,11 @@
     "debug" "*"
     "path-to-regexp" "^1.0.3"
 
+<<<<<<< HEAD
 "express@^4.17.1":
+=======
+"express@^4.17.1", "express@^4.17.3":
+>>>>>>> 4f281da4ddac4be1ad52dc4ab87cb0075469a5f4
   "integrity" "sha512-yuSQpz5I+Ch7gFrPCk4/c+dIBKlQUxtgwqzph132bsT6qhuzss6I8cLJQz7B3rFblzd6wtcI0ZbGltH/C4LjUg=="
   "resolved" "https://registry.npmjs.org/express/-/express-4.17.3.tgz"
   "version" "4.17.3"
@@ -1315,3 +1319,11 @@
     "string-width" "^4.2.3"
     "y18n" "^5.0.5"
     "yargs-parser" "^21.0.0"
+<<<<<<< HEAD
+=======
+
+"yarn@^1.22.18":
+  "integrity" "sha512-oFffv6Jp2+BTUBItzx1Z0dpikTX+raRdqupfqzeMKnoh7WD6RuPAxcqDkMUy9vafJkrB0YaV708znpuMhEBKGQ=="
+  "resolved" "https://registry.npmjs.org/yarn/-/yarn-1.22.18.tgz"
+  "version" "1.22.18"
+>>>>>>> 4f281da4ddac4be1ad52dc4ab87cb0075469a5f4

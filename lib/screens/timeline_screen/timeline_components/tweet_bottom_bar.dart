@@ -39,12 +39,12 @@ class TweetBottomBar extends StatelessWidget {
                 ),
                 Provider.of<TimelineList>(context)
                             .getTweetsList()[index]
-                            .nComments >
+                            .commentCount >
                         0
                     ? Text(
                         Provider.of<TimelineList>(context)
                             .getTweetsList()[index]
-                            .nComments
+                            .commentCount
                             .toString(),
                         style: titleName,
                       )
@@ -70,12 +70,12 @@ class TweetBottomBar extends StatelessWidget {
                 ),
                 Provider.of<TimelineList>(context)
                             .getTweetsList()[index]
-                            .nRetweets >
+                            .retweetCount >
                         0
                     ? Text(
                         Provider.of<TimelineList>(context)
                             .getTweetsList()[index]
-                            .nRetweets
+                            .retweetCount
                             .toString(),
                         style:Provider.of<TimelineList>(context).getTweetsList()[index].isRetweeted==false?notRetweeted:retweeted,
                       )
@@ -93,7 +93,7 @@ class TweetBottomBar extends StatelessWidget {
                     .isLiked,
                 likeCount: Provider.of<TimelineList>(context)
                     .getTweetsList()[index]
-                    .nLove,
+                    .likeCount,
                 likeBuilder: (isLiked) {
                   final color = isLiked ? Colors.red : Colors.transparent;
                   return Padding(
@@ -115,7 +115,7 @@ class TweetBottomBar extends StatelessWidget {
                   );
                 },
                 countBuilder: (count, isLiked, text) {
-                  return Provider.of<TimelineList>(context).getTweetsList()[index].nLove > 0 ? Text(text, style: isLiked?loved:titleName,) : const SizedBox.shrink();
+                  return Provider.of<TimelineList>(context).getTweetsList()[index].likeCount > 0 ? Text(text, style: isLiked?loved:titleName,) : const SizedBox.shrink();
                 },
                 onTap: (isLiked) async {
                   Provider.of<TimelineList>(context, listen: false)
