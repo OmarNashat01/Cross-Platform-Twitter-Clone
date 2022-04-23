@@ -1,39 +1,59 @@
 const portNumber = 8000;
-const data = require('./data.json');
-const jsonServer = require('json-server');
 const routes = require('./routes.json');
-
-const lowdb = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-const bodyParser = require('body-parser');
+const fs = require('fs')
+const data = require('./data.json');
+const bodyParser = require('body-parser')
+const jsonServer = require('json-server');
+const path = require('path');
 
 const server = jsonServer.create();
 const router = jsonServer.router(data);
-const middlewares = jsonServer.defaults();
 
-const db = lowdb(new FileSync('./data.json'));
+let nPath = path.normalize( __dirname + '/data.json');
+const db = JSON.parse(fs.readFileSync(nPath));
 
-server.use(jsonServer.bodyParser);
-server.use(middlewares);
+server.use(bodyParser.urlencoded({extended: true}))
+server.use(bodyParser.json())
+server.use(jsonServer.defaults());
 
 
+function emailExists(email){
+  return db.users.findIndex(user => user.email === email) !== -1;
+}
+ 
 server.post('/signup/verify', function (req, res, next) {
-  res.status(200).json({ "OTP Sent": true, "OTP": "1312" });
-  // res.status(200).json({ "OTP Sent": false, "OTP": "1312" });
+  let exists = emailExists(req.body.email);
+  res.status(200).json({ "OTP Sent": !exists, "OTP": "1312" });
+ 
 });
 
+function otpExists(otp, email) {
+  return db.OTPs.findIndex(val => val.OTP === otp && val.email === email) !== -1;
+}
 server.get('/signup/confirm_email', function (req, res, next) {
-  res.status(200).json({
-    "200": "Email verified",
-    "email": "mohamedmohsen96661@gmail.com"
-  });
+  let otp = req.query.OTP;
+  let email = req.query.email;
 
-  // res.status(401).json({ "401": "Token expired" });
+  if (otpExists(otp, email)) {
+    res.status(200).json({
+      "200": "Email verified",
+      "email": email
+    });
+  } else {
+    res.status(401).json({ "401": "Token expired" });
+  }
 });
+
+function usernameExists(username){
+  return db.users.findIndex(user => user.username === username) !== -1;
+}
 
 server.post('/signup', function (req, res, next) {
-  // res.status(200).json();
-  res.status(400).json();
+  if (usernameExists(req.body.username)) {
+    res.status(400).json();
+  } else {
+    res.status(200).json();
+  }
 });
 
 server.post('/login', function (req, res, next) {
