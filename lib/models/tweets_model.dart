@@ -1,0 +1,13 @@
+import 'package:twitter/models/tweet_model.dart';
+class Tweets
+{
+  final List<dynamic>tweets;
+  Tweets({required this.tweets});
+  factory Tweets.fromJson(Map<String,dynamic> jsonData)
+  {
+    return Tweets(
+      tweets: jsonData["tweets"],
+      //so here my tweets list should have al the tweets as a form of json data
+    );
+  }
+}

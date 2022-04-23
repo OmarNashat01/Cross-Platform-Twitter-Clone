@@ -31,7 +31,7 @@ server.get('/signup/confirm_email', function (req, res, next) {
   // res.status(401).json({ "401": "Token expired" });
 });
 
-server.post('/signup', function (req, res, next) {
+server.p ost('/signup', function (req, res, next) {
   // res.status(200).json();
   res.status(400).json();
 });

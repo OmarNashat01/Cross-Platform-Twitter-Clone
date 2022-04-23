@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:twitter/dummy/timeline_list.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/constants.dart';
-import 'package:twitter/models/tweet_card_data.dart';
+import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
 
@@ -34,7 +34,7 @@ class TweetCard extends StatelessWidget {
                   ProfilePicture(
                       profilePictureFunctionality: () {},
                       profilePictureImage:
-                      Provider.of<TimelineList>(context).getTweetsList()[index].profilePicture,
+                      Provider.of<TimelineList>(context).getTweetsList()[index].profilePicUrl,
                       profilePictureSize: navigationDrawerProfilePicSize),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
@@ -42,7 +42,7 @@ class TweetCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //here is the name and title of the one who tweeted
-                        Text( Provider.of<TimelineList>(context).getTweetsList()[index].name,
+                        Text( Provider.of<TimelineList>(context).getTweetsList()[index].username,
                             style: boldName),
                         Text(Provider.of<TimelineList>(context).getTweetsList()[index].title,
                             style: titleName),
@@ -55,7 +55,7 @@ class TweetCard extends StatelessWidget {
               //--for decoration sized box
               SizedBox(height: 5,),
               //--here is the text of the tweet
-              Provider.of<TimelineList>(context).getTweetsList()[index].existence == TextExistence.exist
+              Provider.of<TimelineList>(context).getTweetsList()[index].textExistence == TextExistence.exist
                   ? Row(
                     children: [
                       Expanded(
@@ -90,7 +90,7 @@ class TweetCard extends StatelessWidget {
             );
           },
               child: Image.asset(
-          Provider.of<TimelineList>(context).getTweetsList()[index].imageURL!,
+          Provider.of<TimelineList>(context).getTweetsList()[index].imageUrl!,
           fit: BoxFit.cover,
           width: double.infinity,
           alignment: Alignment.center,
