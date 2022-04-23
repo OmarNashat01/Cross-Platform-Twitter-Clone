@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/dummy/timeline_list.dart';
 import 'package:twitter/providers/user_provider.dart';
+import 'package:twitter/screens/auth_welcome_screen/auth_welcome_screen.dart';
 import 'package:twitter/screens/bio_screen/bio_screen.dart';
 import 'package:twitter/screens/login_email_screen/login_email_screen.dart';
 import 'package:twitter/screens/password_screen/password_screen.dart';

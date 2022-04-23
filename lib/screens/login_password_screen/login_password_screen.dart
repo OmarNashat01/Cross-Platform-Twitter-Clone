@@ -4,6 +4,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:twitter/screens/password_screen/password_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 
@@ -37,7 +38,9 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
     if (_formKey.currentState!.validate()) {
       log('Login Password PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).login().then((res) {
+      Provider.of<UserProvider>(context, listen: false)
+          .login()
+          .then((res) async {
         switch (res.statusCode) {
           case 200: // User exists (success)
             final response = jsonDecode(res.body);
@@ -47,6 +50,11 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
                 Provider.of<UserProvider>(context, listen: false).password;
             Auth.token = response['token'];
             Auth.userId = response['user_id'];
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs
+              ..setString('email', Auth.email)
+              ..setString('password', Auth.password);
+
             log('token : ${Auth.token}');
             log('userid : ${Auth.userId}');
             log('email : ${Auth.email}');
@@ -72,7 +80,6 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
             break;
         }
       });
-
     } else {
       log('Login Password FAILED');
     }

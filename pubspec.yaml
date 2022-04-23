@@ -51,6 +51,7 @@ dependencies:
   palette_generator: ^0.3.3
   dartdoc: ^5.0.1
   crypto: ^3.0.1
+  shared_preferences: ^2.0.13
 dev_dependencies:
   flutter_test:
     sdk: flutter
