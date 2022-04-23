@@ -13,7 +13,7 @@ enum TextExistence {
 }
 class Tweet
 {
- Tweet({required this.tweetId,required this.userId,required this.profilePicUrl,required this.username,required this.title,required this.imageUrl, this.imageType,required this.text, this.textExistence,this.commentCount=0,this.retweetCount=0,this.likeCount=0, this.innerTweet,this.haveInnerTweet,required this.createdAt, required this.imageAltText,required this.imageHeight,required this.imageWidth,required this.videoAltText,required this.videoHeight,required this.videoUrl,required this.videoWidth});
+ Tweet({required this.tweetId,required this.userId,required this.profilePicUrl,required this.username, this.title, this.imageType,required this.text, this.textExistence,required this.commentCount,required this.retweetCount,required this.likeCount, this.innerTweet,this.haveInnerTweet,required this.createdAt,required this.videos,required this.images,required this.comments,required this.likerIds});
  String tweetId;
  String userId;
  String username;
@@ -22,30 +22,22 @@ class Tweet
  //
  TextExistence? textExistence;
  //
- String title;
+ String? title;
  String createdAt;
  //
  TweetImage? imageType;
  //videos content------------------------------------------
- String videoUrl;
- String videoAltText;
- String videoHeight;
- String videoWidth;
- //List<String>videos;
+  List<dynamic>videos;
  //Images content------------------------------------------
- String imageUrl;
- String imageAltText;
- String imageHeight;
- String imageWidth;
- //List<String>images;
+ List<dynamic>images;
  //------------------------------------------
  //likes------------------------------------------
  int likeCount;
  bool? isLiked=false;
- //List<String>likerIds;
+ List<dynamic>likerIds;
  //comments------------------------------------------
  int commentCount;
- //List<String>comments;
+ List<String>comments;
  //retweets------------------------------------------
  int retweetCount;
  bool? isRetweeted=false;
@@ -57,6 +49,6 @@ class Tweet
  factory Tweet.fromJson(Map<String,dynamic> jsonData)
  {
 
-  return Tweet(tweetId: jsonData["tweet_id"], userId: jsonData["user_id"], profilePicUrl: jsonData["prof_pic_url"], username: jsonData["username"], title: jsonData["username"], imageUrl: jsonData["assets/tweets_images/moon.jpg"], createdAt: jsonData["created_at"], imageAltText: jsonData["alt_text"], imageHeight: jsonData["height"], imageWidth: jsonData["width"], videoAltText: jsonData["alt_text"], videoHeight: jsonData["height"], videoUrl: jsonData["url"], videoWidth: jsonData["width"], text: jsonData['text']);
+  return Tweet(tweetId: jsonData["tweet_id"], userId: jsonData["user_id"], profilePicUrl: jsonData["prof_pic_url"], username: jsonData["username"], createdAt: jsonData["created_at"], text: jsonData['text'],videos:jsonData['videos'] ,images:jsonData['images'] ,likeCount:jsonData['like_count'] ,likerIds: jsonData['liker_ids'],commentCount:jsonData['comment_count'] ,retweetCount:jsonData['retweet_count'] ,comments: jsonData['comments']);
  }
 }

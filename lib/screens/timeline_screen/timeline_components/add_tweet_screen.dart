@@ -52,7 +52,7 @@ class AddTweetScreen extends StatelessWidget {
                           Tweet(
                               username: UsersData.getMyData().name,
                               title: UsersData.getMyData().title,
-                              prof_pic_url: UsersData.getMyData().profilePicture,
+                              profilePicUrl: UsersData.getMyData().profilePicture,
                               imageType: TweetImage.nothing,
                               textExistence: TextExistence.exist,
                               text: text))
@@ -60,7 +60,7 @@ class AddTweetScreen extends StatelessWidget {
                       : Tweet(
                           username: UsersData.getMyData().name,
                           title: UsersData.getMyData().title,
-                          prof_pic_url: UsersData.getMyData().profilePicture,
+                          profilePicUrl: UsersData.getMyData().profilePicture,
                           imageType: TweetImage.nothing,
                           textExistence: TextExistence.exist,
                           text: text,
