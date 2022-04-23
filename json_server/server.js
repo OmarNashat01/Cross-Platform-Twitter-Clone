@@ -3,15 +3,13 @@ const data = require('./data.json');
 const jsonServer = require('json-server');
 const routes = require('./routes.json');
 
-const lowdb = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
+
 const bodyParser = require('body-parser');
 
 const server = jsonServer.create();
 const router = jsonServer.router(data);
 const middlewares = jsonServer.defaults();
 
-const db = lowdb(new FileSync('./data.json'));
 
 server.use(jsonServer.bodyParser);
 server.use(middlewares);
@@ -22,7 +20,8 @@ server.post('/signup/verify', function (req, res, next) {
   // res.status(200).json({ "OTP Sent": false, "OTP": "1312" });
 });
 
-server.get('/signup/confirm_email', function (req, res, next) {
+server.get('/signup/confirm_email', function (req, res, next)
+{
   res.status(200).json({
     "200": "Email verified",
     "email": "mohamedmohsen96661@gmail.com"
