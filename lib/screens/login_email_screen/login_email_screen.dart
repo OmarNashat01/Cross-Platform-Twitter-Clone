@@ -43,19 +43,6 @@ class LoginEmailScreenState extends State<LoginEmailScreen> {
     // Todo: Navigate to forgot password screen
   }
 
-  InputDecoration _decorateField(String hint) {
-    return InputDecoration(
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: kSecondaryColor,
-          width: 3,
-        ),
-      ),
-      hintText: hint,
-      counterStyle: const TextStyle(fontSize: 16),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,8 +82,7 @@ class LoginEmailScreenState extends State<LoginEmailScreen> {
                               .email = email,
                       onFieldSubmitted: (_) => _pressNextButton(context),
                       keyboardType: TextInputType.text,
-                      decoration:
-                          _decorateField('Email'),
+                      decoration: FieldDecorations.normal('Email'),
                     ),
                   ),
                 ],

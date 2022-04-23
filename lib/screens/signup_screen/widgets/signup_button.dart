@@ -13,14 +13,13 @@ class SignupButton extends StatelessWidget {
   const SignupButton(this._formKey);
 
   void _pressSignupButton(context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     if (_formKey.currentState!.validate()) {
       log('Name, email, dob: PASSED');
       _formKey.currentState!
           .save(); // to save name, email, dob in user_provider
 
-      Provider.of<UserProvider>(context, listen: false)
-          .verifyEmail()
-          .then((res) {
+      userProvider.verifyEmail().then((res) {
         final otp = jsonDecode(res.body);
         log(otp.toString());
         if (otp['OTP Sent'] == true) {
@@ -28,8 +27,7 @@ class SignupButton extends StatelessWidget {
           Navigator.of(context).pushNamed(VerificationScreen.routeName);
         } else {
           log('Email has already been taken');
-          Provider.of<UserProvider>(context, listen: false)
-              .setIsEmailTaken(true);
+          userProvider.setIsEmailTaken(true);
         }
       });
     } else {

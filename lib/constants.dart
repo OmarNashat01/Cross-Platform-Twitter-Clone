@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
 bool isMock = true;
@@ -8,7 +11,7 @@ const String kMockBaseUrl = '10.0.2.2:8000';
 
 class Auth {
   static String token = '';
-  static String refreshToken = '';
+  // static String refreshToken = '';
   static String userId = '';
   static String email = '';
   static String password = '';
@@ -16,13 +19,12 @@ class Auth {
 
 class Http {
   static final Http _singleton = Http._internal();
-
   factory Http() => _singleton;
-
   Http._internal();
-
   String getBaseUrl() => isMock == true ? kMockBaseUrl : kBaseUrl;
 }
+
+String hashToMd5(String pass) => md5.convert(utf8.encode(pass)).toString();
 
 // Profile pictures sizes
 const double timelineProfilePicSize = 15;

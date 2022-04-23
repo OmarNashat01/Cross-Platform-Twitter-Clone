@@ -55,21 +55,9 @@ class VerificationScreenState extends State<VerificationScreen> {
     }
   }
 
-  InputDecoration _decorateVerificationField(String hint) {
-    return InputDecoration(
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: kSecondaryColor,
-          width: 3,
-        ),
-      ),
-      hintText: hint,
-      counterStyle: const TextStyle(fontSize: 16),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: CustomAppBars.welcomeAppBar,
       body: Padding(
@@ -98,7 +86,7 @@ class VerificationScreenState extends State<VerificationScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 25),
                       child: Text(
-                        ' Enter it below to verify ${Provider.of<UserProvider>(context, listen: false).email}',
+                        ' Enter it below to verify ${userProvider.email}',
                       ),
                     ),
                   ),
@@ -106,19 +94,16 @@ class VerificationScreenState extends State<VerificationScreen> {
                     key: _formKey,
                     child: TextFormField(
                       autofocus: true,
-                      cursorColor: Theme.of(context).colorScheme.secondary,
+                      cursorColor: kSecondaryColor,
                       cursorWidth: 2,
                       style: const TextStyle(fontSize: 20),
                       validator: validateVerificationCode,
                       controller: _verificationFieldController,
-                      onSaved: (code) =>
-                          Provider.of<UserProvider>(context, listen: false)
-                              .verificationCode = code,
+                      onSaved: (code) => userProvider.verificationCode = code,
                       onFieldSubmitted: (_) => _pressNextButton(context),
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration:
-                          _decorateVerificationField('Verification code'),
+                      decoration: FieldDecorations.normal('Verification code'),
                     ),
                   ),
                 ],

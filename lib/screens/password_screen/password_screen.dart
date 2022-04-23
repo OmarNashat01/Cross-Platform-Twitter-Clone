@@ -42,10 +42,6 @@ class PasswordScreenState extends State<PasswordScreen> {
     }
   }
 
-  String hashToMd5(String pass) {
-    return md5.convert(utf8.encode(pass)).toString();
-  }
-
   InputDecoration _decoratePasswordField(String hint) {
     return InputDecoration(
       focusedBorder: const UnderlineInputBorder(
