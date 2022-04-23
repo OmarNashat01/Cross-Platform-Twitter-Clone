@@ -67,3 +67,61 @@ class CustomButtons {
     );
   }
 }
+
+// =============== Field Styles ===============
+class FieldDecorations {
+  static InputDecoration normal(String hint) {
+    return InputDecoration(
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: kSecondaryColor,
+          width: 3,
+        ),
+      ),
+      hintText: hint,
+      counterStyle: const TextStyle(fontSize: 16),
+    );
+  }
+
+  static InputDecoration abnormal() {
+    return const InputDecoration(
+      focusedBorder:  UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: kSecondaryColor,
+          width: 3,
+        ),
+      ),
+      enabled: false,
+      counterStyle: TextStyle(fontSize: 16),
+    );
+  }
+
+  static InputDecoration normalWithPrefix(String hint, String prefixText) {
+    return InputDecoration(
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: kSecondaryColor,
+          width: 3,
+        ),
+      ),
+      hintText: hint,
+      prefix: Text(prefixText),
+      counterStyle: const TextStyle(fontSize: 16),
+    );
+  }
+
+  static InputDecoration normalWithIcon(String hint, IconButton icon) {
+    return InputDecoration(
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: kSecondaryColor,
+          width: 3,
+        ),
+      ),
+      hintText: hint,
+      counterStyle: const TextStyle(fontSize: 16),
+      suffixIcon: icon
+    );
+  }
+  
+}

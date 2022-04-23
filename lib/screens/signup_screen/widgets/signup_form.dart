@@ -1,8 +1,10 @@
+import 'package:dartdoc/dartdoc.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:twitter/themes.dart';
 
 import 'signup_button.dart';
 import '../../../providers/user_provider.dart';
@@ -61,21 +63,10 @@ class SignupFormState extends State<SignupForm> {
     );
   }
 
-  InputDecoration _decorateField(String hint) {
-    return InputDecoration(
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: kSecondaryColor,
-          width: 3,
-        ),
-      ),
-      hintText: hint,
-      counterStyle: const TextStyle(fontSize: 16),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Form(
       key: _formKey,
       child: Column(
@@ -93,12 +84,10 @@ class SignupFormState extends State<SignupForm> {
                   textInputAction: TextInputAction.next,
                   validator: validateName,
                   controller: _nameFieldController,
-                  onSaved: (name) =>
-                      Provider.of<UserProvider>(context, listen: false).name =
-                          name,
+                  onSaved: (name) => userProvider.name = name,
                   keyboardType: TextInputType.name,
                   style: const TextStyle(fontSize: 20),
-                  decoration: _decorateField('Name'),
+                  decoration: FieldDecorations.normal('Name'),
                 ),
                 const SizedBox(height: 20),
                 Consumer<UserProvider>(
@@ -111,7 +100,7 @@ class SignupFormState extends State<SignupForm> {
                     controller: _emailFieldController,
                     onSaved: (email) => value.email = email,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: _decorateField('Email'),
+                    decoration: FieldDecorations.normal('Email'),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -121,11 +110,10 @@ class SignupFormState extends State<SignupForm> {
                   readOnly: true,
                   validator: validateDob,
                   controller: _dateOfBirthFieldController,
-                  onSaved: (dob) =>
-                      Provider.of<UserProvider>(context, listen: false).dob =
-                          DateFormat.yMMMd().parse(dob as String),
+                  onSaved: (dob) => userProvider.dob =
+                      DateFormat.yMMMd().parse(dob as String),
                   onTap: _showDatePicker,
-                  decoration: _decorateField('Date of birth'),
+                  decoration: FieldDecorations.normal('Date of birth'),
                 ),
               ],
             ),

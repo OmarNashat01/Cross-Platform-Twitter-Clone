@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:twitter/screens/password_screen/password_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 
 import '../../providers/user_provider.dart';
@@ -35,19 +33,16 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
   }
 
   void _pressNextButton(context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     if (_formKey.currentState!.validate()) {
       log('Login Password PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false)
-          .login()
-          .then((res) async {
+      userProvider.login().then((res) async {
         switch (res.statusCode) {
           case 200: // User exists (success)
             final response = jsonDecode(res.body);
-            Auth.email =
-                Provider.of<UserProvider>(context, listen: false).email;
-            Auth.password =
-                Provider.of<UserProvider>(context, listen: false).password;
+            Auth.email = userProvider.email;
+            Auth.password = userProvider.password;
             Auth.token = response['token'];
             Auth.userId = response['user_id'];
             SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -67,16 +62,16 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text('Wrong password!'),
             ));
-            Provider.of<UserProvider>(context, listen: false).email = '';
-            Provider.of<UserProvider>(context, listen: false).password = '';
+            userProvider.email = '';
+            userProvider.password = '';
 
             break;
           default: // status code 401 (user doesn't exist)
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text('Sorry, we could not find your account.'),
             ));
-            Provider.of<UserProvider>(context, listen: false).email = '';
-            Provider.of<UserProvider>(context, listen: false).password = '';
+            userProvider.email = '';
+            userProvider.password = '';
             break;
         }
       });
@@ -89,45 +84,11 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
     // Todo
   }
 
-  String hashToMd5(String pass) {
-    return md5.convert(utf8.encode(pass)).toString();
-  }
-
-  InputDecoration _decorateField() {
-    return const InputDecoration(
-      focusedBorder: UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: kSecondaryColor,
-          width: 3,
-        ),
-      ),
-      enabled: false,
-      counterStyle: TextStyle(fontSize: 16),
-    );
-  }
-
-  InputDecoration _decoratePasswordField(String hint) {
-    return InputDecoration(
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: kSecondaryColor,
-          width: 3,
-        ),
-      ),
-      hintText: hint,
-      counterStyle: const TextStyle(fontSize: 16),
-      suffixIcon: IconButton(
-        onPressed: () => setState(() => _isObscure = !_isObscure),
-        icon: Icon(
-          _isObscure ? Icons.visibility_off : Icons.visibility,
-        ),
-        color: Colors.grey,
-      ),
-    );
-  }
+  
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       appBar: CustomAppBars.welcomeAppBar,
       body: Padding(
@@ -161,15 +122,11 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
                           style: const TextStyle(fontSize: 20),
                           validator: validatePassword,
                           // Can be ignored
-                          onSaved: (email) =>
-                              Provider.of<UserProvider>(context, listen: false)
-                                  .email = email,
+                          onSaved: (email) => userProvider.email = email,
                           onFieldSubmitted: (_) => _pressNextButton(context),
                           keyboardType: TextInputType.text,
-                          decoration: _decorateField(),
-                          initialValue:
-                              Provider.of<UserProvider>(context, listen: false)
-                                  .email,
+                          decoration: FieldDecorations.abnormal(),
+                          initialValue: userProvider.email,
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
@@ -181,11 +138,22 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
                           validator: validatePassword,
                           controller: _passwordFieldController,
                           onSaved: (pass) =>
-                              Provider.of<UserProvider>(context, listen: false)
-                                  .password = hashToMd5(pass as String),
+                              userProvider.password = hashToMd5(pass as String),
                           onFieldSubmitted: (_) => _pressNextButton(context),
                           keyboardType: TextInputType.visiblePassword,
-                          decoration: _decoratePasswordField('Password'),
+                          decoration: FieldDecorations.normalWithIcon(
+                            'Password',
+                            IconButton(
+                              onPressed: () =>
+                                  setState(() => _isObscure = !_isObscure),
+                              icon: Icon(
+                                _isObscure
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
                       ],
                     ),

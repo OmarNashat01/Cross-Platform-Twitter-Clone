@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
 bool isMock = true;
@@ -16,13 +19,12 @@ class Auth {
 
 class Http {
   static final Http _singleton = Http._internal();
-
   factory Http() => _singleton;
-
   Http._internal();
-
   String getBaseUrl() => isMock == true ? kMockBaseUrl : kBaseUrl;
 }
+
+String hashToMd5(String pass) => md5.convert(utf8.encode(pass)).toString();
 
 // Profile pictures sizes
 const double timelineProfilePicSize = 15;

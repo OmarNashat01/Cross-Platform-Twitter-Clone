@@ -40,20 +40,6 @@ class BioScreenState extends State<BioScreen> {
 
   void _pressSkipButton(context) {
     Navigator.of(context).pushReplacementNamed(UsernameScreen.routeName);
-
-  }
-
-  InputDecoration _decorateBioField(String hint) {
-    return InputDecoration(
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: kSecondaryColor,
-          width: 3,
-        ),
-      ),
-      hintText: hint,
-      counterStyle: const TextStyle(fontSize: 16),
-    );
   }
 
   @override
@@ -100,7 +86,7 @@ class BioScreenState extends State<BioScreen> {
                           Provider.of<UserProvider>(context, listen: false)
                               .bio = bio,
                       onFieldSubmitted: (_) => _pressNextButton(context),
-                      decoration: _decorateBioField('Your bio'),
+                      decoration: FieldDecorations.normal('Your bio'),
                     ),
                   ),
                 ],

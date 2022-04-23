@@ -31,17 +31,16 @@ class UsernameScreenState extends State<UsernameScreen> {
   }
 
   void _pressNextButton(context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     if (_formKey.currentState!.validate()) {
       log('username: PASSED');
       _formKey.currentState!.save();
-      Provider.of<UserProvider>(context, listen: false).signup().then((res) {
+      userProvider.signup().then((res) {
         if (res.statusCode == 200) {
-          Provider.of<UserProvider>(context, listen: false)
-              .setIsEmailTaken(false);
+          userProvider.setIsEmailTaken(false);
           Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
         } else {
-          Provider.of<UserProvider>(context, listen: false)
-              .setIsUsernameTaken(true);
+          userProvider.setIsUsernameTaken(true);
         }
       });
     } else {
@@ -55,19 +54,6 @@ class UsernameScreenState extends State<UsernameScreen> {
     Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
   }
 
-  InputDecoration _decorateField(String hint) {
-    return InputDecoration(
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(
-          color: kSecondaryColor,
-          width: 3,
-        ),
-      ),
-      hintText: hint,
-      prefix: const Text('@ '),
-      counterStyle: const TextStyle(fontSize: 16),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +102,7 @@ class UsernameScreenState extends State<UsernameScreen> {
                           controller: usernameFieldController,
                           onSaved: (username) => value.username = username,
                           onFieldSubmitted: (_) => _pressNextButton(context),
-                          decoration: _decorateField('Username'),
+                          decoration: FieldDecorations.normalWithPrefix('Username', '@ '),
                         ),
                       );
                     },
