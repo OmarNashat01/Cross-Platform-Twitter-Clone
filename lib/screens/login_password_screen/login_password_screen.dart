@@ -44,7 +44,7 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
             Auth.email = userProvider.email;
             Auth.password = userProvider.password;
             Auth.token = response['token'];
-            Auth.userId = response['user_id'];
+            Auth.userId = response['user_id'].toString();
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs
               ..setString('email', Auth.email)
@@ -62,16 +62,16 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text('Wrong password!'),
             ));
-            userProvider.email = '';
-            userProvider.password = '';
+            // userProvider.email = '';
+            // userProvider.password = '';
 
             break;
           default: // status code 401 (user doesn't exist)
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text('Sorry, we could not find your account.'),
             ));
-            userProvider.email = '';
-            userProvider.password = '';
+            // userProvider.email = '';
+            // userProvider.password = '';
             break;
         }
       });

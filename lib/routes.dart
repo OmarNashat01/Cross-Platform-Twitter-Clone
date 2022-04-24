@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twitter/screens/welcome_screen/welcome_screen.dart';
 
 import 'screens/auth_welcome_screen/auth_welcome_screen.dart';
 import 'screens/signup_screen/signup_screen.dart';
@@ -16,6 +17,7 @@ import 'screens/notifications_screen/NotificationsScreen.dart';
 import 'screens/search_screen/SearchScreen.dart';
 
 Map<String, WidgetBuilder> routes = {
+  WelcomeScreen.routeName: (context) => WelcomeScreen(),
   AuthWelcomeScreen.routeName: (context) => AuthWelcomeScreen(),
   SignupScreen.routeName: (context) => SignupScreen(),
   LoginEmailScreen.routeName:(context) => LoginEmailScreen(),

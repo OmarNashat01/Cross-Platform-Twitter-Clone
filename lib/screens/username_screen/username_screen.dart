@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:twitter/screens/login_email_screen/login_email_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
+import 'package:twitter/screens/welcome_screen/welcome_screen.dart';
 
 import '../../providers/user_provider.dart';
 
@@ -17,7 +21,6 @@ class UsernameScreen extends StatefulWidget {
 
 class UsernameScreenState extends State<UsernameScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final usernameFieldController = TextEditingController();
 
   String? validateUsername(username) {
@@ -30,15 +33,57 @@ class UsernameScreenState extends State<UsernameScreen> {
     return null;
   }
 
+  void _loginResponseHandler(context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.setIsEmailTaken(false);
+    userProvider.login().then((loginRes) async {
+      switch (loginRes.statusCode) {
+        case 200: // User exists (success)
+          final response = jsonDecode(loginRes.body);
+          Auth.email = userProvider.email;
+          Auth.password = userProvider.password;
+          Auth.token = response['token'];
+          Auth.userId = response['user_id'];
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs
+            ..setString('email', Auth.email)
+            ..setString('password', Auth.password);
+
+          log('token : ${Auth.token}');
+          log('userid : ${Auth.userId}');
+          log('email : ${Auth.email}');
+          log('password : ${Auth.password}');
+          Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
+          break;
+        case 400: // Wrong password
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Wrong password!'),
+          ));
+          userProvider.email = '';
+          userProvider.password = '';
+          break;
+        default: // status code 401 (user doesn't exist)
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Sorry, we could not find your account.'),
+          ));
+          userProvider.email = '';
+          userProvider.password = '';
+          break;
+      }
+    });
+  }
+
   void _pressNextButton(context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.setIsUsernameTaken(false);
+
     if (_formKey.currentState!.validate()) {
       log('username: PASSED');
       _formKey.currentState!.save();
       userProvider.signup().then((res) {
         if (res.statusCode == 200) {
-          userProvider.setIsEmailTaken(false);
-          Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
+          userProvider.setIsUsernameTaken(false);
+          Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeName);
         } else {
           userProvider.setIsUsernameTaken(true);
         }
@@ -51,9 +96,8 @@ class UsernameScreenState extends State<UsernameScreen> {
   void _pressSkipButton(context) {
     // To gurantee empty username
     Provider.of<UserProvider>(context, listen: false).username = '';
-    Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeName);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +146,8 @@ class UsernameScreenState extends State<UsernameScreen> {
                           controller: usernameFieldController,
                           onSaved: (username) => value.username = username,
                           onFieldSubmitted: (_) => _pressNextButton(context),
-                          decoration: FieldDecorations.normalWithPrefix('Username', '@ '),
+                          decoration: FieldDecorations.normalWithPrefix(
+                              'Username', '@ '),
                         ),
                       );
                     },

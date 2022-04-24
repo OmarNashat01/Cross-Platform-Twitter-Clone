@@ -50,7 +50,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             Auth.email = userProvider.email;
             Auth.password = userProvider.password;
             Auth.token = response['token'];
-            Auth.userId = response['user_id'];
+            Auth.userId = response['user_id'].toString();
 
             log('token : ${Auth.token}');
             log('userid : ${Auth.userId}');

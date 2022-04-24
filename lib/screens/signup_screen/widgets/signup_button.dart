@@ -14,6 +14,7 @@ class SignupButton extends StatelessWidget {
 
   void _pressSignupButton(context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.setIsEmailTaken(false);
     if (_formKey.currentState!.validate()) {
       log('Name, email, dob: PASSED');
       _formKey.currentState!
@@ -24,6 +25,7 @@ class SignupButton extends StatelessWidget {
         log(otp.toString());
         if (otp['OTP Sent'] == true) {
           log('OTP: ${otp['OTP']}');
+          userProvider.setIsEmailTaken(false);
           Navigator.of(context).pushNamed(VerificationScreen.routeName);
         } else {
           log('Email has already been taken');
