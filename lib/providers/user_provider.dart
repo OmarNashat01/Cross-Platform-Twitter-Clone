@@ -6,7 +6,7 @@ import 'package:twitter/constants.dart';
 class UserProvider with ChangeNotifier {
   String _name = '';
   String _email = '';
-  DateTime _dob = DateTime.now();
+  DateTime _dob = DateTime.now(); //! must be "yyyy-mm-dd"
   String _verificationCode = '';
   String _profilePic = ''; //! image local path, to be changed later
   String _username = '';
@@ -84,7 +84,7 @@ class UserProvider with ChangeNotifier {
         "password": _password,
         "name": _name,
         "date_of_birth": _dob.toString(),
-        "gender": "",
+        // "gender": "",
         "username": _username
       },
     );
