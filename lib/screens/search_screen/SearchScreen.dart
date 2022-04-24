@@ -136,9 +136,9 @@ class SearchScreen_state extends State<SearchScreen>{
                               physics: const BouncingScrollPhysics(),
                               padding: EdgeInsets.symmetric(vertical: 20),
                               itemBuilder: (context, index) {
-                                return TweetCard(index: index);
+                                return Text('');//TweetCard(index: index);
                               },
-                              itemCount: TimelineList.getTweetsNumbers(),
+                              itemCount: 0,
                             ),
                           ),
                         ),
@@ -150,9 +150,9 @@ class SearchScreen_state extends State<SearchScreen>{
                               physics: const BouncingScrollPhysics(),
                               padding: EdgeInsets.symmetric(vertical: 20),
                               itemBuilder: (context, index) {
-                                return TweetCard(index: index);
+                                return Text('');//TweetCard(index: index);
                               },
-                              itemCount: TimelineList.getTweetsNumbers(),
+                              itemCount: 0,
                             ),
                           ),
                         ),

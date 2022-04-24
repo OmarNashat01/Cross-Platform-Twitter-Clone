@@ -46,29 +46,29 @@ class AddTweetScreen extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      text = title!;
-                      //if i am adding a tweet from scratch do this without showing the inner tweet
-                      quote==false?Provider.of<TimelineList>(context, listen: false).addTweet(
-                          Tweet(
-                              username: UsersData.getMyData().name,
-                              title: UsersData.getMyData().title,
-                              profilePicUrl: UsersData.getMyData().profilePicture,
-                              imageType: TweetImage.nothing,
-                              textExistence: TextExistence.exist,
-                              text: text))
-                      //else i am adding a tweet from scratch having the inner tweet
-                      : Tweet(
-                          username: UsersData.getMyData().name,
-                          title: UsersData.getMyData().title,
-                          profilePicUrl: UsersData.getMyData().profilePicture,
-                          imageType: TweetImage.nothing,
-                          textExistence: TextExistence.exist,
-                          text: text,
-                        innerTweet: TweetCard(index: index!),
-                        haveInnerTweet: true,
-                      );
-                      int count=0;
-                      quote==true?Navigator.of(context).popUntil((_) => count++ >= 2):Navigator.pop(context);
+                      // text = title!;
+                      // //if i am adding a tweet from scratch do this without showing the inner tweet
+                      // quote==false?Provider.of<TimelineList>(context, listen: false).addTweet(
+                      //     Tweet(
+                      //         username: UsersData.getMyData().name,
+                      //         title: UsersData.getMyData().title,
+                      //         profilePicUrl: UsersData.getMyData().profilePicture,
+                      //         imageType: TweetImage.nothing,
+                      //         textExistence: TextExistence.exist,
+                      //         text: text))
+                      // //else i am adding a tweet from scratch having the inner tweet
+                      // : Tweet(
+                      //     username: UsersData.getMyData().name,
+                      //     title: UsersData.getMyData().title,
+                      //     profilePicUrl: UsersData.getMyData().profilePicture,
+                      //     imageType: TweetImage.nothing,
+                      //     textExistence: TextExistence.exist,
+                      //     text: text,
+                      //   innerTweet: TweetCard(index: index!),
+                      //   haveInnerTweet: true,
+                      // );
+                      // int count=0;
+                      // quote==true?Navigator.of(context).popUntil((_) => count++ >= 2):Navigator.pop(context);
                     },
                     child: Text(
                       'Tweet',
@@ -114,7 +114,8 @@ class AddTweetScreen extends StatelessWidget {
                             ),
                             //here will be the difference as if i qoute a tweet i will have the other user tweet here to quote it
                             quote==true?
-                            TweetCard(index:index!)
+                            // TweetCard(index:index!)
+                            Text('w')
                                 :SizedBox.shrink()
                           ],
                         ),

@@ -1,14 +1,21 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/timeline_list.dart';
 import 'package:twitter/dummy/users_data.dart';
+import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/quote_tweet_card.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
+import 'package:twitter/services/tweets_service.dart';
+import '../../providers/tweets_view_model.dart';
 import 'timeline_components/custom_page_route.dart';
 import 'timeline_components/profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,12 +23,76 @@ import 'timeline_components/navigation_drawer.dart';
 import 'package:twitter/models/tweet_model.dart';
 
 // ignore_for_file: prefer_const_constructors
-class TimelineScreen extends StatelessWidget {
+class TimelineScreen extends StatefulWidget {
   static const routeName = '/timeline-screen';
-  final controller = ScrollController();
 
   @override
+  State<TimelineScreen> createState() => _TimelineScreenState();
+}
+
+class _TimelineScreenState extends State<TimelineScreen> {
+  ScrollController ?controller;
+  StreamController ?_streamController;
+  Stream ?_stream;
+  asyncMethod()async
+  {
+    _streamController?.add(await Provider.of<TweetsViewModel>(context).fetchTweets());
+
+  }
+  Future< void> _refresh()async
+  {
+
+  }
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+     controller = ScrollController();
+    StreamController _streamController=StreamController();
+    Stream _stream=_streamController.stream;
+    asyncMethod();
+
+  }
+  @override
   Widget build(BuildContext context) {
+    var futureBuilder=FutureBuilder(
+        future: Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
+        builder: (BuildContext context,AsyncSnapshot snapshot,)
+        {
+
+          switch(snapshot.connectionState)
+          {
+            case ConnectionState.none:
+              return Text('press button to start');
+            case ConnectionState.waiting:
+              return Text("waiting");
+            default:
+              if(snapshot.hasError)
+                {
+                  return Text('error');
+                }
+              else
+                {
+                  return Scrollbar(
+                    radius: Radius.circular(30),
+                    isAlwaysShown: true,
+                    child: RefreshIndicator(
+                      color: Colors.grey,
+                      onRefresh: ()async=>Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index){
+                          return TweetCard(index: index,tweet: snapshot.data[index],);
+                        },
+                        itemCount:snapshot.data.length,
+                      ),
+                    ),
+                  );
+                }
+          }
+
+        }
+    );
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -57,7 +128,7 @@ class TimelineScreen extends StatelessWidget {
               title: TextButton(
                 onPressed: () {
                   //this makes when i press on the bar it goes to the first tweet in timeline
-                  controller.animateTo(0.0,
+                  controller?.animateTo(0.0,
                       curve: Curves.easeIn, duration: Duration(milliseconds: 200));
                 },
                 style: ButtonStyle(
@@ -97,27 +168,32 @@ class TimelineScreen extends StatelessWidget {
           ],
           //--------------------------------------------------------------------
           //tweets list viewer
-          body: Scrollbar(
-            radius: Radius.circular(30),
-            isAlwaysShown: true,
-            child: RefreshIndicator(
-              color: Colors.grey,
-              onRefresh: ()=>Provider.of<TimelineList>(context,listen: false).addRandomTweetOnRefresh(),
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  Provider.of<TimelineList>(context).getTweetsList()[index].haveInnerTweet==true?print('a7a'):print('lol');
-                  return Provider.of<TimelineList>(context).getTweetsList()[index].haveInnerTweet==true?QuoteTweetCard(index: index):TweetCard(index: index);
-                },
-                itemCount:Provider.of<TimelineList>(context).getTweetsList().length,
-              ),
-            ),
-          ),
+        body: futureBuilder,
+
+         ),
         ),
-      ),
+
       //------------------------------------------------------------------------
       //bottom appbar where each icon has its own function
-      bottomNavigationBar: TimelineBottomBar(controller: controller),
+      bottomNavigationBar: TimelineBottomBar(controller: controller!),
     );
   }
 }
+// body: Scrollbar(
+// radius: Radius.circular(30),
+// isAlwaysShown: true,
+// child: RefreshIndicator(
+// color: Colors.grey,
+// onRefresh: ()async=>Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
+// child: ListView.builder(
+// physics: const BouncingScrollPhysics(),
+// itemBuilder: (context, index){
+// Future<List<TweetMain>>tweets=await Provider.of<TweetsViewModel>(context).fetchTweets();
+// tweets.
+// //Provider.of<TweetsViewModel>(context).getTweetsList()[index].haveInnerTweet==true?print('a7a'):print('lol');
+// return TweetCard(index: index);
+// },
+// itemCount:Provider.of<TweetsViewModel>(context).fetchTweets(),
+// ),
+// ),
+// ),

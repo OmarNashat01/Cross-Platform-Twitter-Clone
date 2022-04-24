@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/dummy/timeline_list.dart';
+import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/providers/user_provider.dart';
 import 'package:twitter/screens/auth_welcome_screen/auth_welcome_screen.dart';
 import 'package:twitter/screens/bio_screen/bio_screen.dart';
@@ -33,7 +34,7 @@ class TwitterApp extends StatelessWidget {
       // Add providers as needed
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
-        ChangeNotifierProvider(create: (context) => TimelineList()),
+        ChangeNotifierProvider(create: (context) => TweetsViewModel()),
       ],
 
       child: MaterialApp(
@@ -62,7 +63,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: WelcomeScreen(),
+        home: TimelineScreen(),
         routes: routes,
       ),
     );
