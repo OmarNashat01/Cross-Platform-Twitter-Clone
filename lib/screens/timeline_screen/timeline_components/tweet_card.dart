@@ -40,95 +40,87 @@ class TweetCard extends StatelessWidget {
                               profilePictureImage:
                               tweet.getTweetprofilePicUrl(),
                               profilePictureSize: navigationDrawerProfilePicSize),
-                        ]
-                    )
-                  ]
-              )
-          )
-        ]
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //here is the name and title of the one who tweeted
+                        Text( tweet.getname(),
+                            style: boldName),
+                        Text(tweet.getusername()),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+              //--for decoration sized box
+              SizedBox(height: 5,),
+              //--here is the text of the tweet
+              tweet.getTweettext()!=""
+                  ? Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          tweet.getTweettext(),
+                          softWrap: false,
+                          overflow: TextOverflow.ellipsis,
+                            //max lines of writing a tweet is 8 like in the main twitter
+                            maxLines: 8,
+                            style: tweetsTexts,
+                          ),
+                      ),
+                    ],
+                  )
+                  : const SizedBox.shrink(),
+            ],
+          ),
+        ),
+             //--for decoration sized box
+             SizedBox(height: 5,),
+
+        //--here is the image of the tweet
+       tweet.images[0].url!=""
+            ? GestureDetector(
+          onTap: ()
+          {
+            Navigator.of(context).push(
+              CustomPageRoute
+                (child:ImageDetailScreen(
+                tweet:tweet,
+                index: index,
+              ),beginX: 0,beginY: 1),
+            );
+          },
+               child: Image.asset(
+           tweet.images[0].url,
+           fit: BoxFit.cover,
+           width: double.infinity,
+           alignment: Alignment.center,
+                 ),
+            )
+            : const SizedBox.shrink(),
+
+        //the row of icons for your reactions on the tweet
+        TweetBottomBar(tweet:tweet,index: index,iconsBoundry: Colors.grey.shade600,),
+
+
+        //decoration of tweet at the bottom (divider)
+        const SizedBox(
+          height: 5,
+        ),
+        //decoration of tweet at the bottom (divider)
+        const Divider(
+          thickness: 1.5,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+      ],
     );
   }
 }
-//                   Padding(
-//                     padding: const EdgeInsets.only(left: 10),
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         //here is the name and title of the one who tweeted
-//                         Text( Provider.of<TweetsViewModel>(context).getTweetsList()[index].username,
-//                             style: boldName),
-//                         // Text(Provider.of<TimelineList>(context).getTweetsList()[index].title,
-//                         //     style: titleName),
-//                       ],
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//
-//               //--for decoration sized box
-//               SizedBox(height: 5,),
-//               //--here is the text of the tweet
-//               Provider.of<TweetsViewModel>(context).getTweetsList()[index].textExistence == TextExistence.exist
-//                   ? Row(
-//                     children: [
-//                       Expanded(
-//                         child: Text(
-//                           Provider.of<TweetsViewModel>(context).getTweetsList()[index].text!,
-//                           softWrap: false,
-//                           overflow: TextOverflow.ellipsis,
-//                             //max lines of writing a tweet is 8 like in the main twitter
-//                             maxLines: 8,
-//                             style: tweetsTexts,
-//                           ),
-//                       ),
-//                     ],
-//                   )
-//                   : const SizedBox.shrink(),
-//             ],
-//           ),
-//         ),
-//              //--for decoration sized box
-//              SizedBox(height: 5,),
-//
-//         //--here is the image of the tweet
-//         Provider.of<TweetsViewModel>(context).getTweetsList()[index].imageType == TweetImage.picture
-//             ? GestureDetector(
-//           onTap: ()
-//           {
-//             Navigator.of(context).push(
-//               CustomPageRoute
-//                 (child:ImageDetailScreen(
-//                 index: index,
-//               ),beginX: 0,beginY: 1),
-//             );
-//           },
-//           //     child: Image.asset(
-//           // Provider.of<TimelineList>(context).getTweetsList()[index].imageUrl!,
-//           // fit: BoxFit.cover,
-//           // width: double.infinity,
-//           // alignment: Alignment.center,
-//           //       ),
-//             )
-//             : const SizedBox.shrink(),
-//
-//         //the row of icons for your reactions on the tweet
-//         TweetBottomBar(index: index,iconsBoundry: Colors.grey.shade600,),
-//
-//
-//         //decoration of tweet at the bottom (divider)
-//         const SizedBox(
-//           height: 5,
-//         ),
-//         //decoration of tweet at the bottom (divider)
-//         const Divider(
-//           thickness: 1.5,
-//         ),
-//         const SizedBox(
-//           height: 8,
-//         ),
-//       ],
-//     );
-//   }
-// }
-//
+
 

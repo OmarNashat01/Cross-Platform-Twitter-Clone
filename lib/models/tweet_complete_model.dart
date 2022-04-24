@@ -61,5 +61,16 @@ class TweetMain
     return tweet.followersCount;
   }
   //comments getters-------------------------------------
-
+int getCommentCount()
+{
+  return tweet.commentCount;
+}
+  int getRetweetCount()
+  {
+    return tweet.retweetCount;
+  }
+  int getLikesCount()
+  {
+    return tweet.likeCount;
+  }
 }
