@@ -55,6 +55,44 @@ class _TimelineScreenState extends State<TimelineScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    // var futureBuilder=FutureBuilder(
+    //     future: Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
+    //     builder: (BuildContext context,AsyncSnapshot snapshot,)
+    //     {
+    //
+    //       switch(snapshot.connectionState)
+    //       {
+    //         case ConnectionState.none:
+    //           return Text('press button to start');
+    //         case ConnectionState.waiting:
+    //           return Text("waiting");
+    //         default:
+    //           if(snapshot.hasError)
+    //             {
+    //               return Text('error');
+    //             }
+    //           else
+    //             {
+    //               return Scrollbar(
+    //                 radius: Radius.circular(30),
+    //                 isAlwaysShown: true,
+    //                 child: RefreshIndicator(
+    //                   color: Colors.grey,
+    //                   onRefresh: ()async=>Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
+    //                   child: ListView.builder(
+    //                     physics: const BouncingScrollPhysics(),
+    //                     itemBuilder: (context, index){
+    //                       return TweetCard(index: index,tweet: snapshot.data[index],);
+    //                     },
+    //                     itemCount:snapshot.data.length,
+    //                   ),
+    //                 ),
+    //               );
+    //             }
+    //       }
+    //
+    //     }
+    // );
     var futureBuilder=FutureBuilder(
         future: Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
         builder: (BuildContext context,AsyncSnapshot snapshot,)
@@ -68,27 +106,27 @@ class _TimelineScreenState extends State<TimelineScreen> {
               return Text("waiting");
             default:
               if(snapshot.hasError)
-                {
-                  return Text('error');
-                }
+              {
+                return Text('error');
+              }
               else
-                {
-                  return Scrollbar(
-                    radius: Radius.circular(30),
-                    isAlwaysShown: true,
-                    child: RefreshIndicator(
-                      color: Colors.grey,
-                      onRefresh: ()async=>Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index){
-                          return TweetCard(index: index,tweet: snapshot.data[index],);
-                        },
-                        itemCount:snapshot.data.length,
-                      ),
+              {
+                return Scrollbar(
+                  radius: Radius.circular(30),
+                  isAlwaysShown: true,
+                  child: RefreshIndicator(
+                    color: Colors.grey,
+                    onRefresh: ()async=>Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index){
+                        return TweetCard(index: index,tweet: snapshot.data[index],);
+                      },
+                      itemCount:snapshot.data.length,
                     ),
-                  );
-                }
+                  ),
+                );
+              }
           }
 
         }

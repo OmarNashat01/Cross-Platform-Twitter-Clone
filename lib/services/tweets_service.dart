@@ -50,4 +50,71 @@ class TweetsApi
           return tweetsMain;
 
   }
+  Future<void>addTweet()async
+  {
+    final Uri url = Uri.parse('http://10.0.2.2:8000/tweets');
+    http.Response response = await http.post(url,
+        body: {
+
+            "tweet_id": "1232",
+            "user_id": "121",
+            "name": "abdallah fawzy",
+            "username": "abdallah",
+            "prof_pic_url": "assets/images/myProfilepic.jpeg",
+            "bio": "hello",
+            "followers_count": 0,
+            "following_count": 0,
+            "text": "okaaaaaaay",
+            "created_at": "2022-04-23T03:33:05.603Z",
+            "videos": [
+              {
+                "url": "string",
+                "alt_text": "string",
+                "height": 0,
+                "width": 0
+              }
+            ],
+            "images": [
+              {
+                "url": "assets/tweets_images/morningCoffee.jpg",
+                "alt_text": "string",
+                "height": 200,
+                "width": 200
+              }
+            ],
+            "like_count": 0,
+            "liker_ids": [
+              "string"
+            ],
+            "comment_count": 0,
+            "retweet_count": 0,
+            "comments": [
+              {
+                "user_id": "",
+                "username": "",
+                "prof_pic_url": "",
+                "text": "",
+                "created_at": "",
+                "replies": [
+                  {
+                    "user_id": "",
+                    "username": "",
+                    "Text": ""
+                  }
+                ]
+              }
+            ]
+          }
+    );
+    if(response.statusCode==200)
+      {
+        print('good');
+      }
+    else
+      {
+        print('bad');
+      }
+
+  }
+
 }

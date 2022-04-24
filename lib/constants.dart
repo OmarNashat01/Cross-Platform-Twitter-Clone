@@ -12,7 +12,7 @@ const String kMockBaseUrl = '10.0.2.2:8000';
 class Auth {
   static String token = '';
   // static String refreshToken = '';
-  static String userId = '';
+  static String userId = '126';
   static String email = '';
   static String password = '';
 }
