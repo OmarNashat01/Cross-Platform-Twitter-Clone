@@ -1,11 +1,8 @@
 {
   "dependencies": {
     "body-parser": "^1.20.0",
-<<<<<<< HEAD
     "json-server": "^0.17.0",
-=======
     "express": "^4.17.3",
->>>>>>> 4f281da4ddac4be1ad52dc4ab87cb0075469a5f4
     "lodash": "^4.17.21",
     "lowdb": "^3.0.0",
     "yarn": "^1.22.18"

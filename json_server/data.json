@@ -1,24 +1,13 @@
 {
   "users": [
     {
-      "_id": {
-        "$oid": "625560f7e10c0b48c19d2cb6"
-      },
+      "user_id": "625560f7e10c0b48c19d2cb6",
       "email": "Salma@gmail.com",
-      "password": {
-        "$binary": {
-          "base64": "JDJiJDEyJHZXemNlRlE5b0t3RXpzLlhsWmN6eGU3L09KandRV0l5aWRVd0xhdUxTdGFEMVZjaUd3NlM2",
-          "subType": "00"
-        }
-      },
+      "password": "JDJiJDEyJHZXemNlRlE5b0t3RXpzLlhsWmN6eGU3L09KandRV0l5aWRVd0xhdUxTdGFEMVZjaUd3NlM2",
       "name": "Salma",
       "username": "Salma5533",
-      "date_of_birth": "24/08/2004",
-      "creation_date": {
-        "$date": {
-          "$numberLong": "1649769751990"
-        }
-      },
+      "date_of_birth": "2004-08-24",
+      "creation_date": "2022-04-03",
       "following": [
         {
           "name": "Karim",
@@ -29,24 +18,13 @@
       "followers": []
     },
     {
-      "_id": {
-        "$oid": "6255611de10c0b48c19d2cb7"
-      },
+      "user_id": "6255611de10c0b48c19d2cb7",
       "email": "Karim@gmail.com",
-      "password": {
-        "$binary": {
-          "base64": "JDJiJDEyJDVuNmg5R01Za3V6bUczTXNVUmRldXVKNzJpMTBqTzgzWHFBckc4RERTTFVWOFNSZk9YWUR5",
-          "subType": "00"
-        }
-      },
+      "password": "JDJiJDEyJDVuNmg5R01Za3V6bUczTXNVUmRldXVKNzJpMTBqTzgzWHFBckc4RERTTFVWOFNSZk9YWUR5",
       "name": "Karim",
       "username": "Karim5213",
-      "date_of_birth": "24/08/2003",
-      "creation_date": {
-        "$date": {
-          "$numberLong": "1649769789736"
-        }
-      },
+      "date_of_birth": "2003-08-24",
+      "creation_date": "2022-04-03",
       "followers": [
         {
           "name": "Salma",
@@ -63,24 +41,13 @@
       ]
     },
     {
-      "_id": {
-        "$oid": "62556130e10c0b48c19d2cb8"
-      },
+      "user_id": "62556130e10c0b48c19d2cb8",
       "email": "Omar@gmail.com",
-      "password": {
-        "$binary": {
-          "base64": "JDJiJDEyJGM4UDRLQ3JMRnl1dEk3RGcuZDVuQnVDUjc4QUl2NWx6MUFsaWg5UVlsdHFlTTBGdFltdDZh",
-          "subType": "00"
-        }
-      },
+      "password": "JDJiJDEyJGM4UDRLQ3JMRnl1dEk3RGcuZDVuQnVDUjc4QUl2NWx6MUFsaWg5UVlsdHFlTTBGdFltdDZh",
       "name": "Omar",
       "username": "Omar411",
-      "date_of_birth": "24/08/1999",
-      "creation_date": {
-        "$date": {
-          "$numberLong": "1649769808982"
-        }
-      },
+      "date_of_birth": "1999-08-24",
+      "creation_date": "2022-04-03",
       "followers": [
         {
           "name": "Ragab",
@@ -91,184 +58,127 @@
       "following": []
     },
     {
-      "_id": {
-        "$oid": "6255617ee10c0b48c19d2cbb"
-      },
+      "user_id": "6255617ee10c0b48c19d2cbb",
       "email": "Noura@gmail.com",
-      "password": {
-        "$binary": {
-          "base64": "JDJiJDEyJC45THUvcUN1dHdxb0hYZ2UxR0dnSC5oL2ZoY1FFNnBub3ZKRWprbGQ4OEduM2xvYlVucDFP",
-          "subType": "00"
-        }
-      },
+      "password": "JDJiJDEyJC45THUvcUN1dHdxb0hYZ2UxR0dnSC5oL2ZoY1FFNnBub3ZKRWprbGQ4OEduM2xvYlVucDFP",
       "name": "Nora",
       "username": "Nora552",
-      "date_of_birth": "24/08/1995",
-      "creation_date": {
-        "$date": {
-          "$numberLong": "1649769886722"
-        }
-      }
+      "date_of_birth": "1995-08-24",
+      "creation_date": "2022-04-03"
     },
     {
-      "_id": {
-        "$oid": "62573e72b981a6e94cc3aa03"
-      },
+      "user_id": "62573e72b981a6e94cc3aa03",
       "email": "mariannaderrr@gmail.com.com",
-      "password": {
-        "$binary": {
-          "base64": "JDJiJDEyJERINC95N2Rvekx6NjZHVFFwcmwyeGVkdkk1OEIyYzFQNzEwandON3g0Q3VxYVBWZGRtRGZT",
-          "subType": "00"
-        }
-      },
+      "password": "JDJiJDEyJERINC95N2Rvekx6NjZHVFFwcmwyeGVkdkk1OEIyYzFQNzEwandON3g0Q3VxYVBWZGRtRGZT",
       "name": "Mohamed",
       "username": "MarianNader",
-      "date_of_birth": "26/7/2001",
-      "creation_date": {
-        "$date": {
-          "$numberLong": "1649891986739"
-        }
-      }
+      "date_of_birth": "2003-20-05",
+      "creation_date": "2022-04-03"
     },
     {
-      "_id": {
-        "$oid": "625b812221fd87a18fbbe1db"
-      },
+      "user_id": "625b812221fd87a18fbbe1db",
       "email": "Salma@gmail.com",
-      "password": {
-        "$binary": {
-          "base64": "JDJiJDEyJHZXemNlRlE5b0t3RXpzLlhsWmN6eGU3L09KandRV0l5aWRVd0xhdUxTdGFEMVZjaUd3NlM2",
-          "subType": "00"
-        }
-      },
+      "password": "JDJiJDEyJHZXemNlRlE5b0t3RXpzLlhsWmN6eGU3L09KandRV0l5aWRVd0xhdUxTdGFEMVZjaUd3NlM2",
       "name": "Salma",
       "username": "Salma5533",
-      "date_of_birth": "24/08/2004",
-      "creation_date": {
-        "$date": {
-          "$numberLong": "1649769751990"
-        }
-      }
+      "date_of_birth": "2004-08-24",
+      "creation_date": "2022-04-03"
     },
     {
-      "_id": {
-        "$oid": "62618c5cdca6f7aad5877c2d"
-      },
+      "user_id": "62618c5cdca6f7aad5877c2d",
       "email": "mohamedmoadsada@gmail.com",
-      "password": {
-        "$binary": {
-          "base64": "JDJiJDEyJDhkS1RPZmJ4R1NFZUl3MWhlMjVrR2UvNlU3enQuNm1jSDRLN09lZ3hVbUpoMkdKNHl0NnB5",
-          "subType": "00"
-        }
-      },
+      "password": "JDJiJDEyJDhkS1RPZmJ4R1NFZUl3MWhlMjVrR2UvNlU3enQuNm1jSDRLN09lZ3hVbUpoMkdKNHl0NnB5",
       "name": "name",
       "username": "mark",
-      "date_of_birth": "26/06/2001",
-      "creation_date": {
-        "$date": {
-          "$numberLong": "1650567292875"
-        }
-      },
+      "date_of_birth": "2001-06-26",
+      "creation_date": "2022-04-03",
       "admin": false
     }
   ],
   "OTPs": [
     {
-      "_id": {
-        "$oid": "625c35e913bc802516192cc1"
-      },
+      "user_id": "625c35e913bc802516192cc1",
       "OTP": "1578",
       "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTAyOTY2ODF9.gaUduGxhqFoQ-HOHkwYxU0L0mEkQQoc4PmFYG2YYjqY",
       "email": "fbimohammed@yahoo.com"
     },
     {
-      "_id": {
-        "$oid": "625c36753d94ee6a62ef53db"
-      },
+      "user_id": "625c36753d94ee6a62ef53db",
       "OTP": "3096",
       "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTAyOTY4MjF9.NkBaJgpCkew_IC7V-Q-ryP-0HprtbeFmfJSSZqp2sLE",
       "email": "shit@yahoo.com"
     },
     {
-      "_id": {
-        "$oid": "625c369698cf0300dfed188f"
-      },
+      "user_id": "625c369698cf0300dfed188f",
       "OTP": "0362",
       "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTAyOTY4NTR9.kjmO7dKMCRmZvGF86cGexdBR2YHMttczCPZ4N-yCcB0",
       "email": "fbimohammed@yahoo.com"
     },
     {
-      "_id": {
-        "$oid": "625c36b0d3286f3b28c086c3"
-      },
+      "user_id": "625c36b0d3286f3b28c086c3",
       "OTP": "0244",
       "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTAyOTY4ODB9.2EFex1tPMXsFok9jmix-bwPiY3LQ3ArlZelPF8auEys",
       "email": "fbimohammed@yahoo.com"
     },
     {
-      "_id": {
-        "$oid": "625c37a5732bb074c19d4425"
-      },
+      "user_id": "625c37a5732bb074c19d4425",
       "OTP": "3535",
       "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTAyOTcxMjV9.pENVbGbDJrzf3jTYNJSzsQXxiSnB61eCNYpPaHrJDOo",
       "email": "fbimohammed@yahoo.com"
     },
     {
-      "_id": {
-        "$oid": "625c380f4915f8191214f5b7"
-      },
+      "user_id": "625c380f4915f8191214f5b7",
       "OTP": "5376",
       "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NTAyOTcyMzF9.DdWPd_j_wUjUYRrq2z1lRHmTOi_CCrJ5l3CIBcYY7Pc",
       "email": "fbimohammed@yahoo.com"
     }
   ],
   "tweets": [
-  {
-    "tweet_id": "1",
-    "user_id": "31424423241451",
-    "username": "abdallah fawzy",
-    "prof_pic_url": "assets/images/myProfilepic.jpeg",
-    "text": "hello",
-    "created_at": "2022-04-23T03:33:05.603Z",
-    "videos": [
-      {
-        "url": "string",
-        "alt_text": "string",
-        "height": 0,
-        "width": 0
-      }
-    ],
-    "images": [
-      {
-        "url": "assets/tweets_images/moon.jpg",
-        "alt_text": "string",
-        "height": 200,
-        "width": 200
-      }
-    ],
-    "like_count": 0,
-    "liker_ids": [
-      "string"
-    ],
-    "comment_count": 0,
-    "retweet_count": 0,
-    "comments": [
-      {
-        "user_id": "string",
-        "username": "string",
-        "prof_pic_url": "string",
-        "text": "string",
-        "created_at": "2022-04-23T03:33:05.603Z",
-        "replies": [
-          {
-            "user_id": "string",
-            "username": "string",
-            "Text": "string"
-          }
-        ]
-      }
-    ]
-  }
+    {
+      "tweet_id": "1",
+      "user_id": "31424423241451",
+      "username": "abdallah fawzy",
+      "prof_pic_url": "assets/images/myProfilepic.jpeg",
+      "text": "hello",
+      "created_at": "2022-04-23T03:33:05.603Z",
+      "videos": [
+        {
+          "url": "string",
+          "alt_text": "string",
+          "height": 0,
+          "width": 0
+        }
+      ],
+      "images": [
+        {
+          "url": "assets/tweets_images/moon.jpg",
+          "alt_text": "string",
+          "height": 200,
+          "width": 200
+        }
+      ],
+      "like_count": 0,
+      "liker_ids": [
+        "string"
+      ],
+      "comment_count": 0,
+      "retweet_count": 0,
+      "comments": [
+        {
+          "user_id": "string",
+          "username": "string",
+          "prof_pic_url": "string",
+          "text": "string",
+          "created_at": "2022-04-23T03:33:05.603Z",
+          "replies": [
+            {
+              "user_id": "string",
+              "username": "string",
+              "Text": "string"
+            }
+          ]
+        }
+      ]
+    }
   ]
-  
 }
