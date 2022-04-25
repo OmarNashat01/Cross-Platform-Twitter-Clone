@@ -1,9 +1,22 @@
 {
   "users": [
-    
+    {
+      "email": "zuma56@gmail.com",
+      "password": "95c52caaae90a9fef4bd77d5c7ddaf44",
+      "name": "Hazem",
+      "username": "zuma56",
+      "date_of_birth": "2020-04-25",
+      "bio": "this is bio",
+      "_id": "542831023389702"
+    }
   ],
   "OTPs": [
-
+    {
+      "_id": "542831023389702",
+      "OTP": "3225",
+      "token": "356081549717232",
+      "email": "zuma56@gmail.com"
+    }
   ],
   "tweets": [
     {

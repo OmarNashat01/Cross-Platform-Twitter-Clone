@@ -13,6 +13,7 @@ import 'package:twitter/screens/login_email_screen/login_email_screen.dart';
 import 'package:twitter/screens/password_screen/password_screen.dart';
 import 'package:twitter/screens/profile_pic_screen/profile_pic_screen.dart';
 import 'package:twitter/screens/profile_pic_screen/widgets/image_holder.dart';
+import 'package:twitter/screens/settings_screen/settings_screen.dart';
 import 'package:twitter/screens/signup_screen/signup_screen.dart';
 import 'package:twitter/screens/username_screen/username_screen.dart';
 
