@@ -17,7 +17,7 @@ server.use(bodyParser.urlencoded({ extended: true }))
 server.use(bodyParser.json())
 server.use(jsonServer.defaults());
 
-
+// utility functions
 function emailExists(email) {
   return db.users.findIndex(user => user.email === email) !== -1;
 }
@@ -36,6 +36,7 @@ function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// Overwritten routes
 server.post('/signup/verify', function (req, res, next) {
   let exists = emailExists(req.body.email);
   if (exists) {
@@ -82,7 +83,7 @@ server.post('/signup', function (req, res, next) {
   } else {
     fs.readFile(nPath, (err, data) => {
       let jsonData = JSON.parse(data.toString());
-      req.body['user_id'] = jsonData.OTPs.find(usr => usr.email === req.body.email).user_id;
+      req.body['user_id'] = jsonData.OTPs.find(usr => usr.email === req.body.email).user_id;  // create "user_id" field
       jsonData.users.push(req.body);
       fs.writeFile(nPath, JSON.stringify(jsonData), (err, result) => {
         res.status(200).json();
@@ -104,6 +105,40 @@ server.post('/login', function (req, res, next) {
       "user_id": db.users.find(user => user.email === req.body.email && user.password === req.body.password).user_id
     });
   }
+});
+
+server.post('/tweets', function (req, res, next) {
+
+  fs.readFile(nPath, (err, data) => {
+    let jsonData = JSON.parse(data.toString());
+
+    // get user's data who has a specific user_id
+    let user = jsonData.users.find(usr => usr.user_id === req.body.user_id);
+    if (typeof user === 'undefined') {
+      res.json();
+    }
+
+    // ======= Add data that is not available in the POST request body of tweet creation =========
+    req.body['tweet_id'] = getRandom(100000000000000, 999999999999999);
+    // 
+    req.body['name'] = user.name;
+    req.body['prof_pic_url'] = '';
+    req.body['bio'] = '';
+    req.body['followers_count'] = 0;
+    req.body['following_count'] = 0;
+    //
+    req.body['like_count'] = 0;
+    req.body['liker_ids'] = [];
+    req.body['comment_count'] = 0;
+    req.body['retweet_count'] = 0;
+    req.body['comments'] = [];
+    // ==========================================
+    jsonData.tweets.push(req.body);
+    fs.writeFile(nPath, JSON.stringify(jsonData), (err, result) => {
+      res.status(200).json();
+    });
+  });
+
 });
 
 

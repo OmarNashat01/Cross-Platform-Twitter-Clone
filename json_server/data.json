@@ -118,56 +118,56 @@
         }
       ]
     },
-  {
-    "tweet_id": "1",
-    "user_id": "31424423241451",
-    "name": "abdallah fawzy",
-    "username": "abdallah",
-    "prof_pic_url": "assets/images/myProfilepic.jpeg",
-    "bio": "hello",
-    "followers_count": 0,
-    "following_count": 0,
-    "text": "holaaaaa",
-    "created_at": "2022-04-23T03:33:05.603Z",
-    "videos": [
-      {
-        "url": "string",
-        "alt_text": "string",
-        "height": 0,
-        "width": 0
-      }
-    ],
-    "images": [
-      {
-        "url": "assets/tweets_images/moon.jpg",
-        "alt_text": "string",
-        "height": 200,
-        "width": 200
-      }
-    ],
-    "like_count": 0,
-    "liker_ids": [
-      "string"
-    ],
-    "comment_count": 0,
-    "retweet_count": 0,
-    "comments": [
-      {
-        "user_id": "string",
-        "username": "string",
-        "prof_pic_url": "string",
-        "text": "string",
-        "created_at": "2022-04-23T03:33:05.603Z",
-        "replies": [
-          {
-            "user_id": "hello how are you",
-            "username": "string",
-            "Text": "string"
-          }
-        ]
-      }
-    ]
-  },
+    {
+      "tweet_id": "1",
+      "user_id": "31424423241451",
+      "name": "abdallah fawzy",
+      "username": "abdallah",
+      "prof_pic_url": "assets/images/myProfilepic.jpeg",
+      "bio": "hello",
+      "followers_count": 0,
+      "following_count": 0,
+      "text": "holaaaaa",
+      "created_at": "2022-04-23T03:33:05.603Z",
+      "videos": [
+        {
+          "url": "string",
+          "alt_text": "string",
+          "height": 0,
+          "width": 0
+        }
+      ],
+      "images": [
+        {
+          "url": "assets/tweets_images/moon.jpg",
+          "alt_text": "string",
+          "height": 200,
+          "width": 200
+        }
+      ],
+      "like_count": 0,
+      "liker_ids": [
+        "string"
+      ],
+      "comment_count": 0,
+      "retweet_count": 0,
+      "comments": [
+        {
+          "user_id": "string",
+          "username": "string",
+          "prof_pic_url": "string",
+          "text": "string",
+          "created_at": "2022-04-23T03:33:05.603Z",
+          "replies": [
+            {
+              "user_id": "hello how are you",
+              "username": "string",
+              "Text": "string"
+            }
+          ]
+        }
+      ]
+    },
     {
       "tweet_id": "1",
       "user_id": "31424423241451",
@@ -243,6 +243,44 @@
           ]
         }
       ]
+    },
+    {
+      "user_id": "407959696291317",
+      "username": "zumaa",
+      "Text": "this is a sample text",
+      "created_at": "2022-04-23T11:33:00.030Z",
+      "videos": [],
+      "images": [],
+      "tweet_id": 880672595412939,
+      "name": "hazem",
+      "prof_pic_url": "",
+      "bio": "",
+      "followers_count": 0,
+      "following_count": 0,
+      "like_count": 0,
+      "liker_ids": [],
+      "comment_count": 0,
+      "retweet_count": 0,
+      "comments": []
+    },
+    {
+      "user_id": "407959696291317",
+      "username": "haz",
+      "Text": "this is a sample text",
+      "created_at": "2022-04-23T11:33:00.030Z",
+      "videos": [],
+      "images": [],
+      "tweet_id": 111781749028741,
+      "name": "hazem",
+      "prof_pic_url": "",
+      "bio": "",
+      "followers_count": 0,
+      "following_count": 0,
+      "like_count": 0,
+      "liker_ids": [],
+      "comment_count": 0,
+      "retweet_count": 0,
+      "comments": []
     }
   ]
 }
