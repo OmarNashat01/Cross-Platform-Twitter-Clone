@@ -1,21 +1,9 @@
 {
   "users": [
-    {
-      "email": "hazem@gmail.com",
-      "password": "95c52caaae90a9fef4bd77d5c7ddaf44",
-      "name": "hazem",
-      "date_of_birth": "2021-04-24 00:00:00.000",
-      "username": "zumaa",
-      "user_id": "407959696291317"
-    }
+    
   ],
   "OTPs": [
-    {
-      "user_id": "407959696291317",
-      "OTP": "2302",
-      "token": "943589884445219",
-      "email": "hazem@gmail.com"
-    }
+
   ],
   "tweets": [
     {
@@ -244,7 +232,5 @@
         }
       ]
     }
-
-
   ]
 }

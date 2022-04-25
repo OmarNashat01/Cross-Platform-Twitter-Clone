@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 bool isMock = true;
 
 // API constants
-const String kBaseUrl = '';
+const String kBaseUrl = ''; // without https:// or http://
 const String kMockBaseUrl = '10.0.2.2:8000';
 
 class Auth {

@@ -63,7 +63,6 @@ class SignupFormState extends State<SignupForm> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -78,7 +77,7 @@ class SignupFormState extends State<SignupForm> {
                 TextFormField(
                   autofocus: true,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  cursorColor: Theme.of(context).colorScheme.secondary,
+                  cursorColor: kSecondaryColor,
                   cursorWidth: 2,
                   maxLength: 50,
                   textInputAction: TextInputAction.next,
@@ -93,7 +92,7 @@ class SignupFormState extends State<SignupForm> {
                 Consumer<UserProvider>(
                   builder: (context, value, child) => TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    cursorColor: Theme.of(context).colorScheme.secondary,
+                    cursorColor: kSecondaryColor,
                     cursorWidth: 2,
                     style: const TextStyle(fontSize: 20),
                     validator: validateEmail,
@@ -110,8 +109,8 @@ class SignupFormState extends State<SignupForm> {
                   readOnly: true,
                   validator: validateDob,
                   controller: _dateOfBirthFieldController,
-                  onSaved: (dob) => userProvider.dob =
-                      DateFormat.yMMMd().parse(dob as String),
+                  onSaved: (dob) => userProvider.dob = DateFormat('yyyy-MM-dd')
+                      .format(DateFormat.yMMMd().parse(dob as String)),
                   onTap: _showDatePicker,
                   decoration: FieldDecorations.normal('Date of birth'),
                 ),
