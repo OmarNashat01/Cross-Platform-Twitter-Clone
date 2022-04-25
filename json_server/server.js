@@ -107,39 +107,39 @@ server.post('/login', function (req, res, next) {
   }
 });
 
-server.post('/tweets', function (req, res, next) {
-
-  fs.readFile(nPath, (err, data) => {
-    let jsonData = JSON.parse(data.toString());
-
-    // get user's data who has a specific user_id
-    let user = jsonData.users.find(usr => usr.user_id === req.body.user_id);
-    if (typeof user === 'undefined') {
-      res.json();
-    }
-
-    // ======= Add data that is not available in the POST request body of tweet creation =========
-    req.body['tweet_id'] = getRandom(100000000000000, 999999999999999);
-    // 
-    req.body['name'] = user.name;
-    req.body['prof_pic_url'] = '';
-    req.body['bio'] = '';
-    req.body['followers_count'] = 0;
-    req.body['following_count'] = 0;
-    //
-    req.body['like_count'] = 0;
-    req.body['liker_ids'] = [];
-    req.body['comment_count'] = 0;
-    req.body['retweet_count'] = 0;
-    req.body['comments'] = [];
-    // ==========================================
-    jsonData.tweets.push(req.body);
-    fs.writeFile(nPath, JSON.stringify(jsonData), (err, result) => {
-      res.status(200).json();
-    });
-  });
-
-});
+//server.post('/tweets', function (req, res, next) {
+//
+//  fs.readFile(nPath, (err, data) => {
+//    let jsonData = JSON.parse(data.toString());
+//
+//    // get user's data who has a specific user_id
+//    let user = jsonData.users.find(usr => usr.user_id === req.body.user_id);
+//    if (typeof user === 'undefined') {
+//      res.json();
+//    }
+//
+//    // ======= Add data that is not available in the POST request body of tweet creation =========
+//    req.body['tweet_id'] = getRandom(100000000000000, 999999999999999);
+//    //
+//    req.body['name'] = user.name;
+//    req.body['prof_pic_url'] = '';
+//    req.body['bio'] = '';
+//    req.body['followers_count'] = 0;
+//    req.body['following_count'] = 0;
+//    //
+//    req.body['like_count'] = 0;
+//    req.body['liker_ids'] = [];
+//    req.body['comment_count'] = 0;
+//    req.body['retweet_count'] = 0;
+//    req.body['comments'] = [];
+//    // ==========================================
+//    jsonData.tweets.push(req.body);
+//    fs.writeFile(nPath, JSON.stringify(jsonData), (err, result) => {
+//      res.status(200).json();
+//    });
+//  });
+//
+//});
 
 
 server.use(jsonServer.rewriter(routes));

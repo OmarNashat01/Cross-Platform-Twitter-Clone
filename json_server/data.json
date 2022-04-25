@@ -243,44 +243,8 @@
           ]
         }
       ]
-    },
-    {
-      "user_id": "407959696291317",
-      "username": "zumaa",
-      "Text": "this is a sample text",
-      "created_at": "2022-04-23T11:33:00.030Z",
-      "videos": [],
-      "images": [],
-      "tweet_id": 880672595412939,
-      "name": "hazem",
-      "prof_pic_url": "",
-      "bio": "",
-      "followers_count": 0,
-      "following_count": 0,
-      "like_count": 0,
-      "liker_ids": [],
-      "comment_count": 0,
-      "retweet_count": 0,
-      "comments": []
-    },
-    {
-      "user_id": "407959696291317",
-      "username": "haz",
-      "Text": "this is a sample text",
-      "created_at": "2022-04-23T11:33:00.030Z",
-      "videos": [],
-      "images": [],
-      "tweet_id": 111781749028741,
-      "name": "hazem",
-      "prof_pic_url": "",
-      "bio": "",
-      "followers_count": 0,
-      "following_count": 0,
-      "like_count": 0,
-      "liker_ids": [],
-      "comment_count": 0,
-      "retweet_count": 0,
-      "comments": []
     }
+
+
   ]
 }
