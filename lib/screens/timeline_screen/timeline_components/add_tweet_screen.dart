@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/timeline_list.dart';
@@ -50,8 +51,11 @@ class AddTweetScreen extends StatelessWidget {
                   TextButton(
                     onPressed: ()async {
                       text = title!;
+                      var now = new DateTime.now();
+                      var formatter = new DateFormat('yyyy-MM-dd');
+                      String formattedDate = formatter.format(now);
                       //if i am adding a tweet from scratch do this without showing the inner tweet
-                       await Provider.of<TweetsViewModel>(context,listen: false).addTweet();
+                       await Provider.of<TweetsViewModel>(context,listen: false).addTweet(text: text,dateOfCreation: formattedDate);
                        Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context);
                       Navigator.pop(context);
                     },

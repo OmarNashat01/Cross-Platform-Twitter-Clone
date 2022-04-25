@@ -16,14 +16,9 @@ StreamController streamController;
     notifyListeners();
     return _tweetsList;
   }
-  Future<void>changeTweetText()async
+  Future<void> addTweet({required String text,required String dateOfCreation}) async
   {
-    _tweetsList[0].tweet.text='we';
-    notifyListeners();
-  }
-  Future<void> addTweet() async
-  {
-    await TweetsApi().addTweet();
+    await TweetsApi().addTweet(text:text ,dateOfCreation:dateOfCreation );
     notifyListeners();
   }
   List<TweetMain> getTweetsList()

@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
-
+import 'package:uuid/uuid.dart';
 import 'package:twitter/models/likers_model.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/models/comment_model.dart';
 import 'package:http/http.dart'as http;
 
+import '../constants.dart';
 import '../models/image_model.dart';
 import '../models/images_model.dart';
 import '../models/replies_model.dart';
@@ -100,94 +101,37 @@ class TweetsApi
             }
       return tweetsMain;
   }
-  Future<void>changeTweetText()async
-  {
-    final Uri url = Uri.parse('http://10.0.2.2:8000/tweets');
-    http.Response response = await http.post(url,
-        body: {
-          "id":"10101",
-          "tweet_id": "1232",
-          "user_id": "121",
-          "name": "abdallah fawzy",
-          "username": "abdallah",
-          "prof_pic_url": "assets/images/myProfilepic.jpeg",
-          "bio": "hello",
-          "followers_count": 0,
-          "following_count": 0,
-          "text": "okaaaaaaay",
-          "created_at": "2022-04-23T03:33:05.603Z",
-          "videos": [
-            {
-              "url": "string",
-              "alt_text": "string",
-              "height": 0,
-              "width": 0
-            }
-          ],
-          "images": [
-            {
-              "url": "assets/tweets_images/morningCoffee.jpg",
-              "alt_text": "string",
-              "height": 200,
-              "width": 200
-            }
-          ],
-          "like_count": 0,
-          "liker_ids": [
-            "string"
-          ],
-          "comment_count": 0,
-          "retweet_count": 0,
-          "comments": [
-            {
-              "user_id": "",
-              "username": "",
-              "prof_pic_url": "",
-              "text": "",
-              "created_at": "",
-              "replies": [
-                {
-                  "user_id": "",
-                  "username": "",
-                  "Text": ""
-                }
-              ]
-            }
-          ]
-        }
-    );
-  }
-  Future<void>addTweet()async
+  Future<void>addTweet({required String text,required String dateOfCreation})async
   {
     List<Imagei>images=[];
     List<Video>videos=[];
     images.add(Imagei(url: "assets/tweets_images/moon.jpg", altText: "altText", height: 0, width: 0));
     videos.add(Video(url: "", altText: "altText", height: 0, width: 0));
     Tweet tweet=Tweet(tweetId: "3", userId: "126", profilePicUrl: "assets/images/mahmoud.jpg", username: "mohamed", text: "holaaaaa", commentCount: 1, retweetCount: 2, likeCount: 3, createdAt: "2022-04-23T03:33:05.603Z",  name: "mohamed", followersCount: 10, followingCount: 20, bio: 'okay', likerIds: [], videos:videos, images:images, comments: []);
-
     //TweetMain tweetAdded=TweetMain(tweet: tweet, images: images, videos: videos);
     var headers = {
       'Content-Type': 'application/json'
     };
     var request = http.Request('POST', Uri.parse('http://10.0.2.2:8000/tweets'));
+    var uuid = Uuid();
     request.body = json.encode({
-      "id": "51",
-      "tweet_id": "tweet_id",
-      "user_id": "tweet_id",
-      "name": "tweet_id",
-      "username": "tweet_id",
-      "prof_pic_url": "tweet_id",
-      "bio": "tweet_id",
-      "followers_count": 0,
-      "following_count": 0,
-      "text": "tweet_id",
-      "created_at": "tweet_id",
+      "id": uuid.v4(),//random id
+      "tweet_id": uuid.v4(),//random id for tweet created
+      "user_id": Auth.userId,
+      "name": Auth.name,
+      "username": Auth.username,
+      "prof_pic_url": Auth.profilePicUrl,
+      "bio": Auth.bio,
+      "followers_count": 100,
+      "following_count": 200,
+      "text": text,
+      "created_at": dateOfCreation,
       "like_count": 0,
       "comment_count": 0,
       "retweet_count": 0,
       "images": [
         {
-          "url": "assets/tweets_images/moon.jpg",
+          "url": "assets/tweets_images/zendayaLit.jpg",
           "alt_text": "string",
           "height": 200,
           "width": 200

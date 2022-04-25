@@ -12,9 +12,13 @@ const String kMockBaseUrl = '10.0.2.2:8000';
 class Auth {
   static String token = '';
   // static String refreshToken = '';
-  static String userId = '126';
+  static String userId = 'ab-12-32';
   static String email = '';
   static String password = '';
+  static String profilePicUrl='assets/images/myProfilepic.jpeg';
+  static String username='abdallah';
+  static String name='abdallah__fawzy';
+  static String bio="hello everyone";
 }
 
 class Http {
