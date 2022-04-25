@@ -7,9 +7,9 @@ import '../models/tweet_complete_model.dart';
 class StreamControllerProvider extends ChangeNotifier {
   StreamController streamController=StreamController();
   Stream stream=StreamController().stream;
-  updateTweetStream(BuildContext context) async
+  updateTweetStream(BuildContext context,String user_id) async
   {
-    Provider.of<TweetsViewModel>(context,listen: false).fetchTweets();
+    Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(user_id);
     streamController=Provider.of<TweetsViewModel>(context,listen: false).getStreamController();
     stream=streamController.stream;
     notifyListeners();

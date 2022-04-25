@@ -12,7 +12,7 @@ const String kMockBaseUrl = '10.0.2.2:8000';
 class Auth {
   static String token = '';
   // static String refreshToken = '';
-  static String userId = 'ab-12-32';
+  static String userId = '126';
   static String email = '';
   static String password = '';
   static String profilePicUrl='assets/images/myProfilepic.jpeg';
@@ -26,6 +26,7 @@ class Http {
   factory Http() => _singleton;
   Http._internal();
   String getBaseUrl() => isMock == true ? kMockBaseUrl : kBaseUrl;
+  String getMobileBaseUrl() => isMock == true ? "192.168.1.8:8000":kMockBaseUrl ;
 }
 
 String hashToMd5(String pass) => md5.convert(utf8.encode(pass)).toString();

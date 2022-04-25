@@ -37,6 +37,17 @@ function getRandom(min, max) {
 }
 
 // Overwritten routes
+server.post('/users/likes', function (req, res, next) {
+     fs.readFile(nPath, (err, data) => {
+      let jsonData = JSON.parse(data.toString());
+      let likedTweet=jsonData.tweets.find(tweet => tweet.tweet_id === req.body.tweet_id);
+      likedTweet['like_count']++;
+      fs.writeFile(nPath, JSON.stringify(jsonData), (err, result) => {
+        res.status(200).json({ });
+      });
+    });
+});
+
 server.post('/signup/verify', function (req, res, next) {
   let exists = emailExists(req.body.email);
   if (exists) {
@@ -83,7 +94,7 @@ server.post('/signup', function (req, res, next) {
   } else {
     fs.readFile(nPath, (err, data) => {
       let jsonData = JSON.parse(data.toString());
-      req.body['user_id'] = jsonData.OTPs.find(usr => usr.email === req.body.email).user_id;  // create "user_id" field
+      req.body['user_id'] = jsonData.OTPs.find(usr => usr.email === req.body.email).user_id;// create "user_id" field
       jsonData.users.push(req.body);
       fs.writeFile(nPath, JSON.stringify(jsonData), (err, result) => {
         res.status(200).json();

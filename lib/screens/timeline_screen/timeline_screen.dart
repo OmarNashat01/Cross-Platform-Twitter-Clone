@@ -35,9 +35,9 @@ class _TimelineScreenState extends State<TimelineScreen> {
   ScrollController ?controller;
   StreamController _streamController=StreamController();
   Stream ?_stream;
-  fetchingStreamController()async
+  fetchingStreamController(String user_id)async
   {
-    Provider.of<TweetsViewModel>(context,listen: false).fetchTweets();
+    Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(user_id);
     _streamController=Provider.of<TweetsViewModel>(context,listen: false).getStreamController();
     _stream=_streamController.stream;
   }
@@ -47,7 +47,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
     super.initState();
      controller = ScrollController();
      _streamController=StreamController();
-     fetchingStreamController();
+     fetchingStreamController("126");
      _stream=_streamController.stream;
 
   }
@@ -153,7 +153,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                       isAlwaysShown: true,
                       child: RefreshIndicator(
                         color: Colors.grey,
-                        onRefresh: ()=>Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context),
+                        onRefresh: ()=>Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context,"126"),
                         child: ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index){

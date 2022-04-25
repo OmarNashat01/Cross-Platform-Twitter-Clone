@@ -45,7 +45,7 @@
           "width": 200
         }
       ],
-      "like_count": 0,
+      "like_count": 6,
       "liker_ids": [
         "string"
       ],
@@ -89,7 +89,7 @@
       ],
       "images": [
         {
-          "url": "assets/tweets_images/moon.jpg",
+          "url": "assets/tweets_images/heaven.jpg",
           "alt_text": "string",
           "height": 200,
           "width": 200
@@ -244,7 +244,5 @@
         }
       ]
     }
-
-
   ]
 }

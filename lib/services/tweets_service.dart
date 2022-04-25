@@ -17,13 +17,18 @@ import '../models/tweets_model.dart';
 import '../models/video_model.dart';
 class TweetsApi
 {
-  Future<List<TweetMain>>fetchTweets()async
+  Future<List<TweetMain>>fetchTweets(String userId)async
   {
 
-      final Uri url = Uri.parse('http://10.0.2.2:8000/tweets');
+    final queryParameters = {
+      'user_id': userId,
+      //'token': _email,
+    };
+    final uri =
+    Uri.http(Http().getMobileBaseUrl(), '/tweets/all', queryParameters);
+     // final Uri url = Uri.parse('http://192.168.1.8:8000/tweets/all');
       http.Response response = await http.get(
-          url);
-
+          uri);
           String data=response.body;
           var jsonData=jsonDecode(data);
           List<dynamic>dataGood=[];
@@ -112,7 +117,7 @@ class TweetsApi
     var headers = {
       'Content-Type': 'application/json'
     };
-    var request = http.Request('POST', Uri.parse('http://10.0.2.2:8000/tweets'));
+    var request = http.Request('POST', Uri.parse('http://192.168.1.8:8000/tweets'));
     var uuid = Uuid();
     request.body = json.encode({
       "id": uuid.v4(),//random id
@@ -156,6 +161,28 @@ class TweetsApi
       print(response.reasonPhrase);
     }
   }
+  Future<void>addLike({required String tweetId})async
+  {
 
+
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request('POST', Uri.parse('http://192.168.1.8:8000/tweets'));
+    var uuid = Uuid();
+    request.body = json.encode({
+      "tweet_id": tweetId,//random id for tweet created
+      "user_id": Auth.userId,
+    });
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    print(response.toString());
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    }
+    else {
+      print(response.reasonPhrase);
+    }
+  }
 
 }

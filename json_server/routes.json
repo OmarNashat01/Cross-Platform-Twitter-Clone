@@ -1,7 +1,9 @@
 {
     "/signup/verify": "/users",
     "/tweets/all": "/tweets",
+    "/tweets/all?user_id=:usr_id": "/tweets?user_id=:usr_id",
     "/tweets/:tweet_id": "/tweets?tweet_id=:tweet_id",
+    "/tweets/users/likes":"/tweets",
     "/tweets/all/me": "/tweets?user_id=126",
     "/signup/confirm_email": "/OTPs",
     "/signup/confirm_email?OTP=:otp&email=:mail": "/OTPs?OTP=:otp&email=:mail",
