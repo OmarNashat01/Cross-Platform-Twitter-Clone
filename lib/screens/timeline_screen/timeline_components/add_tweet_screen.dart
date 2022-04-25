@@ -10,6 +10,8 @@ import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
 
+import '../../../providers/stream_controller_provider.dart';
+
 class AddTweetScreen extends StatelessWidget {
   AddTweetScreen({this.index,this.quote});
   bool? quote=false;//this quote is to check if this add tweet sreen is opened from add floating button itself or from quote tweet
@@ -46,11 +48,11 @@ class AddTweetScreen extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {
+                    onPressed: ()async {
                       text = title!;
                       //if i am adding a tweet from scratch do this without showing the inner tweet
-                    TweetsViewModel tweetsApi=TweetsViewModel();
-                    tweetsApi.addTweet();
+                       await Provider.of<TweetsViewModel>(context,listen: false).addTweet();
+                       Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context);
                       Navigator.pop(context);
                     },
                     child: Text(

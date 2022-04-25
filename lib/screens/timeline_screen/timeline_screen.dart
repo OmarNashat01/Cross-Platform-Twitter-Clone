@@ -10,6 +10,7 @@ import 'package:twitter/dummy/timeline_list.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
+import 'package:twitter/providers/stream_controller_provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/quote_tweet_card.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
@@ -32,108 +33,31 @@ class TimelineScreen extends StatefulWidget {
 
 class _TimelineScreenState extends State<TimelineScreen> {
   ScrollController ?controller;
-  StreamController ?_streamController;
+  StreamController _streamController=StreamController();
   Stream ?_stream;
-  asyncMethod()async
+  fetchingStreamController()async
   {
-    _streamController?.add(await Provider.of<TweetsViewModel>(context).fetchTweets());
-
-  }
-  Future< void> _refresh()async
-  {
-
+    Provider.of<TweetsViewModel>(context,listen: false).fetchTweets();
+    _streamController=Provider.of<TweetsViewModel>(context,listen: false).getStreamController();
+    _stream=_streamController.stream;
   }
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
      controller = ScrollController();
-    StreamController _streamController=StreamController();
-    Stream _stream=_streamController.stream;
-    asyncMethod();
+     _streamController=StreamController();
+     fetchingStreamController();
+     _stream=_streamController.stream;
 
   }
   @override
   Widget build(BuildContext context) {
-    // var futureBuilder=FutureBuilder(
-    //     future: Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
-    //     builder: (BuildContext context,AsyncSnapshot snapshot,)
-    //     {
-    //
-    //       switch(snapshot.connectionState)
-    //       {
-    //         case ConnectionState.none:
-    //           return Text('press button to start');
-    //         case ConnectionState.waiting:
-    //           return Text("waiting");
-    //         default:
-    //           if(snapshot.hasError)
-    //             {
-    //               return Text('error');
-    //             }
-    //           else
-    //             {
-    //               return Scrollbar(
-    //                 radius: Radius.circular(30),
-    //                 isAlwaysShown: true,
-    //                 child: RefreshIndicator(
-    //                   color: Colors.grey,
-    //                   onRefresh: ()async=>Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
-    //                   child: ListView.builder(
-    //                     physics: const BouncingScrollPhysics(),
-    //                     itemBuilder: (context, index){
-    //                       return TweetCard(index: index,tweet: snapshot.data[index],);
-    //                     },
-    //                     itemCount:snapshot.data.length,
-    //                   ),
-    //                 ),
-    //               );
-    //             }
-    //       }
-    //
-    //     }
-    // );
-    var futureBuilder=FutureBuilder(
-        future: Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
-        builder: (BuildContext context,AsyncSnapshot snapshot,)
-        {
-
-          switch(snapshot.connectionState)
-          {
-            case ConnectionState.none:
-              return Text('press button to start');
-            case ConnectionState.waiting:
-              return Text("waiting");
-            default:
-              if(snapshot.hasError)
-              {
-                return Text('error');
-              }
-              else
-              {
-                return Scrollbar(
-                  radius: Radius.circular(30),
-                  isAlwaysShown: true,
-                  child: RefreshIndicator(
-                    color: Colors.grey,
-                    onRefresh: ()async=>Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(),
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (context, index){
-                        return TweetCard(index: index,tweet: snapshot.data[index],);
-                      },
-                      itemCount:snapshot.data.length,
-                    ),
-                  ),
-                );
-              }
-          }
-
-        }
-    );
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // await Provider.of<TweetsViewModel>(context,listen: false).addTweet();
+          // Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context);
           Navigator.of(context).push(
             CustomPageRoute
             (child:AddTweetScreen(quote: false,),beginX: 0,beginY: 1),
@@ -206,7 +130,44 @@ class _TimelineScreenState extends State<TimelineScreen> {
           ],
           //--------------------------------------------------------------------
           //tweets list viewer
-        body: futureBuilder,
+        body: StreamBuilder(
+            stream: _stream,
+            builder: (BuildContext context,AsyncSnapshot snapshot,)
+            {
+
+              switch(snapshot.connectionState)
+              {
+                case ConnectionState.none:
+                  return Text('press button to start');
+                case ConnectionState.waiting:
+                  return Text("waiting");
+                default:
+                  if(snapshot.hasError)
+                  {
+                    return Text('error');
+                  }
+                  else
+                  {
+                    return Scrollbar(
+                      radius: Radius.circular(30),
+                      isAlwaysShown: true,
+                      child: RefreshIndicator(
+                        color: Colors.grey,
+                        onRefresh: ()=>Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context),
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index){
+                            return TweetCard(index: index,tweet: snapshot.data[index],);
+                          },
+                          itemCount:snapshot.data.length,
+                        ),
+                      ),
+                    );
+                  }
+              }
+
+            }
+        ),
 
          ),
         ),
@@ -217,7 +178,25 @@ class _TimelineScreenState extends State<TimelineScreen> {
     );
   }
 }
-// body: Scrollbar(
+// StreamBuilder(
+// stream: Provider.of<TweetsViewModel>(context,listen: true).fetchTweets()as Stream,
+//     builder: (BuildContext context,AsyncSnapshot snapshot,)
+// {
+//
+// switch(snapshot.connectionState)
+// {
+// case ConnectionState.none:
+// return Text('press button to start');
+// case ConnectionState.waiting:
+// return Text("waiting");
+// default:
+// if(snapshot.hasError)
+// {
+// return Text('error');
+// }
+// else
+// {
+// return Scrollbar(
 // radius: Radius.circular(30),
 // isAlwaysShown: true,
 // child: RefreshIndicator(
@@ -226,12 +205,14 @@ class _TimelineScreenState extends State<TimelineScreen> {
 // child: ListView.builder(
 // physics: const BouncingScrollPhysics(),
 // itemBuilder: (context, index){
-// Future<List<TweetMain>>tweets=await Provider.of<TweetsViewModel>(context).fetchTweets();
-// tweets.
-// //Provider.of<TweetsViewModel>(context).getTweetsList()[index].haveInnerTweet==true?print('a7a'):print('lol');
-// return TweetCard(index: index);
+// return TweetCard(index: index,tweet: snapshot.data[index],);
 // },
-// itemCount:Provider.of<TweetsViewModel>(context).fetchTweets(),
+// itemCount:snapshot.data.length,
 // ),
 // ),
+// );
+// }
+// }
+//
+// }
 // ),

@@ -54,20 +54,20 @@ class TimelineList extends ChangeNotifier
       _tweetList.insert(0,newTweet);
       notifyListeners();
     }
-   void retweet(int index)
-   {
-     _retweetList.insert(0,_tweetList[index]);
-     _tweetList[index].isRetweeted=true;
-     _tweetList[index].retweetCount++;
-     notifyListeners();
-   }
-  void undoRetweet(int index)
-  {
-    _retweetList.remove(_tweetList[index]);
-    _tweetList[index].isRetweeted=false;
-    _tweetList[index].retweetCount--;
-    notifyListeners();
-  }
+   // void retweet(int index)
+   // {
+   //   _retweetList.insert(0,_tweetList[index]);
+   //   _tweetList[index].isRetweeted=true;
+   //   _tweetList[index].retweetCount++;
+   //   notifyListeners();
+   // }
+  // void undoRetweet(int index)
+  // {
+  //   _retweetList.remove(_tweetList[index]);
+  //   _tweetList[index].isRetweeted=false;
+  //   _tweetList[index].retweetCount--;
+  //   notifyListeners();
+  // }
    Future <void> addRandomTweetOnRefresh() async
    {
      await Future.delayed(const Duration(milliseconds: 500));
@@ -76,19 +76,19 @@ class TimelineList extends ChangeNotifier
      addTweet(randomTweet);
    }
    ///////////////////////////////////////////
-   void reactLove(bool liked,int index)
-   {
-     if(liked==true)
-     {
-       getTweetsList()[index].likeCount++;
-       getTweetsList()[index].isLiked=true;
-     }
-     else
-     {
-       getTweetsList()[index].likeCount--;
-       getTweetsList()[index]. isLiked=false;
-     }
-     notifyListeners();
-   }
+   // void reactLove(bool liked,int index)
+   // {
+   //   if(liked==true)
+   //   {
+   //     getTweetsList()[index].likeCount++;
+   //     getTweetsList()[index].isLiked=true;
+   //   }
+   //   else
+   //   {
+   //     getTweetsList()[index].likeCount--;
+   //     getTweetsList()[index]. isLiked=false;
+   //   }
+   //   notifyListeners();
+   // }
 
 }

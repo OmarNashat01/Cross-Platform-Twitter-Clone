@@ -8,6 +8,7 @@ import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
+import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
 
@@ -22,7 +23,12 @@ class TweetCard extends StatelessWidget {
 
   int index;
   TweetMain tweet;
-
+  // Future<String>asyncMethod(int i,BuildContext context)async
+  // {
+  //   List<TweetMain>tweets= await Provider.of<TweetsViewModel>(context).fetchTweets();
+  //   return tweets[i].getTweetprofilePicUrl();
+  //
+  // }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,10 +41,9 @@ class TweetCard extends StatelessWidget {
                     Row(
                         children: [
                           //--here is the profile picture of the one who tweeted
-                          ProfilePicture(
+                          ProfilePicture (
                               profilePictureFunctionality: () {},
-                              profilePictureImage:
-                              tweet.getTweetprofilePicUrl(),
+                              profilePictureImage:Provider.of<TweetsViewModel>(context).getTweetsList()[index].getTweetprofilePicUrl(),
                               profilePictureSize: navigationDrawerProfilePicSize),
 
                   Padding(
@@ -59,12 +64,12 @@ class TweetCard extends StatelessWidget {
               //--for decoration sized box
               SizedBox(height: 5,),
               //--here is the text of the tweet
-              tweet.getTweettext()!=""
+              Provider.of<TweetsViewModel>(context).getTweetsList()[index].getTweettext()!=""
                   ? Row(
                     children: [
                       Expanded(
                         child: Text(
-                          tweet.getTweettext(),
+                          Provider.of<TweetsViewModel>(context).getTweetsList()[index].getTweettext(),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                             //max lines of writing a tweet is 8 like in the main twitter
@@ -82,29 +87,27 @@ class TweetCard extends StatelessWidget {
              SizedBox(height: 5,),
 
         //--here is the image of the tweet
-       tweet.images[0].url!=""
-            ? GestureDetector(
+            GestureDetector(
           onTap: ()
           {
             Navigator.of(context).push(
               CustomPageRoute
                 (child:ImageDetailScreen(
-                tweet:tweet,
                 index: index,
               ),beginX: 0,beginY: 1),
             );
           },
                child: Image.asset(
-           tweet.images[0].url,
+                 Provider.of<TweetsViewModel>(context).getTweetsList()[index].images[0].url,
            fit: BoxFit.cover,
            width: double.infinity,
            alignment: Alignment.center,
                  ),
-            )
-            : const SizedBox.shrink(),
+            ),
+
 
         //the row of icons for your reactions on the tweet
-        TweetBottomBar(tweet:tweet,index: index,iconsBoundry: Colors.grey.shade600,),
+        TweetBottomBar(index: index,iconsBoundry: Colors.grey.shade600,),
 
 
         //decoration of tweet at the bottom (divider)

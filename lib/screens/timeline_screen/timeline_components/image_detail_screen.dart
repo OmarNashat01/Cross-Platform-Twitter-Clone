@@ -7,10 +7,10 @@ import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bot
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
 
 import '../../../models/tweet_complete_model.dart';
+import '../../../providers/tweets_view_model.dart';
 class ImageDetailScreen extends StatefulWidget {
   int index;
-  TweetMain tweet;
-  ImageDetailScreen({required this.index,required this.tweet});
+  ImageDetailScreen({required this.index});
   @override
   State<ImageDetailScreen> createState() => _ImageDetailScreenState();
 }
@@ -27,7 +27,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
   _updatePalette ()async
   {
     final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(
-      AssetImage(widget.tweet.images[0].url),
+      AssetImage(Provider.of<TweetsViewModel>(context).getTweetsList()[widget.index].images[0].url),
     );
     color=paletteGenerator.dominantColor;
     setState(() {
@@ -71,7 +71,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
               key: const Key('key'),
               onDismissed: (_) => Navigator.of(context).pop(),
               child: Image.asset(
-                widget.tweet.images[0].url,
+                Provider.of<TweetsViewModel>(context).getTweetsList()[widget.index].images[0].url,
                 fit: BoxFit.cover,
                 width: double.infinity,
                 alignment: Alignment.center,
@@ -79,7 +79,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
             ),
               Column(
                 children: [
-                  TweetBottomBar(tweet:widget.tweet,index: widget.index,iconsBoundry: Colors.white,),
+                  TweetBottomBar(index: widget.index,iconsBoundry: Colors.white,),
                   TextField(
                     scrollPadding: EdgeInsets.only(bottom:100,top: 100),
                     decoration: InputDecoration(
