@@ -10,6 +10,7 @@ class TweetsViewModel extends ChangeNotifier {
 ///=StreamController streamController;
 
 //this function fetch tweets from api call and then update the stream
+
   Future<void> fetchMyTweets(BuildContext context) async
   {
     addedDataToStream = await TweetsApi().fetchMyTweets();
@@ -22,13 +23,16 @@ class TweetsViewModel extends ChangeNotifier {
     Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
     notifyListeners();
   }
-  // Future<List<TweetMain>> fetchTweets(String user_id,BuildContext context) async
-  // {
-  //   _tweetsList = await TweetsApi().fetchTweets(user_id);
-  //   Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(_tweetsList);
-  //   notifyListeners();
-  //   return _tweetsList;
-  // }
+  Future<List<dynamic>> fetchTweetByTweetIdWithoutAddingToStream(String tweetId) async
+  {
+     return  TweetsApi().fetchTweetByTweetId(tweetId);
+  }
+  Future<void> deleteTweet(String tweetId) async
+  {
+     await TweetsApi().deleteTweet(tweetId: tweetId);
+    //=Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
+    notifyListeners();
+  }
   Future<void> addTweet({required String text,required String dateOfCreation}) async
   {
     await TweetsApi().addTweet(text:text ,dateOfCreation:dateOfCreation );

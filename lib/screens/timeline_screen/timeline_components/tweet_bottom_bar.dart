@@ -115,8 +115,8 @@ class TweetBottomBar extends StatelessWidget {
                   print("tweet id is : ${tweet.tweet.tweetId}");
                   print("is liked of this tweet is : ${tweet.tweet.isLiked}");
 
-                  Provider.of<TweetsViewModel>(context,listen: false).likeTweet(tweet_id: tweet.tweet.tweetId);
-                   Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context);
+                  await Provider.of<TweetsViewModel>(context,listen: false).likeTweet(tweet_id: tweet.tweet.tweetId);
+                  await Provider.of<StreamControllerProvider>(context,listen: false).removeTweetFromStreamControllerThenFetchToUpdateUI(index, tweet.tweet.tweetId, context);
 
                 },
               ),

@@ -7,15 +7,28 @@ import '../models/tweet_complete_model.dart';
 class StreamControllerProvider extends ChangeNotifier {
   StreamController streamController = StreamController();
 
-  //List<TweetMain>tweetsList=[];
+  dynamic tweetsList=[];
   Stream stream = StreamController().stream;
 
   updateStreamController(dynamic data) {
-    streamController.add(data);
+    if(data!=null) {
+      for (int i = 0; i < data.length; i++) {
+        tweetsList.insert(0, data[i]);
+      }
+    }
+    streamController.add(tweetsList);
     stream = streamController.stream;
     notifyListeners();
   }
+  removeTweetFromStreamControllerThenFetchToUpdateUI(int index,String tweetId,BuildContext context) async
+  {
+    //fetch then add
+    dynamic tweet=await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetIdWithoutAddingToStream(tweetId);
 
+    streamController.add(tweet);
+    stream = streamController.stream;
+    notifyListeners();
+  }
   StreamController getStreamController() {
     notifyListeners();
     return streamController;

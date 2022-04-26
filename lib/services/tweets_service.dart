@@ -68,12 +68,8 @@ class TweetsApi
           }
           likers = tweetsList[i].likerIds.toList();
           //check if the you the auth are from the likers of the this specific tweet to let the tweet stay liked
-          for (int i = 0; i < likers.length; i++) {
-            if (Auth.userId == likers[i]) {
-              tweetsList[i].isLiked = true;
-              print('your repsone is ${tweetsList[i].isLiked}');
-            }
-          }
+
+
           images = tweetsList[i].images.map((e) => Imagei.fromJson(e))
               .toList();
           videos =
@@ -158,14 +154,7 @@ class TweetsApi
         }
         likers = tweetsList[i].likerIds.toList();
         //check if the you the auth are from the likers of the this specific tweet to let the tweet stay liked
-        for(int i=0;i<likers.length;i++)
-        {
-          if(Auth.userId==likers[i])
-          {
-            tweetsList[i].isLiked=true;
-            print('your repsone is ${tweetsList[i].isLiked}');
-          }
-        }
+
         images = tweetsList[i].images.map((e) => Imagei.fromJson(e))
             .toList();
         videos =
@@ -249,14 +238,7 @@ class TweetsApi
         }
         likers = tweetsList[i].likerIds.toList();
         //check if the you the auth are from the likers of the this specific tweet to let the tweet stay liked
-        for(int i=0;i<likers.length;i++)
-        {
-          if(Auth.userId==likers[i])
-          {
-            tweetsList[i].isLiked=true;
-            print('your repsone is ${tweetsList[i].isLiked}');
-          }
-        }
+
         images = tweetsList[i].images.map((e) => Imagei.fromJson(e))
             .toList();
         videos =
@@ -280,18 +262,18 @@ class TweetsApi
     }
     return tweetsMain;
   }
-  Future<TweetMain>fetchTweetByTweetId(String tweetId)async
+  Future<List<TweetMain>>fetchTweetByTweetId(String tweetId)async
   {
 
     final queryParameters = {
       'tweet_id': tweetId,
       //'token': _email,
     };
-    final uri = Uri.http(Http().getMobileBaseUrl(), '/tweets/tweet_id', queryParameters);
+    final uri = Uri.http(Http().getMobileBaseUrl(), '/tweets', queryParameters);
     http.Response response = await http.get(uri);
     String data=response.body;
     var jsonData=jsonDecode(data);
-    dynamic tweet;
+    List<dynamic> tweet;
 
       if(jsonData[0].length==17) {
         tweet= jsonData.map((e) => Tweet.fromJson(e,false)).toList();
@@ -299,7 +281,6 @@ class TweetsApi
       else
       {
         tweet= jsonData.map((e) => Tweet.fromJson(e,true)).toList();
-
       }
     //----------------------------------------------------------------------
     TweetMain tweetMain;
@@ -308,27 +289,20 @@ class TweetsApi
     List<dynamic>images;
     List<dynamic>videos;
     //--------------------------------------------------------------------------
-
-      if (tweet.length==17)
+      if (tweet[0].comments.map((e) => Comment.fromJson(e)).toList()!=null)
       {
         List<List<dynamic>>replies = [];
-        comments = tweet.comments.map((e) => Comment.fromJson(e)).toList();
+        comments = tweet[0].comments.map((e) => Comment.fromJson(e)).toList();
         for (int i = 0; i < comments.length; i++) {
           List<dynamic>reply = comments[i].repliesList.map((e) => Reply.fromJson(e)).toList();
           replies.add(reply);
         }
-        likers = tweet.likerIds.toList();
+        likers = tweet[0].likerIds.toList();
         //check if the you the auth are from the likers of the this specific tweet to let the tweet stay liked
-        for(int i=0;i<likers.length;i++)
-        {
-          if(Auth.userId==likers[i])
-          {
-            tweet.isLiked=true;
-          }
-        }
-        images = tweet.images.map((e) => Imagei.fromJson(e)).toList();
-        videos = tweet.videos.map((e) => Video.fromJson(e)).toList();
-        TweetMain tweetIMain = TweetMain(tweet: tweet,
+
+        images = tweet[0].images.map((e) => Imagei.fromJson(e)).toList();
+        videos = tweet[0].videos.map((e) => Video.fromJson(e)).toList();
+        TweetMain tweetIMain = TweetMain(tweet: tweet[0],
             comments: comments,
             replies: replies,
             likers: likers,
@@ -338,14 +312,15 @@ class TweetsApi
       }
       else
       {
-        images = tweet.images.map((e) => Imagei.fromJson(e)).toList();
-        videos = tweet.videos.map((e) => Video.fromJson(e)).toList();
-        TweetMain tweetIMain = TweetMain(tweet: tweet, videos: videos, images: images);
+        images = tweet[0].images.map((e) => Imagei.fromJson(e)).toList();
+        videos = tweet[0].videos.map((e) => Video.fromJson(e)).toList();
+        TweetMain tweetIMain = TweetMain(tweet: tweet[0], videos: videos, images: images);
         tweetMain=tweetIMain;
 
       }
-
-    return tweetMain;
+List<TweetMain>tweetSent=[];
+      tweetSent.add(tweetMain);
+    return tweetSent;
   }
   Future<void>addTweet({required String text,required String dateOfCreation})async
   {
@@ -396,6 +371,21 @@ class TweetsApi
     else {
       print(response.reasonPhrase);
     }
+  }
+  Future<void>deleteTweet({required String tweetId})async
+  {
+
+    final queryParameters = {
+      'tweet_id': tweetId,
+      //'token': _email,
+    };
+    final uri = Uri.http(Http().getMobileBaseUrl(), '/tweets', queryParameters);
+    http.Response response = await http.delete(uri);
+    if(response.statusCode==200)
+      {
+        print("tweet with id$tweetId is deleted successfully ");
+      }
+
   }
   Future<void>addLike({required String tweetId})async
   {
