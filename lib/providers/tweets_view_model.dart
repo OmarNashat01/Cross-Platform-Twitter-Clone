@@ -2,20 +2,33 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:twitter/providers/stream_controller_provider.dart';
 import 'package:twitter/services/tweets_service.dart';
 import '../models/tweet_complete_model.dart';
 class TweetsViewModel extends ChangeNotifier {
-  TweetsViewModel({required this.streamController});
-  List<TweetMain> _tweetsList = [];
-StreamController streamController;
+  dynamic addedDataToStream;
+///=StreamController streamController;
 
-  Future<List<TweetMain>> fetchTweets(String user_id) async
+//this function fetch tweets from api call and then update the stream
+  Future<void> fetchMyTweets(BuildContext context) async
   {
-    _tweetsList = await TweetsApi().fetchTweets(user_id);
-    streamController.add(_tweetsList);
+    addedDataToStream = await TweetsApi().fetchMyTweets();
+    Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
     notifyListeners();
-    return _tweetsList;
   }
+  Future<void> fetchTweetByTweetId(BuildContext context,String tweetId) async
+  {
+    addedDataToStream = await TweetsApi().fetchTweetByTweetId(tweetId);
+    Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
+    notifyListeners();
+  }
+  // Future<List<TweetMain>> fetchTweets(String user_id,BuildContext context) async
+  // {
+  //   _tweetsList = await TweetsApi().fetchTweets(user_id);
+  //   Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(_tweetsList);
+  //   notifyListeners();
+  //   return _tweetsList;
+  // }
   Future<void> addTweet({required String text,required String dateOfCreation}) async
   {
     await TweetsApi().addTweet(text:text ,dateOfCreation:dateOfCreation );
@@ -26,12 +39,12 @@ StreamController streamController;
     await TweetsApi().addLike(tweetId: tweet_id);
     notifyListeners();
   }
-  List<TweetMain> getTweetsList()
-  {
-    return _tweetsList;
-  }
-  StreamController getStreamController()
-  {
-    return streamController;
-  }
+  // List<TweetMain> getTweetsList()
+  // {
+  //   return _tweetsList;
+  // }
+  // StreamController getStreamController()
+  // {
+  //   return streamController;
+  // }
 }

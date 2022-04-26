@@ -1,3 +1,4 @@
+
 const portNumber = 8000;
 const routes = require('./routes.json');
 const fs = require('fs')
@@ -37,6 +38,18 @@ function getRandom(min, max) {
 }
 
 // Overwritten routes
+server.post('/users/likes', function (req, res, next) {
+     fs.readFile(nPath, (err, data) => {
+      let jsonData = JSON.parse(data.toString());
+      let likedTweet=jsonData.tweets.find(tweet => tweet.tweet_id === req.body.tweet_id);
+      likedTweet['like_count']++;
+      likedTweet["liker_ids"].push(req.body.user_id);
+      fs.writeFile(nPath, JSON.stringify(jsonData), (err, result) => {
+        res.status(200).json({ });
+      });
+    });
+});
+
 server.post('/signup/verify', function (req, res, next) {
   let exists = emailExists(req.body.email);
   if (exists) {

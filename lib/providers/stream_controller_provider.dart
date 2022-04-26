@@ -5,22 +5,23 @@ import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/services/tweets_service.dart';
 import '../models/tweet_complete_model.dart';
 class StreamControllerProvider extends ChangeNotifier {
-  StreamController streamController=StreamController();
-  Stream stream=StreamController().stream;
-  updateTweetStream(BuildContext context,String user_id) async
-  {
-    Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(user_id);
-    streamController=Provider.of<TweetsViewModel>(context,listen: false).getStreamController();
-    stream=streamController.stream;
+  StreamController streamController = StreamController();
+
+  //List<TweetMain>tweetsList=[];
+  Stream stream = StreamController().stream;
+
+  updateStreamController(dynamic data) {
+    streamController.add(data);
+    stream = streamController.stream;
     notifyListeners();
   }
-  StreamController getStreamController()
-  {
+
+  StreamController getStreamController() {
     notifyListeners();
     return streamController;
   }
-  Stream getStream()
-  {
+
+  Stream getStream() {
     notifyListeners();
     return stream;
   }

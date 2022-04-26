@@ -15,8 +15,9 @@ class TweetBottomBar extends StatelessWidget {
     Key? key,
     required this.index,
     required this.iconsBoundry,
+     required this.tweet,
   }) : super(key: key);
-
+   TweetMain tweet;
    int index;
    Color iconsBoundry;
 
@@ -40,10 +41,10 @@ class TweetBottomBar extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                Provider.of<TweetsViewModel>(context).getTweetsList()[index].getCommentCount() >
+                tweet.getCommentCount() >
                         0
                     ? Text(
-                  Provider.of<TweetsViewModel>(context).getTweetsList()[index].getCommentCount()
+                  tweet.getCommentCount()
                             .toString(),
                         style: titleName,
                       )
@@ -67,10 +68,10 @@ class TweetBottomBar extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                Provider.of<TweetsViewModel>(context).getTweetsList()[index].getRetweetCount()>
+                tweet.getRetweetCount()>
                         0
                     ? Text(
-                  Provider.of<TweetsViewModel>(context).getTweetsList()[index].getRetweetCount()
+                 tweet.getRetweetCount()
                             .toString(),
                         //style:Provider.of<TweetsViewModel>(context).getTweetsList()[index].isRetweeted==false?notRetweeted:retweeted,
                       )
@@ -84,10 +85,8 @@ class TweetBottomBar extends StatelessWidget {
             children: [
               LikeButton(
 
-                isLiked:Provider.of<TweetsViewModel>(context)
-                    .getTweetsList()[index]
-                    .tweet.isLiked,
-                likeCount: Provider.of<TweetsViewModel>(context).getStreamController()[index],
+                isLiked:tweet.tweet.isLiked,
+                likeCount: tweet.tweet.likeCount,
                 likeBuilder: (isLiked) {
                   final color = isLiked ? Colors.red : Colors.transparent;
                   return Padding(
@@ -109,14 +108,16 @@ class TweetBottomBar extends StatelessWidget {
                   );
                 },
                 countBuilder: (count, isLiked, text) {
-                  return Provider.of<TweetsViewModel>(context,listen: false).getTweetsList()[index].getLikesCount()> 0 ? Text(text, style: isLiked?loved:titleName,) : const SizedBox.shrink();
+                  return tweet.getLikesCount()> 0 ? Text(text, style: isLiked?loved:titleName,) : const SizedBox.shrink();
                 },
                 onTap: (isLiked) async {
-                  Provider.of<TweetsViewModel>(context,listen: false).likeTweet(tweet_id: Provider.of<TweetsViewModel>(context,listen: false).getTweetsList()[index].tweet.tweetId);
-                  Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context,"126");
-                print(Provider.of<TweetsViewModel>(context,listen: false).getTweetsList()[index].tweet.tweetId);
-                   Provider.of<TweetsViewModel>(context, listen: false).getTweetsList()[index].tweet.isLiked=!isLiked;
-                  return !isLiked;
+                  tweet.tweet.isLiked=!isLiked;
+                  print("tweet id is : ${tweet.tweet.tweetId}");
+                  print("is liked of this tweet is : ${tweet.tweet.isLiked}");
+
+                  Provider.of<TweetsViewModel>(context,listen: false).likeTweet(tweet_id: tweet.tweet.tweetId);
+                   Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context);
+
                 },
               ),
               SizedBox(

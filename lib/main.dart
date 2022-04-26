@@ -38,7 +38,7 @@ class TwitterApp extends StatelessWidget {
       // Add providers as needed
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
-        ChangeNotifierProvider(create: (context) => TweetsViewModel(streamController: StreamController())),
+        ChangeNotifierProvider(create: (context) => TweetsViewModel()),
         ChangeNotifierProvider(create: (context) => StreamControllerProvider()),
       ],
 
@@ -68,7 +68,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: WelcomeScreen(),
+        home: TimelineScreen(),
         routes: routes,
       ),
     );

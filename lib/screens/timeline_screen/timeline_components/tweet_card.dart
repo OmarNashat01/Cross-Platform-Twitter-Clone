@@ -20,15 +20,8 @@ import 'image_detail_screen.dart';
 //this information will come from class which is TweetCardData
 class TweetCard extends StatelessWidget {
   TweetCard({required this.index, required this.tweet});
-
   int index;
   TweetMain tweet;
-  // Future<String>asyncMethod(int i,BuildContext context)async
-  // {
-  //   List<TweetMain>tweets= await Provider.of<TweetsViewModel>(context).fetchTweets();
-  //   return tweets[i].getTweetprofilePicUrl();
-  //
-  // }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -43,7 +36,7 @@ class TweetCard extends StatelessWidget {
                           //--here is the profile picture of the one who tweeted
                           ProfilePicture (
                               profilePictureFunctionality: () {},
-                              profilePictureImage:Provider.of<TweetsViewModel>(context).getTweetsList()[index].getTweetprofilePicUrl(),
+                              profilePictureImage:tweet.getTweetprofilePicUrl(),
                               profilePictureSize: navigationDrawerProfilePicSize),
 
                   Padding(
@@ -64,12 +57,12 @@ class TweetCard extends StatelessWidget {
               //--for decoration sized box
               SizedBox(height: 5,),
               //--here is the text of the tweet
-              Provider.of<TweetsViewModel>(context).getTweetsList()[index].getTweettext()!=""
+                    tweet.getTweettext()!=""
                   ? Row(
                     children: [
                       Expanded(
                         child: Text(
-                          Provider.of<TweetsViewModel>(context).getTweetsList()[index].getTweettext(),
+                          tweet.getTweettext(),
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                             //max lines of writing a tweet is 8 like in the main twitter
@@ -93,12 +86,13 @@ class TweetCard extends StatelessWidget {
             Navigator.of(context).push(
               CustomPageRoute
                 (child:ImageDetailScreen(
+                tweet: tweet,
                 index: index,
               ),beginX: 0,beginY: 1),
             );
           },
                child: Image.asset(
-                 Provider.of<TweetsViewModel>(context).getTweetsList()[index].images[0].url,
+                 tweet.images[0].url,
            fit: BoxFit.cover,
            width: double.infinity,
            alignment: Alignment.center,
@@ -107,7 +101,7 @@ class TweetCard extends StatelessWidget {
 
 
         //the row of icons for your reactions on the tweet
-        TweetBottomBar(index: index,iconsBoundry: Colors.grey.shade600,),
+        TweetBottomBar(tweet:tweet,index: index,iconsBoundry: Colors.grey.shade600,),
 
 
         //decoration of tweet at the bottom (divider)

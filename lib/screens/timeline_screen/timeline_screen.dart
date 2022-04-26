@@ -35,21 +35,18 @@ class _TimelineScreenState extends State<TimelineScreen> {
   ScrollController ?controller;
   StreamController _streamController=StreamController();
   Stream ?_stream;
-  fetchingStreamController(String user_id)async
-  {
-    Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(user_id);
-    _streamController=Provider.of<TweetsViewModel>(context,listen: false).getStreamController();
-    _stream=_streamController.stream;
-  }
+  // fetchingStreamController(String user_id)async
+  // {
+  //   Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(user_id);
+  //   _streamController=Provider.of<TweetsViewModel>(context,listen: false).getStreamController();
+  //   _stream=_streamController.stream;
+  // }
 @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     controller = ScrollController();
-     _streamController=StreamController();
-     fetchingStreamController("126");
-     _stream=_streamController.stream;
-
+    controller=ScrollController();
+      Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets( context);
   }
   @override
   Widget build(BuildContext context) {
@@ -131,7 +128,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
           //--------------------------------------------------------------------
           //tweets list viewer
         body: StreamBuilder(
-            stream: _stream,
+            stream: Provider.of<StreamControllerProvider>(context).stream,
             builder: (BuildContext context,AsyncSnapshot snapshot,)
             {
 
@@ -153,7 +150,9 @@ class _TimelineScreenState extends State<TimelineScreen> {
                       isAlwaysShown: true,
                       child: RefreshIndicator(
                         color: Colors.grey,
-                        onRefresh: ()=>Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context,"126"),
+                        onRefresh: () {
+                          return Provider.of<TweetsViewModel>(context, listen: false).fetchTweetByTweetId(context,"90");
+                        },
                         child: ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index){

@@ -56,7 +56,8 @@ class AddTweetScreen extends StatelessWidget {
                       String formattedDate = formatter.format(now);
                       //if i am adding a tweet from scratch do this without showing the inner tweet
                        await Provider.of<TweetsViewModel>(context,listen: false).addTweet(text: text,dateOfCreation: formattedDate);
-                       Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context,"126");
+                       //Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context,"126");
+                      await Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context);
                       Navigator.pop(context);
                     },
                     child: Text(
