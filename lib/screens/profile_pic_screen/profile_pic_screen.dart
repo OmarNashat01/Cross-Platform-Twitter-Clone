@@ -20,12 +20,6 @@ class ProfilePicScreen extends StatefulWidget {
 }
 
 class ProfilePicScreenState extends State<ProfilePicScreen> {
-  // String? validateBio(bio) {
-  //   if (bio == null || bio.isEmpty) {
-  //     return 'Please describe yourself, or you can just skip\n this for now';
-  //   }
-  //   return null;
-  // }
 
   void _pressNextButton(context) {
     if (Provider.of<UserProvider>(context, listen: false).profilePic.isEmpty) {

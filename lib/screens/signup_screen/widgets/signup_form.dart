@@ -27,8 +27,13 @@ class SignupFormState extends State<SignupForm> {
     return null;
   }
 
-  String? validateEmail(value) {
-    if (Provider.of<UserProvider>(context, listen: false).isEmailTaken) {
+  // Seperated to make unit testing work
+  bool isEmailTakenChecker() {
+    return Provider.of<UserProvider>(context, listen: false).isEmailTaken;
+  }
+  
+  String? validateEmail(value, isEmailTaken) {
+    if (isEmailTaken) {
       return 'Email has already been taken.';
     }
 
@@ -95,7 +100,7 @@ class SignupFormState extends State<SignupForm> {
                     cursorColor: kSecondaryColor,
                     cursorWidth: 2,
                     style: const TextStyle(fontSize: 20),
-                    validator: validateEmail,
+                    validator: (value) => validateEmail(value, isEmailTakenChecker()),
                     controller: _emailFieldController,
                     onSaved: (email) => value.email = email,
                     keyboardType: TextInputType.emailAddress,
