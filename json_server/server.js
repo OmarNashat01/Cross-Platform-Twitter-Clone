@@ -37,37 +37,28 @@ function getRandom(min, max) {
 }
 
 // Overwritten routes
-server.post('/users/likes', function (req, res, next) {
-     fs.readFile(nPath, (err, data) => {
-      let jsonData = JSON.parse(data.toString());
-      let likedTweet=jsonData.tweets.find(tweet => tweet.tweet_id === req.body.tweet_id);
-      likedTweet['like_count']++;
-      fs.writeFile(nPath, JSON.stringify(jsonData), (err, result) => {
-        res.status(200).json({ });
-      });
-    });
-});
-
 server.post('/signup/verify', function (req, res, next) {
   let exists = emailExists(req.body.email);
   if (exists) {
-    res.status(200).json({ "OTP Sent": false, "OTP": "" });
+    res.status(400).json({ "message": "email does already exist" });
   } else {
     let otp = getRandom(1000, 9999);
     let userId = getRandom(100000000000000, 999999999999999);
     let token = getRandom(100000000000000, 999999999999999);
 
-
     fs.readFile(nPath, (err, data) => {
       let jsonData = JSON.parse(data.toString());
       jsonData.OTPs.push({
-        user_id: userId.toString(),
-        OTP: otp.toString(),
-        token: token.toString(),
-        email: req.body.email
+        "_id": userId.toString(),
+        "OTP": otp.toString(),
+        "token": token.toString(),
+        "email": req.body.email
       });
       fs.writeFile(nPath, JSON.stringify(jsonData), (err, result) => {
-        res.status(200).json({ "OTP Sent": true, "OTP": otp });
+        res.status(200).json({
+          "message": "OTP SENT",
+          "OTP": otp
+        });
       });
     });
   }
@@ -84,36 +75,37 @@ server.get('/signup/confirm_email', function (req, res, next) {
       "email": email
     });
   } else {
-    res.status(401).json({ "401": "Token expired" });
+    res.status(401).json({ "message": "OTP Expired" });
   }
 });
 
 server.post('/signup', function (req, res, next) {
   if (usernameExists(req.body.username)) {
-    res.status(400).json();
+    res.status(400).json({ "message": "username exists" });
   } else {
     fs.readFile(nPath, (err, data) => {
       let jsonData = JSON.parse(data.toString());
-      req.body['user_id'] = jsonData.OTPs.find(usr => usr.email === req.body.email).user_id;// create "user_id" field
+      req.body['_id'] = jsonData.OTPs.find(usr => usr.email === req.body.email)._id;  // create "_id" field
       jsonData.users.push(req.body);
       fs.writeFile(nPath, JSON.stringify(jsonData), (err, result) => {
-        res.status(200).json();
+        res.status(200).json({ "message": "Successufly inserted new user" });
       });
     });
   }
 });
 
 server.post('/login', function (req, res, next) {
+  // Todo 200
   if (!emailExists(req.body.email)) {
-    res.status(401).json({ "400": "user not found" });
+    res.status(404).json({ "message": "email doesn't exist" });
   } else if (!passMatches(req.body.email, req.body.password)) {
-    res.status(400).json({ "400": "Password doesn't match" });
+    res.status(400).json({ "message": "incorrect password" });
   } else {
     let token = getRandom(100000000000000, 999999999999999);
-    res.status(200).json({
-      "User found": true,
+    res.status(201).json({
+      "message": "user found",
       "token": token.toString(),
-      "user_id": db.users.find(user => user.email === req.body.email && user.password === req.body.password).user_id
+      "_id": db.users.find(user => user.email === req.body.email && user.password === req.body.password)._id
     });
   }
 });

@@ -94,9 +94,18 @@ class UsernameScreenState extends State<UsernameScreen> {
   }
 
   void _pressSkipButton(context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
     // To gurantee empty username
-    Provider.of<UserProvider>(context, listen: false).username = '';
-    Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeName);
+    userProvider.username = '';
+    userProvider.signup().then((res) {
+      if (res.statusCode == 200) {
+        userProvider.setIsUsernameTaken(false);
+        Navigator.of(context).pushReplacementNamed(WelcomeScreen.routeName);
+      } else {
+        userProvider.setIsUsernameTaken(true);
+      }
+    });
   }
 
   @override

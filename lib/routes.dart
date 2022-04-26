@@ -15,6 +15,7 @@ import 'screens/username_screen/username_screen.dart';
 import 'screens/profile_screen/edit_profile_screen.dart';
 import 'screens/notifications_screen/NotificationsScreen.dart';
 import 'screens/search_screen/SearchScreen.dart';
+import 'screens/settings_screen/settings_screen.dart';
 
 Map<String, WidgetBuilder> routes = {
   WelcomeScreen.routeName: (context) => WelcomeScreen(),
@@ -32,4 +33,5 @@ Map<String, WidgetBuilder> routes = {
   NotificationsScreen.routeName: (context) => NotificationsScreen(),
   SearchScreen.routeName: (context) => SearchScreen(),
   EditProfileScreen.routeName: (context) => EditProfileScreen(),
+  SettingsScreen.routeName: (context) => SettingsScreen()
 };

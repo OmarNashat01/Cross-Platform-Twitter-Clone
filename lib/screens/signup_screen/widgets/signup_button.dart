@@ -21,10 +21,10 @@ class SignupButton extends StatelessWidget {
           .save(); // to save name, email, dob in user_provider
 
       userProvider.verifyEmail().then((res) {
-        final otp = jsonDecode(res.body);
-        log(otp.toString());
-        if (otp['OTP Sent'] == true) {
-          log('OTP: ${otp['OTP']}');
+        final response = jsonDecode(res.body);
+        log(response.toString());
+        if (res.statusCode == 200) {
+          log('OTP: ${response['OTP']}');
           userProvider.setIsEmailTaken(false);
           Navigator.of(context).pushNamed(VerificationScreen.routeName);
         } else {

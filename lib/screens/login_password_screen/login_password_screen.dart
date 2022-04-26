@@ -39,12 +39,13 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
       _formKey.currentState!.save();
       userProvider.login().then((res) async {
         switch (res.statusCode) {
-          case 200: // User exists (success)
+          case 200: // Todo
+          case 201: // OK (success)
             final response = jsonDecode(res.body);
             Auth.email = userProvider.email;
             Auth.password = userProvider.password;
             Auth.token = response['token'];
-            Auth.userId = response['user_id'].toString();
+            Auth.userId = response['_id'].toString();
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs
               ..setString('email', Auth.email)
@@ -66,7 +67,7 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
             // userProvider.password = '';
 
             break;
-          default: // status code 401 (user doesn't exist)
+          default: // status code 404 (user doesn't exist)
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text('Sorry, we could not find your account.'),
             ));

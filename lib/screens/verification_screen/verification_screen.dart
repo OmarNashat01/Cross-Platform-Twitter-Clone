@@ -21,9 +21,6 @@ class VerificationScreenState extends State<VerificationScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final _verificationFieldController = TextEditingController();
-  final _snackBar = const SnackBar(
-    content: Text('The code you entered is incorrect. Please try again.'),
-  );
 
   String? validateVerificationCode(code) {
     if (code == null || code.isEmpty) {
@@ -39,7 +36,6 @@ class VerificationScreenState extends State<VerificationScreen> {
       Provider.of<UserProvider>(context, listen: false)
           .verifyCode()
           .then((res) {
-        final response = jsonDecode(res.body);
         // email verified
         if (res.statusCode == 200) {
           Navigator.of(context)
@@ -47,7 +43,12 @@ class VerificationScreenState extends State<VerificationScreen> {
             ..pop();
           Navigator.of(context).pushReplacementNamed(PasswordScreen.routeName);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(_snackBar);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content:
+                  Text('The code you entered is incorrect. Please try again.'),
+            ),
+          );
         }
       });
     } else {

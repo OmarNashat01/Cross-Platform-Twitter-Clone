@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'opacity_data.dart';
 import 'package:twitter/screens/profile_screen/profile_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/custom_page_route.dart';
+import 'package:twitter/screens/settings_screen/settings_screen.dart';
 
 //this navigation drawer is made for whenever the user press on his profile picture in the time line drawer is popped up
 class NavigationDrawer extends StatelessWidget {
@@ -38,9 +39,13 @@ class NavigationDrawer extends StatelessWidget {
                       ProfilePicture(
                         profilePictureFunctionality: () {
                           //go to profile screen upon pressing it
-                          Navigator.of(context).push(CustomPageRoute(child:ProfileScreen(),beginX: 1,beginY: 0),);
+                          Navigator.of(context).push(
+                            CustomPageRoute(
+                                child: ProfileScreen(), beginX: 1, beginY: 0),
+                          );
                         },
-                        profilePictureImage: UsersData.getMyData().profilePicture,
+                        profilePictureImage:
+                            UsersData.getMyData().profilePicture,
                         profilePictureSize: navigationDrawerProfilePicSize,
                       ),
 
@@ -185,7 +190,9 @@ class NavigationDrawer extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context){ return ProfileScreen(); },
+                            builder: (context) {
+                              return ProfileScreen();
+                            },
                           ),
                         );
                       },
@@ -299,7 +306,10 @@ class NavigationDrawer extends StatelessWidget {
                     //------------------------------------------------------------
                     //settings and privacy button
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(SettingsScreen.routeName);
+                      },
                       child: Padding(
                         padding: const EdgeInsets.only(
                             top: 15, bottom: 4, left: 13, right: 20),
