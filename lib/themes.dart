@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'constants.dart';
 
+/// Custom app bar widgets
 // =============== App bars ===============
 class CustomAppBars {
   static AppBar welcomeAppBar = AppBar(
@@ -16,6 +17,7 @@ class CustomAppBars {
   );
 }
 
+/// Collection of buttons that are used across the app
 // =============== Button Styles ===============
 class CustomButtons {
   static ButtonStyle blueButton({bool isFit = true}) {
@@ -68,6 +70,7 @@ class CustomButtons {
   }
 }
 
+/// Collection of text fields used
 // =============== Field Styles ===============
 class FieldDecorations {
   static InputDecoration normal(String hint) {

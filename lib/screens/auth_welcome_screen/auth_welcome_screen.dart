@@ -8,6 +8,7 @@ import '../login_email_screen/login_email_screen.dart';
 import '../../constants.dart';
 import '../../themes.dart';
 
+/// First page to choose among "signup" and "login" screens
 class AuthWelcomeScreen extends StatelessWidget {
   static const routeName = '/auth-welcome-screen';
 

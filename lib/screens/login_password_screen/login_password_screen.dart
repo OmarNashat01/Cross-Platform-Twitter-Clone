@@ -11,6 +11,7 @@ import '../../providers/user_provider.dart';
 import '../../themes.dart';
 import '../../constants.dart';
 
+/// Login Screen that takes password as an input
 class LoginPasswordScreen extends StatefulWidget {
   static const routeName = '/login-password-screen';
 

@@ -11,6 +11,7 @@ import '../../providers/user_provider.dart';
 import '../../themes.dart';
 import '../../constants.dart';
 
+/// Password screen
 class PasswordScreen extends StatefulWidget {
   static const routeName = '/password-screen';
 
@@ -24,6 +25,7 @@ class PasswordScreenState extends State<PasswordScreen> {
 
   final _passwordFieldController = TextEditingController();
 
+  /// Proper validations for password input field
   String? validatePassword(pass) {
     if (pass == null || pass.isEmpty || pass.length < 8) {
       return 'Your password needs to be at least 8 characters.\nPlease enter a longer one.';
@@ -42,6 +44,7 @@ class PasswordScreenState extends State<PasswordScreen> {
     }
   }
 
+  /// Used to decorate and style the password field
   InputDecoration _decoratePasswordField(String hint) {
     return InputDecoration(
       focusedBorder: const UnderlineInputBorder(

@@ -12,6 +12,7 @@ import '../../providers/user_provider.dart';
 import '../../themes.dart';
 import '../../constants.dart';
 
+/// @username screen
 class UsernameScreen extends StatefulWidget {
   static const routeName = '/username-screen';
 
@@ -23,10 +24,12 @@ class UsernameScreenState extends State<UsernameScreen> {
   final _formKey = GlobalKey<FormState>();
   final usernameFieldController = TextEditingController();
 
+  /// Check if the entered username is already taken by another user
   bool isUsernameTakenChecker() {
     return Provider.of<UserProvider>(context, listen: false).isUsernameTaken;
   }
 
+  /// Proper validations for username input field
   String? validateUsername(username, isUsernameTaken) {
     if (username == null || username.isEmpty || username.length <= 4) {
       return 'Username should be more than 4 characters.';

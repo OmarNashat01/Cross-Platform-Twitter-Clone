@@ -11,6 +11,7 @@ import '../../../providers/user_provider.dart';
 
 import '../../../constants.dart';
 
+/// Basic form for creating accounts that includes Name, Email and DOB
 class SignupForm extends StatefulWidget {
   @override
   State<SignupForm> createState() => SignupFormState();
@@ -22,16 +23,19 @@ class SignupFormState extends State<SignupForm> {
   final _emailFieldController = TextEditingController();
   final _dateOfBirthFieldController = TextEditingController();
 
+  /// Proper validations for name field
   String? validateName(value) {
     if (value.isEmpty) return 'Please enter your name.';
     return null;
   }
 
   // Seperated to make unit testing work
+  /// Check if the entered email is already taken or previously stored in the database
   bool isEmailTakenChecker() {
     return Provider.of<UserProvider>(context, listen: false).isEmailTaken;
   }
-  
+
+  /// Proper validations for email input field
   String? validateEmail(value, isEmailTaken) {
     if (isEmailTaken) {
       return 'Email has already been taken.';
@@ -43,6 +47,7 @@ class SignupFormState extends State<SignupForm> {
     return null;
   }
 
+  /// Proper validations for dob input field
   String? validateDob(value) {
     if (value.isEmpty) return 'Please enter your date of birth.';
     return null;
@@ -54,6 +59,7 @@ class SignupFormState extends State<SignupForm> {
     });
   }
 
+  /// Handle Date Picker
   void _showDatePicker() {
     DatePicker.showDatePicker(
       context,
@@ -100,7 +106,8 @@ class SignupFormState extends State<SignupForm> {
                     cursorColor: kSecondaryColor,
                     cursorWidth: 2,
                     style: const TextStyle(fontSize: 20),
-                    validator: (value) => validateEmail(value, isEmailTakenChecker()),
+                    validator: (value) =>
+                        validateEmail(value, isEmailTakenChecker()),
                     controller: _emailFieldController,
                     onSaved: (email) => value.email = email,
                     keyboardType: TextInputType.emailAddress,

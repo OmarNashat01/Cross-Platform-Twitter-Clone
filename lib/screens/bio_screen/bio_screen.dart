@@ -20,6 +20,7 @@ class BioScreenState extends State<BioScreen> {
 
   final bioFieldController = TextEditingController();
 
+  /// Proper validations for Bio input field
   String? validateBio(bio) {
     if (bio == null || bio.isEmpty) {
       return 'Please describe yourself, or you can just skip\n this for now';

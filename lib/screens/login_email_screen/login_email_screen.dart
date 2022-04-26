@@ -10,6 +10,7 @@ import '../../providers/user_provider.dart';
 import '../../themes.dart';
 import '../../constants.dart';
 
+/// Login screen to handle email input field
 class LoginEmailScreen extends StatefulWidget {
   static const routeName = '/login-email-screen';
 
@@ -39,6 +40,7 @@ class LoginEmailScreenState extends State<LoginEmailScreen> {
     }
   }
 
+  /// Go to forgot password screen to handle this functionality
   void _pressForgotPassButton(context) {
     // Todo: Navigate to forgot password screen
   }

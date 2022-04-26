@@ -20,16 +20,21 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  
+  /// Navigate to the signup / signin screen 
   void _switchToAuthWelcomeScreen() async {
     await Future.delayed(const Duration(milliseconds: 1500));
     Navigator.of(context).pushReplacementNamed(AuthWelcomeScreen.routeName);
   }
 
+  /// Navigate to the home page (timeline) 
   void _switchToTimelineScreen() async {
     await Future.delayed(const Duration(milliseconds: 1500));
     Navigator.of(context).pushReplacementNamed(TimelineScreen.routeName);
   }
 
+  /// Navigate to Timeline screen if a user is already logged in
+  /// Navigate to Signup/Signin screen if there is no logged in account
   void _checkAndSwitch() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isAlreadyLoggedIn = (prefs.getString('email') != null);

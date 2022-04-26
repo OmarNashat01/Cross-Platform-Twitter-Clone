@@ -3,12 +3,16 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
+/// Switch variable to toggle between using mock backend service or the real backend
 bool isMock = true;
 
-// API constants
+/// Base URL of the real backend
 const String kBaseUrl = ''; // without https:// or http://
+
+/// Mock server base URL
 const String kMockBaseUrl = '10.0.2.2:8000';
 
+/// Contains all needed globals across the application navigation after logging in
 class Auth {
   static String token = '';
   // static String refreshToken = '';
@@ -21,6 +25,7 @@ class Auth {
   static String bio="hello everyone";
 }
 
+/// Singlton class that gives you access to Base URLs
 class Http {
   static final Http _singleton = Http._internal();
   factory Http() => _singleton;
@@ -29,6 +34,7 @@ class Http {
   String getMobileBaseUrl() => isMock == true ? "192.168.1.8:8000":kMockBaseUrl ;
 }
 
+/// Used to hash the user's password via MD5
 String hashToMd5(String pass) => md5.convert(utf8.encode(pass)).toString();
 
 // Profile pictures sizes
@@ -41,7 +47,7 @@ const String kLogoPath = 'assets/icons/twitter_logo.svg';
 const String kGoogleLogoPath = 'assets/icons/google_logo.svg';
 const String squareLogoPath = 'assets/images/square.png';
 
-// Colors
+/// Colors
 const Color kPrimaryColor = Colors.white;
 const Color kOnPrimaryColor = Colors.black;
 

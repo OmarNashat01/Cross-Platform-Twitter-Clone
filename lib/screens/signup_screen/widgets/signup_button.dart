@@ -12,6 +12,7 @@ class SignupButton extends StatelessWidget {
   final _formKey;
   const SignupButton(this._formKey);
 
+  /// Calls signup to make api requst and handle the coming response
   void _pressSignupButton(context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     userProvider.setIsEmailTaken(false);

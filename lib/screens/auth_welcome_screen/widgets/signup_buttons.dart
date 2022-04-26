@@ -6,6 +6,7 @@ import '../../signup_screen/signup_screen.dart';
 import '../../../themes.dart';
 import '../../../constants.dart';
 
+/// Widgets of Buttons inside the signup / login screen
 class SignUpButtons extends StatelessWidget {
   void _switchToSignupScreen(context) {
     Navigator.of(context).pushNamed(SignupScreen.routeName);

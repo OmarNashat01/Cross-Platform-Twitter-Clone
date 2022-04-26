@@ -17,6 +17,7 @@ import 'screens/notifications_screen/NotificationsScreen.dart';
 import 'screens/search_screen/SearchScreen.dart';
 import 'screens/settings_screen/settings_screen.dart';
 
+/// All app routes
 Map<String, WidgetBuilder> routes = {
   WelcomeScreen.routeName: (context) => WelcomeScreen(),
   AuthWelcomeScreen.routeName: (context) => AuthWelcomeScreen(),

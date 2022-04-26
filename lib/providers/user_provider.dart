@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:twitter/constants.dart';
 
+/// Holds user's data and utility functions to send API requests 
 class UserProvider with ChangeNotifier {
   String _name = '';
   String _email = '';

@@ -10,6 +10,7 @@ import '../../providers/user_provider.dart';
 import '../../themes.dart';
 import '../../constants.dart';
 
+/// Account validation screen
 class VerificationScreen extends StatefulWidget {
   static const routeName = '/verification-screen';
 
@@ -22,6 +23,7 @@ class VerificationScreenState extends State<VerificationScreen> {
 
   final _verificationFieldController = TextEditingController();
 
+  /// Check if the entered verification code matches the one sent to this email 
   String? validateVerificationCode(code) {
     if (code == null || code.isEmpty) {
       return 'Please enter the verification code.';
@@ -29,6 +31,7 @@ class VerificationScreenState extends State<VerificationScreen> {
     return null;
   }
 
+  /// Saves the verification code and handle the API responses
   void _pressNextButton(context) {
     if (_formKey.currentState!.validate()) {
       log('Verification PASSED');
