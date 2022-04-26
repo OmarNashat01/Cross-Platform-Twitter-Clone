@@ -23,11 +23,15 @@ class UsernameScreenState extends State<UsernameScreen> {
   final _formKey = GlobalKey<FormState>();
   final usernameFieldController = TextEditingController();
 
-  String? validateUsername(username) {
+  bool isUsernameTakenChecker() {
+    return Provider.of<UserProvider>(context, listen: false).isUsernameTaken;
+  }
+
+  String? validateUsername(username, isUsernameTaken) {
     if (username == null || username.isEmpty || username.length <= 4) {
       return 'Username should be more than 4 characters.';
     }
-    if (Provider.of<UserProvider>(context, listen: false).isUsernameTaken) {
+    if (isUsernameTaken) {
       return 'Username has already been taken';
     }
     return null;
@@ -151,7 +155,7 @@ class UsernameScreenState extends State<UsernameScreen> {
                           cursorColor: kSecondaryColor,
                           cursorWidth: 2,
                           style: const TextStyle(fontSize: 20),
-                          validator: validateUsername,
+                          validator: (value) => validateUsername(value, isUsernameTakenChecker()),
                           controller: usernameFieldController,
                           onSaved: (username) => value.username = username,
                           onFieldSubmitted: (_) => _pressNextButton(context),

@@ -6,7 +6,7 @@ void main() {
   final SignupFormState signupFormState =
       SignupForm().createElement().state as SignupFormState;
 
-  group('NameValidation', () {
+  group('Name Validation', () {
     test('EmptyString', () {
       String dummy = '';
       String expected = 'Please enter your name.';
@@ -18,41 +18,47 @@ void main() {
     });
   });
 
-  group('EmailValidation', () {
+  group('Email Validation', () {
     test('EmptyString', () {
       String dummy = '';
       String expected = 'Please enter a valid email.';
-      expect(expected, signupFormState.validateEmail(dummy));
+      expect(expected, signupFormState.validateEmail(dummy, false));
     });
-    test('InvalidEmail1', () {
+    test('Invalid Email1', () {
       String dummy = 'ahmedmahmoud';
       String expected = 'Please enter a valid email.';
-      expect(expected, signupFormState.validateEmail(dummy));
+      expect(expected, signupFormState.validateEmail(dummy, false));
     });
-    test('InvalidEmail2', () {
+    test('Invalid Email2', () {
       String dummy = 'ahmedmahmoud89@yousry';
       String expected = 'Please enter a valid email.';
-      expect(expected, signupFormState.validateEmail(dummy));
+      expect(expected, signupFormState.validateEmail(dummy, false));
     });
 
-    test('InvalidEmail3', () {
+    test('Invalid Email3', () {
       String dummy = 'ahmedmahmoud89@yousry';
       String expected = 'Please enter a valid email.';
-      expect(expected, signupFormState.validateEmail(dummy));
+      expect(expected, signupFormState.validateEmail(dummy, false));
     });
 
-    test('InvalidEmail4', () {
+    test('Invalid Email4', () {
       String dummy = 'ahmedmahmoud89@yousry..';
       String expected = 'Please enter a valid email.';
-      expect(expected, signupFormState.validateEmail(dummy));
+      expect(expected, signupFormState.validateEmail(dummy, false));
     });
 
-    test('ValidEmail', () {
+    test('Email Taken', () {
       String dummy = 'hazem.elaswad00@eng-st.cu.edu.eg';
-      expect(null, signupFormState.validateName(dummy));
+      String expected = 'Email has already been taken.';
+      expect(expected, signupFormState.validateEmail(dummy, true));
+    });
+
+    test('Valid Email', () {
+      String dummy = 'hazem.elaswad00@eng-st.cu.edu.eg';
+      expect(null, signupFormState.validateEmail(dummy, false));
     });
   });
-  group('DateOfBirthValidation', () {
+  group('DateOfBirth Validation', () {
     test('EmptyString', () {
       String dummy = '';
       String expected = 'Please enter your date of birth.';
@@ -60,7 +66,7 @@ void main() {
     });
 
     test('ValidDob', () {
-      String dob = '2019-04-04 00:00:00.000';
+      String dob = '2019-04-04';
       expect(null, signupFormState.validateName(dob));
     });
   });
