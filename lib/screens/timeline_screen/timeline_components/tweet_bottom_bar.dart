@@ -7,6 +7,7 @@ import 'package:twitter/screens/timeline_screen/timeline_components/retweet_scre
 import '../../../constants.dart';
 import '../../../dummy/timeline_list.dart';
 import '../../../models/tweet_complete_model.dart';
+import '../../../providers/stream_controller_provider.dart';
 import '../../../providers/tweets_view_model.dart';
 
 class TweetBottomBar extends StatelessWidget {
@@ -82,11 +83,11 @@ class TweetBottomBar extends StatelessWidget {
           Row(
             children: [
               LikeButton(
-                // Provider.of<TweetsViewModel>(context)
-                //     .getTweetsList()[index]
-                //     .isLiked
-                isLiked:false,
-                likeCount: Provider.of<TweetsViewModel>(context).getTweetsList()[index].getLikesCount(),
+
+                isLiked:Provider.of<TweetsViewModel>(context)
+                    .getTweetsList()[index]
+                    .tweet.isLiked,
+                likeCount: Provider.of<TweetsViewModel>(context).getStreamController()[index],
                 likeBuilder: (isLiked) {
                   final color = isLiked ? Colors.red : Colors.transparent;
                   return Padding(
@@ -108,11 +109,13 @@ class TweetBottomBar extends StatelessWidget {
                   );
                 },
                 countBuilder: (count, isLiked, text) {
-                  return Provider.of<TweetsViewModel>(context).getTweetsList()[index].getLikesCount()> 0 ? Text(text, style: isLiked?loved:titleName,) : const SizedBox.shrink();
+                  return Provider.of<TweetsViewModel>(context,listen: false).getTweetsList()[index].getLikesCount()> 0 ? Text(text, style: isLiked?loved:titleName,) : const SizedBox.shrink();
                 },
                 onTap: (isLiked) async {
-                  // Provider.of<TweetsViewModel>(context, listen: false)
-                  //     .reactLove(!isLiked, index);
+                  Provider.of<TweetsViewModel>(context,listen: false).likeTweet(tweet_id: Provider.of<TweetsViewModel>(context,listen: false).getTweetsList()[index].tweet.tweetId);
+                  Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context,"126");
+                print(Provider.of<TweetsViewModel>(context,listen: false).getTweetsList()[index].tweet.tweetId);
+                   Provider.of<TweetsViewModel>(context, listen: false).getTweetsList()[index].tweet.isLiked=!isLiked;
                   return !isLiked;
                 },
               ),

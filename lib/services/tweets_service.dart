@@ -168,8 +168,7 @@ class TweetsApi
     var headers = {
       'Content-Type': 'application/json'
     };
-    var request = http.Request('POST', Uri.parse('http://192.168.1.8:8000/tweets'));
-    var uuid = Uuid();
+    var request = http.Request('POST', Uri.parse('http://192.168.1.8:8000/users/likes'));
     request.body = json.encode({
       "tweet_id": tweetId,//random id for tweet created
       "user_id": Auth.userId,

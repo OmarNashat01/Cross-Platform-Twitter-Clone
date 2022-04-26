@@ -21,6 +21,11 @@ StreamController streamController;
     await TweetsApi().addTweet(text:text ,dateOfCreation:dateOfCreation );
     notifyListeners();
   }
+  Future<void> likeTweet({required String tweet_id}) async
+  {
+    await TweetsApi().addLike(tweetId: tweet_id);
+    notifyListeners();
+  }
   List<TweetMain> getTweetsList()
   {
     return _tweetsList;
