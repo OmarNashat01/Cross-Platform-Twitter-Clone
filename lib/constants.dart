@@ -87,3 +87,15 @@ const Text followersString = Text(
   ' Followers  ',
   style: titleName,
 );
+
+
+const TextStyle bio_boldName =
+TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black);
+const TextStyle bio_titleName =
+TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black);
+const TextStyle header_titleName =
+TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white);
+const TextStyle bio_UserName = TextStyle(
+  fontSize: 14,
+  color: Color(0xff757575),
+);
