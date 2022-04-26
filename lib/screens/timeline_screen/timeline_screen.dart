@@ -148,18 +148,12 @@ class _TimelineScreenState extends State<TimelineScreen> {
                     return Scrollbar(
                       radius: Radius.circular(30),
                       isAlwaysShown: true,
-                      child: RefreshIndicator(
-                        color: Colors.grey,
-                        onRefresh: () {
-                          return Provider.of<TweetsViewModel>(context, listen: false).fetchTweetByTweetId(context,"90");
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index){
+                          return TweetCard(index: index,tweet: snapshot.data[index],);
                         },
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index){
-                            return TweetCard(index: index,tweet: snapshot.data[index],);
-                          },
-                          itemCount:snapshot.data.length,
-                        ),
+                        itemCount:snapshot.data.length,
                       ),
                     );
                   }
