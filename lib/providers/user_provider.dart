@@ -1,14 +1,16 @@
 import 'dart:collection';
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:twitter/constants.dart';
 
-/// Holds user's data and utility functions to send API requests 
+/// Holds user's data and utility functions to send API requests
 class UserProvider with ChangeNotifier {
   String _name = '';
   String _email = '';
-  String _dob = ''; //! must be 'yyyy-mm-dd'
+  String _dob = ''; //! must be in 'yyyy-mm-dd' format
   String _verificationCode = '';
   String _profilePic = ''; //! image local path, to be changed later
   String _username = '';
@@ -29,7 +31,7 @@ class UserProvider with ChangeNotifier {
   set username(name) => _username = name;
   set password(password) => _password = password;
   set bio(bio) => _bio = bio;
-  set gender(gender) => _gender = gender; // 'M' or 'F'
+  set gender(gender) => _gender = gender; // 'M' | 'F'
   set location(location) => _location = location;
   set website(website) => _website = website;
 
@@ -69,8 +71,11 @@ class UserProvider with ChangeNotifier {
 
     final response = await http.post(
       Uri.parse('http://${Http().getBaseUrl()}/signup/verify'),
-      body: {'email': _email},
+      headers: {"Content-Type": "application/json; charset=UTF-8"},
+      body: jsonEncode({'email': _email}),
     );
+    log(_email);
+
     return response;
   }
 
@@ -102,23 +107,26 @@ class UserProvider with ChangeNotifier {
       // profilePic
     });
     general.forEach((key, value) {
-      if (value.isNotEmpty) mapToFill[key] = value;
+      if (value.isNotEmpty)
+        mapToFill[key] = value; //! should add empty values as null values
     });
 
     final response = await http.post(
       Uri.parse('http://${Http().getBaseUrl()}/signup'),
-      body: mapToFill,
+      headers: {"Content-Type": "application/json; charset=UTF-8"},
+      body: jsonEncode(general /*mapToFill*/),
     );
     return response;
   }
 
   Future<http.Response> login() async {
     final response = await http.post(
-      Uri.parse('http://${Http().getBaseUrl()}/login'),
-      body: {
+      Uri.parse('http://${Http().getBaseUrl()}/Login/'),
+      headers: {"Content-Type": "application/json; charset=UTF-8"},
+      body: jsonEncode({
         'email': _email,
         'password': _password,
-      },
+      }),
     );
     return response;
   }

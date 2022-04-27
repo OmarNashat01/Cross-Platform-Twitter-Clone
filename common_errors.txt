@@ -1,0 +1,8 @@
+Post request:
+
+<h1>Redirecting...</h1>
+<p>You should be redirected automatically to target URL: <a href="http://3.90.225.164:5000/Login/">http://3.90.225.164:5000/Login/</a>. If not click the link....
+
+Sol: Add / at the end of the route (/login/)
+
+- User headers and jsonEncode

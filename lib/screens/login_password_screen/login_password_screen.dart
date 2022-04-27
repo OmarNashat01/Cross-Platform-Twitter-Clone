@@ -86,8 +86,6 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
     // Todo
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);

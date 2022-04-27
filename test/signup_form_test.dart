@@ -67,7 +67,7 @@ void main() {
 
     test('ValidDob', () {
       String dob = '2019-04-04';
-      expect(null, signupFormState.validateName(dob));
+      expect(null, signupFormState.validateDob(dob));
     });
   });
 }

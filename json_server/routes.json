@@ -7,6 +7,7 @@
     "/signup/confirm_email": "/OTPs",
     "/signup/confirm_email?OTP=:otp&email=:mail": "/OTPs?OTP=:otp&email=:mail",
     "/signup": "/users",
-    "/login": "/OTPs"
+    "/login": "/OTPs",
+    "/users/me": "/users?_id="
 
 }
