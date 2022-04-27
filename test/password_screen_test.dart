@@ -17,7 +17,7 @@ void main() {
       String expected = 'Your password needs to be at least 8 characters.\nPlease enter a longer one.';
       expect(expected, passwordScreenState.validatePassword(dummy));
     });
-    test('ValidName', () {
+    test('ValidPassword', () {
       String dummy = '87ekql[q';
       expect(null, passwordScreenState.validatePassword(dummy));
     });

@@ -8,5 +8,4 @@
     "/signup/confirm_email?OTP=:otp&email=:mail": "/OTPs?OTP=:otp&email=:mail",
     "/signup": "/users",
     "/login": "/OTPs"
-
 }
