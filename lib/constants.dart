@@ -4,10 +4,13 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
 /// Switch variable to toggle between using mock backend service or the real backend
-bool isMock = true;
+bool isMock = false;
+
+/// Switch variable to toggle between hasing the password or not
+bool isPasswordHashed = false;
 
 /// Base URL of the real backend
-const String kBaseUrl = ''; // without https:// or http://
+const String kBaseUrl = '3.90.225.164:5000'; // without https:// or http://
 
 /// Mock server base URL
 const String kMockBaseUrl = '10.0.2.2:8000';
