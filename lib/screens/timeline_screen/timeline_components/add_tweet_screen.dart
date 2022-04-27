@@ -28,65 +28,85 @@ class AddTweetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        //here a nested scroll view widget needs ti be done
+      //here a nested scroll view widget needs ti be done
       body: SafeArea(
         child: NestedScrollView(
             floatHeaderSlivers: true,
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled)=>
-          [
-            SliverAppBar(
-              forceElevated: innerBoxIsScrolled,
-              pinned: true,
-              automaticallyImplyLeading: false,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      'Cancel',
-                      style: TextStyle(
-                        color: Colors.blue,
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled)=>
+            [
+              SliverAppBar(
+                forceElevated: innerBoxIsScrolled,
+                pinned: true,
+                automaticallyImplyLeading: false,
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
                       ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: ()async {
-                      text = title!;
-                      int idx = text.indexOf(":");
-                      List parts = [text.substring(0,idx).trim(), text.substring(idx+1).trim()];
-                      print(parts[0]);
-                      print(parts[1]);
-                      var now = new DateTime.now();
-                      var formatter = new DateFormat('yyyy-MM-dd');
-                      String formattedDate = formatter.format(now);
-                      //if i am adding a tweet from scratch do this without showing the inner tweet
-                      var uuid = Uuid();
-                      String id=uuid.v4();
-                      String tweetId=uuid.v4();
+                    TextButton(
+                      onPressed: ()async {
+                        text = title!;
+                        List parts=[];
+                        var image1;
+                        int c=0;
+                        int idx = text.indexOf(":");
+                        for(int i=0;i<text.length;i++)
+                        {
+                          if(text[i]==':')
+                          {
+                            print('hola');
+                            c=1;
+                            parts = [text.substring(0,idx).trim(), text.substring(idx+1).trim()];
+                            image1=[{ "url": parts[1], "alt_text": "7:45 pm", "height": 0, "width": 0}];
+                            break;
+                          }
+                        }
+                        if(c==0)
+                        {
+                          print("not hola");
+                          parts.add(text);
+                          image1=[];
+                        }
 
 
-                       await Provider.of<TweetsViewModel>(context,listen: false).addTweet(id:id,tweetId:tweetId,dateOfCreation:"2022-4-27",text: parts[0],images: [{ "url": parts[1], "alt_text": "7:45 pm", "height": 0, "width": 0},],videos: []);
-                       //Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context,"126");
-                       await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(context,tweetId);
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      'Tweet',
-                      style: TextStyle(
-                        color: Colors.blue[600],
+                        print(parts[0]);
+                        var now = new DateTime.now();
+                        var formatter = new DateFormat('yyyy-MM-dd');
+                        String formattedDate = formatter.format(now);
+                        //if i am adding a tweet from scratch do this without showing the inner tweet
+                        var uuid = Uuid();
+                        String id=uuid.v4();
+                        String tweetId=uuid.v4();
+
+
+                        await Provider.of<TweetsViewModel>(context,listen: false).addTweet(id:id,tweetId:tweetId,dateOfCreation:"2022-4-27",text: parts[0],images: image1,videos: []);
+                        //Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context,"126");
+                        await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(context,tweetId);
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Tweet',
+                        style: TextStyle(
+                          color: Colors.blue[600],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            )
+                  ],
+                ),
+              )
 
-          ],
-          physics: BouncingScrollPhysics(),
-          body: ListView(
+            ],
+            physics: BouncingScrollPhysics(),
+            body: ListView(
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,11 +149,11 @@ class AddTweetScreen extends StatelessWidget {
 
               ],
 
-          )
+            )
 
         ),
       ),
 
-       );
+    );
   }
 }

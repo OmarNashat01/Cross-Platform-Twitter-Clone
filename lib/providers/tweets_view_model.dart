@@ -17,6 +17,12 @@ class TweetsViewModel extends ChangeNotifier {
     Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
     notifyListeners();
   }
+  Future<void> fetchRandomTweetsOfRandomUsers(BuildContext context,int page) async
+  {
+    addedDataToStream = await TweetsApi().fetchRandomTweetsOfRandomUsers(page);
+    Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
+    notifyListeners();
+  }
   Future<void> fetchTweetByTweetId(BuildContext context,String tweetId) async
   {
     addedDataToStream = await TweetsApi().fetchTweetByTweetId(tweetId);

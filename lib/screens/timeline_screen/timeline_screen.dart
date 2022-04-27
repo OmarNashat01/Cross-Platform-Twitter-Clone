@@ -46,7 +46,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
     // TODO: implement initState
     super.initState();
     controller=ScrollController();
-      Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets( context);
+      Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context);
   }
   @override
   Widget build(BuildContext context) {
@@ -128,7 +128,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
           //--------------------------------------------------------------------
           //tweets list viewer
         body: StreamBuilder(
-            stream: Provider.of<StreamControllerProvider>(context).stream,
+            stream: Provider.of<StreamControllerProvider>(context).streamController.stream,
             builder: (BuildContext context,AsyncSnapshot snapshot,)
             {
 
@@ -151,7 +151,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                       child: RefreshIndicator(
                         color: Colors.grey,
                         onRefresh: () {
-                          return Provider.of<TweetsViewModel>(context, listen: false).fetchMyTweets(context);
+                          return Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,2);
                         },
                         child: ListView.builder(
                           physics: const BouncingScrollPhysics(),

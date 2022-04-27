@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:twitter/providers/stream_controller_provider.dart';
 import 'package:twitter/screens/notifications_screen/NotificationsScreen.dart';
 import 'package:twitter/screens/search_screen/SearchScreen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
+
+import 'custom_page_route.dart';
 class TimelineBottomBar extends StatelessWidget {
   const TimelineBottomBar({
     Key? key,
@@ -27,6 +31,7 @@ class TimelineBottomBar extends StatelessWidget {
               {
                 controller.animateTo(0.0,
                     curve: Curves.easeIn, duration: const Duration(milliseconds: 200));
+                Provider.of<StreamControllerProvider>(context).disposed();
               },
               onLongPress: ()
               {
@@ -39,13 +44,13 @@ class TimelineBottomBar extends StatelessWidget {
                 );
               },
               child: IconButton(onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context){ return TimelineScreen(); },
-                  ),
+                Provider.of<StreamControllerProvider>(context,listen: false).disposed();
+                Navigator.of(context).push(
+                    CustomPageRoute
+                      (child:TimelineScreen(),beginX: 0,beginY: 1),
                 );
-              }, icon: Icon(FontAwesomeIcons.house,
+              },
+                icon: Icon(FontAwesomeIcons.house,
               ),),
             ),
             IconButton(onPressed: (){

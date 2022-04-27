@@ -4,7 +4,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
 /// Switch variable to toggle between using mock backend service or the real backend
-bool isMock = false;
+bool isMock = true;
 
 /// Switch variable to toggle between hasing the password or not
 bool isPasswordHashed = false;
@@ -36,6 +36,7 @@ class Http {
   Http._internal();
   String getBaseUrl() => isMock == true ? kMockBaseUrl : kBaseUrl;
   String getMobileBaseUrl() => isMock == true ? "192.168.1.8:8000":kMockBaseUrl ;
+  String getBackendBaseUrl()=>"45.79.245.94:5000";
 }
 
 /// Used to hash the user's password via MD5

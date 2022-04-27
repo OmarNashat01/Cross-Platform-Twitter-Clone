@@ -28,7 +28,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
   _updatePalette ()async
   {
     final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImageProvider(
-      AssetImage(widget.tweet.images[0].url),
+      NetworkImage(widget.tweet.images[0].url),
     );
     color=paletteGenerator.dominantColor;
     setState(() {
@@ -71,7 +71,7 @@ class _ImageDetailScreenState extends State<ImageDetailScreen> {
               direction: DismissDirection.vertical,
               key: const Key('key'),
               onDismissed: (_) => Navigator.of(context).pop(),
-              child: Image.asset(
+              child: Image.network(
                 widget.tweet.images[0].url,
                 fit: BoxFit.cover,
                 width: double.infinity,

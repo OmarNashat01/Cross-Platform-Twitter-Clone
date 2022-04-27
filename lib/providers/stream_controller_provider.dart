@@ -17,9 +17,17 @@ class StreamControllerProvider extends ChangeNotifier {
       }
     }
     streamController.add(tweetsList);
-    stream = streamController.stream;
+    //stream = streamController.stream;
     notifyListeners();
   }
+
+  disposed()
+  {
+    streamController.onCancel;
+    streamController.close();
+    print("ok");
+  }
+
   removeTweetFromStreamControllerThenFetchToUpdateUI(int index,String tweetId,BuildContext context) async
   {
     //fetch then add

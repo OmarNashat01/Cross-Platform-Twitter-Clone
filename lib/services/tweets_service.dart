@@ -113,82 +113,106 @@ class TweetsApi {
     }
   }
 
-  Future<List<TweetMain>> fetchRandomTweetsOfRandomUsers(int page) async
+  Future<List<TweetMain>?> fetchRandomTweetsOfRandomUsers(int page) async
   {
     final queryParameters = {
       'page': page,
-      //'token': _email,
     };
-    final uri = Uri.http(
-        Http().getMobileBaseUrl(), '/tweets/random', queryParameters);
-    http.Response response = await http.get(uri);
+    // final Uri uri = Uri.parse('$backendUrl/tweets/random?page=:page');
+    final uri = Uri.parse('$backendUrl/tweets/random?page=$page')
+    ;
+    // final uri = Uri.http(
+    //     Http().getBackendBaseUrl(), '/tweets/random', queryParameters);
+    http.Response response = await http.get(uri, headers: {
+      "x-access-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
+    },);
     String data = response.body;
-    var jsonData = jsonDecode(data);
-    List<dynamic>dataWithComments = [];
-    List<dynamic>dataWithoutComments = [];
-    List<dynamic> tweetsList = [];
-    print(jsonData.length);
-
-    for (int i = 0; i < jsonData.length; i++) {
-      if (jsonData[i].length == 17) {
-        dataWithComments.add(jsonData[i]);
-      }
-      else {
-        dataWithoutComments.add(jsonData[i]);
-        print(dataWithoutComments[0]);
-      }
-    }
-    List<dynamic>tweetsGood = [];
-    List<dynamic>tweetsBad = [];
-    tweetsGood = dataWithComments.map((e) => Tweet.fromJson(e, false)).toList();
-    tweetsBad =
-        dataWithoutComments.map((e) => Tweet.fromJson(e, true)).toList();
-    for (int i = 0; i < tweetsBad.length; i++) {
-      tweetsGood.insert(0, tweetsBad[i]);
-    }
-    tweetsList = tweetsGood;
-    //----------------------------------------------------------------------
-    List<TweetMain>tweetsMain = [];
-    List<dynamic>comments;
-    List<dynamic>likers;
-    List<dynamic>images;
-    List<dynamic>videos;
-    //--------------------------------------------------------------------------
-    for (int i = 0; i < tweetsList.length; i++) {
-      if (tweetsList.length == 17) {
-        List<List<dynamic>>replies = [];
-        comments =
-            tweetsList[i].comments.map((e) => Comment.fromJson(e))
-                .toList();
-        for (int i = 0; i < comments.length; i++) {
-          List<dynamic>reply = comments[i].repliesList.map((e) =>
-              Reply.fromJson(e)).toList();
-          replies.add(reply);
+    var de = jsonDecode(data);
+    if (jsonDecode(data)["404"] != "tweets are unavailable") {
+      var jsonData = jsonDecode(data)["Tweets"];
+      List<dynamic>tweetsWithComments = [];
+      List<dynamic>tweetsWithoutComments = [];
+      List<dynamic> tweetsList = [];
+      List<int>tWCIndices = [];
+      List<int>tNCIndices = [];
+      for (int i = 0; i < jsonData.length; i++) {
+        if (jsonData[i].length == 17) {
+          tweetsWithComments.add(jsonData[i]);
+          tWCIndices.add(i); //2,3
         }
-        likers = tweetsList[i].likerIds.toList();
-        //check if the you the auth are from the likers of the this specific tweet to let the tweet stay liked
+        else {
+          tweetsWithoutComments.add(jsonData[i]);
+          tNCIndices.add(i); //0,1,4
+        }
+      }
+      List<dynamic>tweetsGood = [];
+      List<dynamic>tweetsBad = [];
+      //see if comments in this
+      tweetsGood = tweetsWithComments.map((e) => Tweet.fromJson(e, false))
+          .toList(); //[2],[3]
+      tweetsBad = tweetsWithoutComments.map((e) => Tweet.fromJson(e, true))
+          .toList(); //[0],[1],[4]
+      for (int i = 0; i < tWCIndices.length; i++) {
+        tweetsList.insert(tWCIndices[i], tweetsGood[i]);
+      }
+      for (int i = 0; i < tNCIndices.length; i++) {
+        tweetsList.insert(tNCIndices[i], tweetsBad[i]);
+      }
+      //----------------------------------------------------------------------
+      List<TweetMain>tweetsMain = [];
+      List<dynamic>comments = [];
+      List<dynamic>likers = [];
+      List<dynamic>images = [];
+      List<dynamic>videos = [];
+      //--------------------------------------------------------------------------
+      for (int i = 0; i < tweetsList.length; i++) {
+        if (jsonData[i].length == 17) {
+          List<List<dynamic>>replies = [];
+          if (tweetsList[i].comments.length > 0) {
+            comments =
+                tweetsList[i].comments.map((e) => Comment.fromJson(e)).toList();
 
-        images = tweetsList[i].images.map((e) => Imagei.fromJson(e))
-            .toList();
-        videos =
-            tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
-        TweetMain tweetIMain = TweetMain(tweet: tweetsList[i],
-            comments: comments,
-            replies: replies,
-            likers: likers,
-            videos: videos,
-            images: images);
-        tweetsMain.add(tweetIMain);
+            for (int i = 0; i < comments.length; i++) {
+              List<dynamic>reply = comments[i].repliesList.map((e) =>
+                  Reply.fromJson(e)).toList();
+              replies.add(reply);
+            }
+          }
+          if (tweetsList[i].likerIds.length > 0) {
+            likers = tweetsList[i].likerIds.toList();
+          }
+          if (tweetsList[i].images.length > 0) {
+            images =
+                tweetsList[i].images.map((e) => Imagei.fromJson(e)).toList();
+          }
+          if (tweetsList[i].videos.length > 0) {
+            videos =
+                tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
+          }
+          TweetMain tweetIMain = TweetMain(tweet: tweetsList[i],
+              comments: comments,
+              replies: replies,
+              likers: likers,
+              videos: videos,
+              images: images);
+          tweetsMain.add(tweetIMain);
+          //print(tweetIMain.getTweetprofilePicUrl());
+        }
+
+        else {
+          //handle it like the above
+          if (tweetsList[i].userId == Auth.userId) {
+            images = tweetsList[i].images.map((e) => Imagei.fromJson(e)).toList();
+            videos =
+                tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
+            TweetMain tweetIMain = TweetMain(
+                tweet: tweetsList[i], videos: videos, images: images);
+            tweetsMain.add(tweetIMain);
+          }
+        }
       }
-      else {
-        images = tweetsList[i].images.map((e) => Imagei.fromJson(e)).toList();
-        videos = tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
-        TweetMain tweetIMain = TweetMain(
-            tweet: tweetsList[i], videos: videos, images: images);
-        tweetsMain.add(tweetIMain);
-      }
+      return tweetsMain;
     }
-    return tweetsMain;
   }
 
   Future<List<TweetMain>> fetchTweetsOfCertainUser(String userId) async
@@ -272,23 +296,20 @@ class TweetsApi {
 
   Future<List<TweetMain>> fetchTweetByTweetId(String tweetId) async
   {
+    print("hello");
     final queryParameters = {
       'tweet_id': tweetId,
       //'token': _email,
     };
     final uri = Uri.http(Http().getMobileBaseUrl(), '/tweets', queryParameters);
     http.Response response = await http.get(uri,
-        headers: {
-          HttpHeaders.authorizationHeader
-              : "wqeq"
-        }
     );
     String data = response.body;
     var jsonData = jsonDecode(data);
     print(jsonData[0]);
     print(jsonData[0].length);
     List<dynamic> tweet;
-
+    print("hello");
     if (jsonData[0].length == 17) {
       tweet = jsonData.map((e) => Tweet.fromJson(e, false)).toList();
     }
@@ -337,6 +358,7 @@ class TweetsApi {
           tweet: tweet[0], videos: videos, images: images);
       tweetMain = tweetIMain;
     }
+    print("hello");
     List<TweetMain>tweetSent = [];
     tweetSent.add(tweetMain);
     return tweetSent;
