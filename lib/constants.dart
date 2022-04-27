@@ -14,6 +14,7 @@ const String kBaseUrl = '3.90.225.164:5000'; // without https:// or http://
 
 /// Mock server base URL
 const String kMockBaseUrl = '10.0.2.2:8000';
+
 const String backendUrl="http://45.79.245.94:5000";
 const String androidMobileBaseUrl="http://192.168.1.8:8000";
 /// Contains all needed globals across the application navigation after logging in
@@ -35,11 +36,11 @@ class Http {
   factory Http() => _singleton;
   Http._internal();
   String getBaseUrl() => isMock == true ? kMockBaseUrl : kBaseUrl;
-  String getMobileBaseUrl() => isMock == true ? "192.168.1.8:8000":kMockBaseUrl ;
+  String getMobileBaseUrl() => isMock == true ? "192.168.1.8:8000":backendUrl ;
 }
 
 /// Used to hash the user's password via MD5
-String hashToMd5(String pass) => md5.convert(utf8.encode(pass)).toString();
+String hashToMd5(String pass) => isPasswordHashed ? md5.convert(utf8.encode(pass)).toString() : pass;
 
 // Profile pictures sizes
 const double timelineProfilePicSize = 15;
