@@ -33,14 +33,14 @@ class TweetsViewModel extends ChangeNotifier {
     //=Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
     notifyListeners();
   }
-  Future<void> addTweet({required String text,required String dateOfCreation}) async
+  Future<void> addTweet({required String dateOfCreation,required String id,required String tweetId,required String text,required List<dynamic>images,required List<dynamic>videos}) async
   {
-    await TweetsApi().addTweet(text:text ,dateOfCreation:dateOfCreation );
+    await TweetsApi().addTweet(dateOfCreation:dateOfCreation,id:id,tweetId:tweetId,text:text ,images:images,videos:videos);
     notifyListeners();
   }
-  Future<void> likeTweet({required String tweet_id}) async
+  Future<void> likeTweet({required String tweetId}) async
   {
-    await TweetsApi().addLike(tweetId: tweet_id);
+    await TweetsApi().addLike(tweetId: tweetId);
     notifyListeners();
   }
   // List<TweetMain> getTweetsList()

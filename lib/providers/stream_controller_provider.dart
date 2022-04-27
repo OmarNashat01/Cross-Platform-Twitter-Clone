@@ -24,8 +24,9 @@ class StreamControllerProvider extends ChangeNotifier {
   {
     //fetch then add
     dynamic tweet=await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetIdWithoutAddingToStream(tweetId);
-
-    streamController.add(tweet);
+    print(tweet[0].tweet.likeCount);
+    tweetsList.insert(index, tweet[0]);
+    streamController.add(tweetsList);
     stream = streamController.stream;
     notifyListeners();
   }

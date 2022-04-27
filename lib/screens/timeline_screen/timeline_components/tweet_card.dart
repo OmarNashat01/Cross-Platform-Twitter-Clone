@@ -91,12 +91,14 @@ class TweetCard extends StatelessWidget {
               ),beginX: 0,beginY: 1),
             );
           },
-               child: Image.asset(
+               child: tweet.images.length>0?
+               Image.network(
                  tweet.images[0].url,
            fit: BoxFit.cover,
            width: double.infinity,
            alignment: Alignment.center,
-                 ),
+                 ):
+                   SizedBox.shrink(),
             ),
 
 

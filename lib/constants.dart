@@ -11,7 +11,8 @@ const String kBaseUrl = ''; // without https:// or http://
 
 /// Mock server base URL
 const String kMockBaseUrl = '10.0.2.2:8000';
-
+const String backendUrl="http://45.79.245.94:5000";
+const String androidMobileBaseUrl="http://192.168.1.8:8000";
 /// Contains all needed globals across the application navigation after logging in
 class Auth {
   static String token = '';
@@ -19,7 +20,7 @@ class Auth {
   static String userId = '126';
   static String email = '';
   static String password = '';
-  static String profilePicUrl='assets/images/myProfilepic.jpeg';
+  static String profilePicUrl="https://pbs.twimg.com/media/EEI178KWsAEC79p.jpg";
   static String username='abdallah';
   static String name='abdallah__fawzy';
   static String bio="hello everyone";

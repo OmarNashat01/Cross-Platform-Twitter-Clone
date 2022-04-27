@@ -1,15 +1,19 @@
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/timeline_list.dart';
 import 'package:twitter/dummy/users_data.dart';
+import 'package:twitter/models/image_model.dart';
 import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../providers/stream_controller_provider.dart';
 
@@ -51,13 +55,22 @@ class AddTweetScreen extends StatelessWidget {
                   TextButton(
                     onPressed: ()async {
                       text = title!;
+                      int idx = text.indexOf(":");
+                      List parts = [text.substring(0,idx).trim(), text.substring(idx+1).trim()];
+                      print(parts[0]);
+                      print(parts[1]);
                       var now = new DateTime.now();
                       var formatter = new DateFormat('yyyy-MM-dd');
                       String formattedDate = formatter.format(now);
                       //if i am adding a tweet from scratch do this without showing the inner tweet
-                       await Provider.of<TweetsViewModel>(context,listen: false).addTweet(text: text,dateOfCreation: formattedDate);
+                      var uuid = Uuid();
+                      String id=uuid.v4();
+                      String tweetId=uuid.v4();
+
+
+                       await Provider.of<TweetsViewModel>(context,listen: false).addTweet(id:id,tweetId:tweetId,dateOfCreation:"2022-4-27",text: parts[0],images: [{ "url": parts[1], "alt_text": "7:45 pm", "height": 0, "width": 0},],videos: []);
                        //Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context,"126");
-                      await Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context);
+                       await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(context,tweetId);
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -82,7 +95,7 @@ class AddTweetScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 20),
                       child: ProfilePicture(
                           profilePictureFunctionality: () {},
-                          profilePictureImage: UsersData.getMyData().profilePicture,
+                          profilePictureImage: "https://pbs.twimg.com/media/EEI178KWsAEC79p.jpg",
                           profilePictureSize: navigationDrawerProfilePicSize),
                     ),
                     Flexible(

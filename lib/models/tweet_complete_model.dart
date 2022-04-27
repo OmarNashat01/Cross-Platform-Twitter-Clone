@@ -46,7 +46,7 @@ class TweetMain
     return tweet.text;
   }
   //get bio of user who made the tweet
-  String getTweetbio()
+  String? getTweetbio()
   {
     return tweet.bio;
   }

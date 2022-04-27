@@ -20,7 +20,7 @@ class Tweet
  String username;
  String profilePicUrl;
  String text;
- String bio;
+ String? bio;
  int followingCount;
  int followersCount;
  //
@@ -59,7 +59,7 @@ if(isAdded==true)
  }
 else
  {
-  return Tweet(tweetId: jsonData["tweet_id"], userId: jsonData["user_id"], profilePicUrl: jsonData["prof_pic_url"],name:jsonData["name"] , username: jsonData["username"],bio: jsonData["bio"] ,followersCount: jsonData["followers_count"],followingCount: jsonData["following_count"],createdAt: jsonData["created_at"], text: jsonData['text'],videos:jsonData['videos'] ,images:jsonData['images'] ,likeCount:jsonData['like_count'] ,likerIds: jsonData['liker_ids'],commentCount:jsonData['comment_count'] ,retweetCount:jsonData['retweet_count'] ,comments: jsonData['comments']);
+  return Tweet(tweetId: jsonData["tweet_id"], userId: jsonData["user_id"], profilePicUrl: jsonData["prof_pic_url"],name:jsonData["name"] , username: jsonData["username"],bio: jsonData["bio"] ,followersCount: jsonData["followers_count"],followingCount: jsonData["following_count"],createdAt: jsonData["created_at"], text: jsonData['text'],videos:jsonData['videos'] ,images:jsonData['images'] ,likeCount:jsonData['like_count'] ,likerIds: jsonData['liked_by_ids'],commentCount:jsonData['comment_count'] ,retweetCount:jsonData['retweet_count'] ,comments: jsonData['comments']);
 
  }
 

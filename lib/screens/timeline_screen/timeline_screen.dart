@@ -102,7 +102,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                       profilePictureFunctionality: () {
                         Scaffold.of(context).openDrawer();
                       },
-                      profilePictureImage: UsersData.getMyData().profilePicture,
+                      profilePictureImage: "https://pbs.twimg.com/media/EEI178KWsAEC79p.jpg",
                       profilePictureSize: timelineProfilePicSize,
                     ),
                     //twitter icon in the appbar
@@ -148,12 +148,19 @@ class _TimelineScreenState extends State<TimelineScreen> {
                     return Scrollbar(
                       radius: Radius.circular(30),
                       isAlwaysShown: true,
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index){
-                          return TweetCard(index: index,tweet: snapshot.data[index],);
+                      child: RefreshIndicator(
+                        color: Colors.grey,
+                        onRefresh: () {
+                          return Provider.of<TweetsViewModel>(context, listen: false).fetchMyTweets(context);
                         },
-                        itemCount:snapshot.data.length,
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index){
+                            //print(snapshot.data.length);
+                            return TweetCard(index: index,tweet: snapshot.data[index],);
+                          },
+                          itemCount:snapshot.data.length,
+                        ),
                       ),
                     );
                   }
