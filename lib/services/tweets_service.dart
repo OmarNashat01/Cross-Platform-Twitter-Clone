@@ -26,8 +26,9 @@ class TweetsApi {
     });
     String data = response.body;
     var de = jsonDecode(data);
-    if (jsonDecode(data)["404"] != "tweets are unavailable") {
-      var jsonData = jsonDecode(data)["Tweets"];
+      var jsonData = jsonDecode(data)["tweets"];
+      print(jsonData);
+    if (jsonData.length>0) {
       List<dynamic>tweetsWithComments = [];
       List<dynamic>tweetsWithoutComments = [];
       List<dynamic> tweetsList = [];
@@ -129,7 +130,7 @@ class TweetsApi {
     String data = response.body;
     var de = jsonDecode(data);
     if (jsonDecode(data)["404"] != "tweets are unavailable") {
-      var jsonData = jsonDecode(data)["Tweets"];
+      var jsonData = jsonDecode(data)["tweets"];
       List<dynamic>tweetsWithComments = [];
       List<dynamic>tweetsWithoutComments = [];
       List<dynamic> tweetsList = [];
@@ -365,43 +366,68 @@ class TweetsApi {
   }
 
   //add tweet is done using mock server for now as testing in backend stop
-  Future<void> addTweet(
-      {required String dateOfCreation, required String id, required String tweetId, required String text, required List<
-          dynamic>images, required List<dynamic>videos}) async
+
+  Future<void>addTweet({required String text,required List<dynamic>images,required List<dynamic>videos})async
   {
     var headers = {
+      'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4',
+      'follow_redirects': 'true',
       'Content-Type': 'application/json'
     };
-    var request = http.Request(
-        'POST', Uri.parse('$androidMobileBaseUrl/tweets'));
+    var request = http.Request('POST', Uri.parse('http://45.79.245.94:5000/tweets/'));
     request.body = json.encode({
-      "id": id, //random id
-      "tweet_id": tweetId, //random id for tweet created
-      "user_id": Auth.userId,
-      "name": "mohamed",
-      "username": "Maho",
-      "prof_pic_url": "https://pbs.twimg.com/media/EEI178KWsAEC79p.jpg",
-      "bio": Auth.bio,
-      "followers_count": 100,
-      "following_count": 200,
-      "text": text,
-      "created_at": dateOfCreation,
-      "like_count": 0,
-      "comment_count": 0,
-      "retweet_count": 0,
-      "images": images,
-      "videos": videos,
+      "text": "wholaaaaa",
+      "images": [],
+      "videos": []
     });
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
-    print(response.toString());
+
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
     }
     else {
       print(response.reasonPhrase);
     }
+
   }
+  // Future<void> addTweet(
+  //     {required String dateOfCreation, required String id, required String tweetId, required String text, required List<
+  //         dynamic>images, required List<dynamic>videos}) async
+  // {
+  //   var headers = {
+  //     'Content-Type': 'application/json'
+  //   };
+  //   var request = http.Request(
+  //       'POST', Uri.parse('$androidMobileBaseUrl/tweets'));
+  //   request.body = json.encode({
+  //     "id": id, //random id
+  //     "tweet_id": tweetId, //random id for tweet created
+  //     "user_id": Auth.userId,
+  //     "name": "mohamed",
+  //     "username": "Maho",
+  //     "prof_pic_url": "https://pbs.twimg.com/media/EEI178KWsAEC79p.jpg",
+  //     "bio": Auth.bio,
+  //     "followers_count": 100,
+  //     "following_count": 200,
+  //     "text": text,
+  //     "created_at": dateOfCreation,
+  //     "like_count": 0,
+  //     "comment_count": 0,
+  //     "retweet_count": 0,
+  //     "images": images,
+  //     "videos": videos,
+  //   });
+  //   request.headers.addAll(headers);
+  //   http.StreamedResponse response = await request.send();
+  //   print(response.toString());
+  //   if (response.statusCode == 200) {
+  //     print(await response.stream.bytesToString());
+  //   }
+  //   else {
+  //     print(response.reasonPhrase);
+  //   }
+  // }
     Future<void> deleteTweet({required String tweetId}) async
     {
       final queryParameters = {
@@ -563,19 +589,19 @@ class TweetsApi {
 ///---------------------------------------------------------------------------------------------
 ///backend post request
 ///
-//
+// //
 // Future<void>addTweet({required String text,required List<dynamic>images,required List<dynamic>videos})async
-// // {
-// //   final Uri uri = Uri.parse('$backendUrl/tweets');
-// //   http.Response response = await http.post(uri,headers: {"x-access-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"}
-// //   ,body:  json.encode({
-// //
-// //         "Text": text,
-// //         "images": images,
-// //         "videos":videos
-// //       })
-// //   );
-// //
-// //
-// //
-// // }
+// {
+//   final Uri uri = Uri.parse('$backendUrl/tweets');
+//   http.Response response = await http.post(uri,headers: {"x-access-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"}
+//   ,body:  json.encode({
+//
+//         "Text": text,
+//         "images": images,
+//         "videos":videos
+//       })
+//   );
+//
+//
+//
+// }

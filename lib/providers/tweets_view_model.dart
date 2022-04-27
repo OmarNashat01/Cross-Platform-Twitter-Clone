@@ -33,22 +33,22 @@ class TweetsViewModel extends ChangeNotifier {
   {
      return  TweetsApi().fetchTweetByTweetId(tweetId);
   }
-  Future<void> deleteTweet(String tweetId) async
+  // Future<void> deleteTweet(String tweetId) async
+  // {
+  //    await TweetsApi().deleteTweet(tweetId: tweetId);
+  //   //=Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
+  //   notifyListeners();
+  // }
+  Future<void> addTweet({required String text,required List<dynamic>images,required List<dynamic>videos}) async
   {
-     await TweetsApi().deleteTweet(tweetId: tweetId);
-    //=Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
+    await TweetsApi().addTweet(text:text ,images:images,videos:videos);
     notifyListeners();
   }
-  Future<void> addTweet({required String dateOfCreation,required String id,required String tweetId,required String text,required List<dynamic>images,required List<dynamic>videos}) async
-  {
-    await TweetsApi().addTweet(dateOfCreation:dateOfCreation,id:id,tweetId:tweetId,text:text ,images:images,videos:videos);
-    notifyListeners();
-  }
-  Future<void> likeTweet({required String tweetId}) async
-  {
-    await TweetsApi().addLike(tweetId: tweetId);
-    notifyListeners();
-  }
+  // Future<void> likeTweet({required String tweetId}) async
+  // {
+  //   await TweetsApi().addLike(tweetId: tweetId);
+  //   notifyListeners();
+  // }
   // List<TweetMain> getTweetsList()
   // {
   //   return _tweetsList;

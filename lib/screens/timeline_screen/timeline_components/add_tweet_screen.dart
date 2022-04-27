@@ -88,7 +88,7 @@ class AddTweetScreen extends StatelessWidget {
                         String tweetId=uuid.v4();
 
 
-                        await Provider.of<TweetsViewModel>(context,listen: false).addTweet(id:id,tweetId:tweetId,dateOfCreation:"2022-4-27",text: parts[0],images: image1,videos: []);
+                        await Provider.of<TweetsViewModel>(context,listen: false).addTweet(text: parts[0],images: image1,videos: []);
                         //Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context,"126");
                         await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(context,tweetId);
                         Navigator.pop(context);
