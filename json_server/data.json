@@ -8,6 +8,18 @@
       "date_of_birth": "2020-04-25",
       "bio": "this is bio",
       "_id": "542831023389702"
+    },
+    {
+      "email": "hazem.elaswad00@eng-st.cu.edu.eg",
+      "password": "95c52caaae90a9fef4bd77d5c7ddaf44",
+      "name": "Hazem",
+      "username": "zuma59",
+      "date_of_birth": "2018-04-27",
+      "gender": "",
+      "bio": "",
+      "location": "",
+      "website": "",
+      "_id": "406047456563605"
     }
   ],
   "OTPs": [
@@ -16,6 +28,12 @@
       "OTP": "3225",
       "token": "356081549717232",
       "email": "zuma56@gmail.com"
+    },
+    {
+      "_id": "406047456563605",
+      "OTP": "2059",
+      "token": "195962713920588",
+      "email": "hazem.elaswad00@eng-st.cu.edu.eg"
     }
   ],
   "tweets": [
