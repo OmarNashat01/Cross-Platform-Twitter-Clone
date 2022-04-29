@@ -9,9 +9,12 @@ import 'package:twitter/constants.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
+import 'package:twitter/providers/user_provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/users_profiles.dart';
 
+import '../../../models/user_model.dart';
 import 'custom_page_route.dart';
 import 'image_detail_screen.dart';
 
@@ -19,11 +22,13 @@ import 'image_detail_screen.dart';
 //the tweet need information to be rendered
 //this information will come from class which is TweetCardData
 class TweetCard extends StatelessWidget {
-  TweetCard({required this.index, required this.tweet});
+  TweetCard({required this.index, required this.tweet,required this.user});
   int index;
   TweetMain tweet;
+   Future<User> user;
   @override
   Widget build(BuildContext context) {
+
     return Column(
         children: [
           Padding(
@@ -34,10 +39,42 @@ class TweetCard extends StatelessWidget {
                     Row(
                         children: [
                           //--here is the profile picture of the one who tweeted
-                          ProfilePicture (
-                              profilePictureFunctionality: () {},
-                              profilePictureImage:tweet.getTweetprofilePicUrl(),
-                              profilePictureSize: navigationDrawerProfilePicSize),
+                          FutureBuilder(
+                            future:user,
+                            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot)
+                            {
+                              switch(snapshot.connectionState)
+                              {
+                                case ConnectionState.none:
+                                  return Text('press button to start');
+                                case ConnectionState.waiting:
+                                  return Container(
+                                      alignment: Alignment.topCenter,
+                                      margin: EdgeInsets.only(top: 20),
+                                      child: CircularProgressIndicator(
+                                        value: 0.8,
+                                      )
+                                  );
+                                default:
+                                  if(snapshot.hasError)
+                                  {
+                                    return Text('error');
+                                  }
+                                  else
+                                    {
+                                      return ProfilePicture (
+                                          profilePictureFunctionality: () {
+                                            Navigator.of(context).push(
+                                              CustomPageRoute(
+                                                  child: (UsersProfile(user:snapshot.data)), beginX: 1, beginY: 0),
+                                            );
+                                          },
+                                          profilePictureImage:tweet.getTweetprofilePicUrl(),
+                                          profilePictureSize: navigationDrawerProfilePicSize);
+                                    }
+                              }
+                            },
+                          ),
 
                   Padding(
                     padding: const EdgeInsets.only(left: 10),

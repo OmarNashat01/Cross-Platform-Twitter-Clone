@@ -8,11 +8,12 @@ import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 
 import 'custom_page_route.dart';
 class TimelineBottomBar extends StatelessWidget {
-  const TimelineBottomBar({
+   TimelineBottomBar({
     Key? key,
     required this.controller,
+     required this.pop,
   }) : super(key: key);
-
+   bool pop;
   final ScrollController controller;
 
   @override
@@ -29,9 +30,6 @@ class TimelineBottomBar extends StatelessWidget {
             GestureDetector(
               onTap: ()
               {
-                controller.animateTo(0.0,
-                    curve: Curves.easeIn, duration: const Duration(milliseconds: 200));
-                Provider.of<StreamControllerProvider>(context).disposed();
               },
               onLongPress: ()
               {
@@ -44,10 +42,12 @@ class TimelineBottomBar extends StatelessWidget {
                 );
               },
               child: IconButton(onPressed: (){
-                Provider.of<StreamControllerProvider>(context,listen: false).disposed();
+                pop==false?
+                controller.animateTo(0.0,
+                    curve: Curves.easeIn, duration: const Duration(milliseconds: 200)):
                 Navigator.of(context).push(
-                    CustomPageRoute
-                      (child:TimelineScreen(),beginX: 0,beginY: 1),
+                  CustomPageRoute
+                    (child:TimelineScreen(),beginX: 0,beginY: 1),
                 );
               },
                 icon: Icon(FontAwesomeIcons.house,

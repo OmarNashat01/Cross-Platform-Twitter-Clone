@@ -17,6 +17,7 @@ import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bot
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
 import 'package:twitter/services/tweets_service.dart';
 import '../../providers/tweets_view_model.dart';
+import '../../providers/user_provider.dart';
 import 'timeline_components/custom_page_route.dart';
 import 'timeline_components/profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -33,7 +34,7 @@ class TimelineScreen extends StatefulWidget {
 
 class _TimelineScreenState extends State<TimelineScreen> {
   ScrollController ?controller;
-  StreamController _streamController=StreamController();
+  final StreamController _streamController=StreamController();
   Stream ?_stream;
   // fetchingStreamController(String user_id)async
   // {
@@ -46,7 +47,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
     // TODO: implement initState
     super.initState();
     controller=ScrollController();
-      Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context);
+    Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context,0);
   }
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
           // Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context);
           Navigator.of(context).push(
             CustomPageRoute
-            (child:AddTweetScreen(quote: false,),beginX: 0,beginY: 1),
+            (child:AddTweetScreen(hintText: "What's happening?",tweetOrReply: "Tweet"),beginX: 0,beginY: 1),
           );
         },
         backgroundColor: Colors.blue,
@@ -102,7 +103,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                       profilePictureFunctionality: () {
                         Scaffold.of(context).openDrawer();
                       },
-                      profilePictureImage: "https://pbs.twimg.com/media/EEI178KWsAEC79p.jpg",
+                      profilePictureImage: Auth.profilePicUrl,
                       profilePictureSize: timelineProfilePicSize,
                     ),
                     //twitter icon in the appbar
@@ -128,7 +129,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
           //--------------------------------------------------------------------
           //tweets list viewer
         body: StreamBuilder(
-            stream: Provider.of<StreamControllerProvider>(context).streamController.stream,
+            stream: Provider.of<StreamControllerProvider>(context).addStreamController(_streamController,0).stream,
             builder: (BuildContext context,AsyncSnapshot snapshot,)
             {
 
@@ -137,12 +138,19 @@ class _TimelineScreenState extends State<TimelineScreen> {
                 case ConnectionState.none:
                   return Text('press button to start');
                 case ConnectionState.waiting:
-                  return Text("waiting");
+                  return Container(
+                      alignment: Alignment.topCenter,
+                      margin: EdgeInsets.only(top: 20),
+                      child: CircularProgressIndicator(
+                        value: 0.8,
+                      )
+                  );
                 default:
                   if(snapshot.hasError)
                   {
                     return Text('error');
                   }
+
                   else
                   {
                     return Scrollbar(
@@ -151,13 +159,13 @@ class _TimelineScreenState extends State<TimelineScreen> {
                       child: RefreshIndicator(
                         color: Colors.grey,
                         onRefresh: () {
-                          return Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,2);
+                          return Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,2,0);
                         },
                         child: ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index){
                             //print(snapshot.data.length);
-                            return TweetCard(index: index,tweet: snapshot.data[index],);
+                            return TweetCard(index: index,tweet: snapshot.data[index],user:Provider.of<UserProvider>(context).fetchUserByUserId(snapshot.data[index].tweet.userId));
                           },
                           itemCount:snapshot.data.length,
                         ),
@@ -174,7 +182,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
       //------------------------------------------------------------------------
       //bottom appbar where each icon has its own function
-      bottomNavigationBar: TimelineBottomBar(controller: controller!),
+      bottomNavigationBar: TimelineBottomBar(controller: controller!,pop: false,),
     );
   }
 }

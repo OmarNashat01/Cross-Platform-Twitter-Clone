@@ -5,6 +5,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:twitter/constants.dart';
+import 'package:twitter/services/users_services.dart';
+
+import '../models/user_model.dart';
 
 /// Holds user's data and utility functions to send API requests
 class UserProvider with ChangeNotifier {
@@ -154,5 +157,11 @@ class UserProvider with ChangeNotifier {
     log('username: $_username');
     log('pass: $_password');
     log('bio: $_bio');
+  }
+  Future<User> fetchUserByUserId(String userId) async
+  {
+    User user=await UsersApi().fetchUserByUserId(userId);
+    return user;
+    notifyListeners();
   }
 }

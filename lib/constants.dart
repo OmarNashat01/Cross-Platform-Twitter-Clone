@@ -23,7 +23,7 @@ class Auth {
   static String userId = '126';
   static String email = '';
   static String password = '';
-  static String profilePicUrl="https://pbs.twimg.com/media/EEI178KWsAEC79p.jpg";
+  static String profilePicUrl="https://c8.alamy.com/comp/2C5BXFW/robot-cartoon-id-profile-3d-illustration-2C5BXFW.jpg";
   static String username='abdallah';
   static String name='abdallah__fawzy';
   static String bio="hello everyone";

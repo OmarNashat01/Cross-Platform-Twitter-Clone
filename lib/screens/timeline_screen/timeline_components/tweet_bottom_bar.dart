@@ -9,6 +9,8 @@ import '../../../dummy/timeline_list.dart';
 import '../../../models/tweet_complete_model.dart';
 import '../../../providers/stream_controller_provider.dart';
 import '../../../providers/tweets_view_model.dart';
+import 'add_tweet_screen.dart';
+import 'custom_page_route.dart';
 
 class TweetBottomBar extends StatelessWidget {
    TweetBottomBar({
@@ -30,7 +32,13 @@ class TweetBottomBar extends StatelessWidget {
         children: [
           //comment button on tweet
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              ///i should get here the id of this tweet to insert the reply to this specific tweet
+              Navigator.of(context).push(
+                CustomPageRoute
+                  (child:AddTweetScreen(hintText: "Tweet your reply",tweetOrReply: "Reply",replying:true,name:tweet.tweet.username),beginX: 0,beginY: 1),
+              );
+            },
             child: Row(
               children: [
                  Icon(

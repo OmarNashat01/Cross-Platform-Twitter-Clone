@@ -11,24 +11,30 @@ class TweetsViewModel extends ChangeNotifier {
 
 //this function fetch tweets from api call and then update the stream
 
-  Future<void> fetchMyTweets(BuildContext context) async
+  Future<void> fetchMyTweets(BuildContext context,int streamControllerIndex) async
   {
     addedDataToStream = await TweetsApi().fetchMyTweets();
-    Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
+    Provider.of<StreamControllerProvider>(context,listen: false).updateMyStreamController(addedDataToStream, streamControllerIndex);
     notifyListeners();
   }
-  Future<void> fetchRandomTweetsOfRandomUsers(BuildContext context,int page) async
+  Future<void> fetchUserTweets(BuildContext context,int streamControllerIndex,String userId) async
+  {
+    addedDataToStream = await TweetsApi().fetchUserTweets(userId);
+    Provider.of<StreamControllerProvider>(context,listen: false).updateUserStreamController(addedDataToStream, streamControllerIndex);
+    notifyListeners();
+  }
+  Future<void> fetchRandomTweetsOfRandomUsers(BuildContext context,int page,int streamControllerIndex) async
   {
     addedDataToStream = await TweetsApi().fetchRandomTweetsOfRandomUsers(page);
-    Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
+    Provider.of<StreamControllerProvider>(context,listen: false).updateMyStreamController(addedDataToStream,streamControllerIndex);
     notifyListeners();
   }
-  Future<void> fetchTweetByTweetId(BuildContext context,String tweetId) async
-  {
-    addedDataToStream = await TweetsApi().fetchTweetByTweetId(tweetId);
-    Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
-    notifyListeners();
-  }
+  // Future<void> fetchTweetByTweetId(BuildContext context,String tweetId,int streamControllerIndex) async
+  // {
+  //   addedDataToStream = await TweetsApi().fetchTweetByTweetId(tweetId);
+  //   Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream,streamControllerIndex);
+  //   notifyListeners();
+  // }
   Future<List<dynamic>> fetchTweetByTweetIdWithoutAddingToStream(String tweetId) async
   {
      return  TweetsApi().fetchTweetByTweetId(tweetId);

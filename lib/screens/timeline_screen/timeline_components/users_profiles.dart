@@ -1,31 +1,39 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:custom_nested_scroll_view/custom_nested_scroll_view.dart';
 import 'package:provider/provider.dart';
+import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/screens/search_screen/SearchScreen.dart';
 import 'package:twitter/providers/stream_controller_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'dart:math' as math;
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
-import '../../themes.dart';
-import '../timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/profile_screen/edit_profile_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 
-class ProfileScreen extends StatefulWidget {
+import '../../../models/user_model.dart';
+import '../../../providers/tweets_view_model.dart';
+import '../../../providers/user_provider.dart';
+import '../../../themes.dart';
+
+class UsersProfile extends StatefulWidget {
   static const routeName = '/profile-screen';
+  UsersProfile({required this.user});
+  User user;
   @override
   State<StatefulWidget> createState() {
-    return ProfileScreen_state();
+    return UsersProfile_state();
   }
 }
-
-class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProviderStateMixin {
+int x=1;
+class UsersProfile_state extends State<UsersProfile> with SingleTickerProviderStateMixin {
   bool isMyProfile = true;
   var top = 0.0;
 
@@ -41,16 +49,25 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
   }
 
   late ScrollController _scrollController;
+  StreamController tweetsStreamController=StreamController();//index 1
+  // StreamController tweetsStreamController=StreamController();
 
+  // StreamController tweetsStreamController=StreamController();
+  // Stream ?tweetsStream;
+  // StreamController tweetsStreamController=StreamController();
+  // Stream ?tweetsStream;
   late TabController _tabController = TabController(initialIndex: 0, length: 4, vsync: this);
   @override
   void initState() {
     super.initState();
+
     _tabController = TabController(initialIndex: 0, length: 4, vsync: this);
     _scrollController = ScrollController();
+    x=x+1;
+    Provider.of<TweetsViewModel>(context,listen: false).fetchUserTweets(context,x,widget.user.id);
+    print(x);
     _scrollController.addListener(() {
       setState(() {
-
       });
     });
   }
@@ -154,11 +171,11 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Text(
-                                      UsersData.getMyData().name,
+                                      widget.user.name,
                                       style: header_titleName,
                                     ),
                                     Text(
-                                      '200 Tweets',
+                                      widget.user.tweetCount.toString(),
                                       style: TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w400,
@@ -172,7 +189,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                             background: Stack(
                               children: [
                                 Container(
-                                  child: Image.network('https://images.pexels.com/photos/2531709/pexels-photo-2531709.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', fit: BoxFit.cover,),
+                                  child: Image.network(widget.user.coverPicUrl, fit: BoxFit.cover,),
                                   width: double.infinity,
                                 ),
                               ],
@@ -207,9 +224,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                         profilePictureFunctionality: () {
                                           Scaffold.of(context).openDrawer();
                                         },
-                                        profilePictureImage: UsersData
-                                            .getMyData()
-                                            .profilePicture,
+                                        profilePictureImage: widget.user.profilePicUrl,
                                         profilePictureSize: 40,
                                       ),
                                     ),
@@ -266,23 +281,24 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                               height: 10,
                             ),
                             Text(
-                              UsersData.getMyData().name,
+                              widget.user.name,
                               style: bio_titleName,
                             ),
                             Text(
-                              UsersData.getMyData().title,
+                              widget.user.username,
                               style: bio_UserName,
                             ),
                             SizedBox(
                               height: 10,
                             ),
+                            widget.user.bio!=null?
                             Text(
-                              'A 20-year Computer Student working as a graphic desogner.',
+                              widget.user.bio!,
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                               ),
-                            ),
+                            ):SizedBox.shrink(),
                             SizedBox(
                               height: 15,
                             ),
@@ -293,7 +309,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                     child: Icon(Icons.location_on_outlined, size: 14, color: Colors.black54,),
                                   ),
                                   TextSpan(
-                                      text: " Cairo, Egypt",
+                                      text: widget.user.location,
                                       style: TextStyle(fontSize: 12, color: Colors.black54)
                                   ),
                                 ],
@@ -309,7 +325,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                     child: Icon(Icons.sports_basketball_outlined, size: 14, color: Colors.black54,),
                                   ),
                                   TextSpan(
-                                      text: " Born 17 February 2002",
+                                      text: " Born ${widget.user.dateOfBirth}",
                                       style: TextStyle(fontSize: 12, color: Colors.black54)
                                   ),
                                 ],
@@ -325,7 +341,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                     child: Icon(Icons.calendar_month_outlined, size: 14, color: Colors.black54,),
                                   ),
                                   TextSpan(
-                                      text: " Joined January 2014",
+                                      text: " Joined ${widget.user.creationDate}",
                                       style: TextStyle(fontSize: 12, color: Colors.black54)
                                   ),
                                 ],
@@ -339,9 +355,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                 Row(
                                   children: [
                                     Text(
-                                      UsersData.getMyData()
-                                          .followingNumber
-                                          .toString(),
+                                     widget.user.followingCount.toString(),
                                       style: boldName,
                                     ),
                                     followingString,
@@ -350,9 +364,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                 Row(
                                   children: [
                                     Text(
-                                      UsersData.getMyData()
-                                          .followersNumber
-                                          .toString(),
+                                      widget.user.followersCount.toString(),
                                       style: boldName,
                                     ),
                                     followersString,
@@ -378,6 +390,14 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                 borderSide: BorderSide(width: 4.0, color: Colors.blue),
 
                               ),
+                              onTap: (int index)
+                              {
+                                setState(() {
+                                  x=x+1;
+                                  print(x);
+                                });
+
+                              },
                               controller: _tabController,
                               isScrollable: true,
                               labelColor: Colors.black,
@@ -412,142 +432,138 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                   child: TabBarView(
                     controller: _tabController,
                     children: [
-                  //     StreamBuilder(
-                  //         stream: Provider.of<StreamControllerProvider>(context).stream,
-                  //         builder: (BuildContext context,AsyncSnapshot snapshot,)
-                  //         {
-                  //
-                  //           switch(snapshot.connectionState)
-                  //           {
-                  //             case ConnectionState.none:
-                  //               return Text('press button to start');
-                  //             case ConnectionState.waiting:
-                  //               return Text("waiting");
-                  //             default:
-                  //               if(snapshot.hasError)
-                  //               {
-                  //                 return Text('error');
-                  //               }
-                  //               else
-                  //               {
-                  //                 return Scrollbar(
-                  //                   radius: Radius.circular(30),
-                  //                   isAlwaysShown: true,
-                  //                   child: ListView.builder(
-                  //                     physics: const BouncingScrollPhysics(),
-                  //                     itemBuilder: (context, index){
-                  //                       return TweetCard(index: index,tweet: snapshot.data[index],);
-                  //                     },
-                  //                     itemCount:snapshot.data.length,
-                  //                   ),
-                  //                 );
-                  //               }
-                  //           }
-                  //
-                  //         }
-                  //     ),
-                  // StreamBuilder(
-                  //     stream: Provider.of<StreamControllerProvider>(context).stream,
-                  //     builder: (BuildContext context,AsyncSnapshot snapshot,)
-                  //     {
-                  //
-                  //       switch(snapshot.connectionState)
-                  //       {
-                  //         case ConnectionState.none:
-                  //           return Text('press button to start');
-                  //         case ConnectionState.waiting:
-                  //           return Text("waiting");
-                  //         default:
-                  //           if(snapshot.hasError)
-                  //           {
-                  //             return Text('error');
-                  //           }
-                  //           else
-                  //           {
-                  //             return Scrollbar(
-                  //               radius: Radius.circular(30),
-                  //               isAlwaysShown: true,
-                  //               child: ListView.builder(
-                  //                 physics: const BouncingScrollPhysics(),
-                  //                 itemBuilder: (context, index){
-                  //                   return TweetCard(index: index,tweet: snapshot.data[index],);
-                  //                 },
-                  //                 itemCount:snapshot.data.length,
-                  //               ),
-                  //             );
-                  //           }
-                  //       }
-                  //
-                  //     }
-                  // ),
-                  //     StreamBuilder(
-                  //         stream: Provider.of<StreamControllerProvider>(context).stream,
-                  //         builder: (BuildContext context,AsyncSnapshot snapshot,)
-                  //         {
-                  //
-                  //           switch(snapshot.connectionState)
-                  //           {
-                  //             case ConnectionState.none:
-                  //               return Text('press button to start');
-                  //             case ConnectionState.waiting:
-                  //               return Text("waiting");
-                  //             default:
-                  //               if(snapshot.hasError)
-                  //               {
-                  //                 return Text('error');
-                  //               }
-                  //               else
-                  //               {
-                  //                 return Scrollbar(
-                  //                   radius: Radius.circular(30),
-                  //                   isAlwaysShown: true,
-                  //                   child: ListView.builder(
-                  //                     physics: const BouncingScrollPhysics(),
-                  //                     itemBuilder: (context, index){
-                  //                       return TweetCard(index: index,tweet: snapshot.data[index],);
-                  //                     },
-                  //                     itemCount:snapshot.data.length,
-                  //                   ),
-                  //                 );
-                  //               }
-                  //           }
-                  //
-                  //         }
-                  //     ),
-                  //     StreamBuilder(
-                  //         stream: Provider.of<StreamControllerProvider>(context).stream,
-                  //         builder: (BuildContext context,AsyncSnapshot snapshot,)
-                  //         {
-                  //
-                  //           switch(snapshot.connectionState)
-                  //           {
-                  //             case ConnectionState.none:
-                  //               return Text('press button to start');
-                  //             case ConnectionState.waiting:
-                  //               return Text("waiting");
-                  //             default:
-                  //               if(snapshot.hasError)
-                  //               {
-                  //                 return Text('error');
-                  //               }
-                  //               else
-                  //               {
-                  //                 return Scrollbar(
-                  //                   radius: Radius.circular(30),
-                  //                   isAlwaysShown: true,
-                  //                   child: ListView.builder(
-                  //                     physics: const BouncingScrollPhysics(),
-                  //                     itemBuilder: (context, index){
-                  //                       return TweetCard(index: index,tweet: snapshot.data[index],);
-                  //                     },
-                  //                     itemCount:snapshot.data.length,
-                  //                   ),
-                  //                 );
-                  //               }
-                  //           }
-                  //
-                  //         }
-                  //     ),
+                      StreamBuilder(
+                          stream: Provider.of<StreamControllerProvider>(context).addStreamController(tweetsStreamController, x).stream,
+                          builder: (BuildContext context,AsyncSnapshot snapshot,)
+                          {
+                            switch(snapshot.connectionState)
+                            {
+                              case ConnectionState.none:
+                                return Text('press button to start');
+                              case ConnectionState.waiting:
+                                return const CircularProgressIndicator();
+                              default:
+                                if(snapshot.hasError)
+                                {
+                                  return Text('error');
+                                }
+                                else
+                                {
+                                  return Scrollbar(
+                                    radius: Radius.circular(30),
+                                    isAlwaysShown: true,
+                                    child: ListView.builder(
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index){
+                                        return TweetCard(index: index,tweet: snapshot.data[index],user:Provider.of<UserProvider>(context).fetchUserByUserId(widget.user.id),);
+                                      },
+                                      itemCount:snapshot.data.length,
+                                    ),
+                                  );
+                                }
+                            }
+
+                          }
+                      ),
+                      StreamBuilder(
+                          builder: (BuildContext context,AsyncSnapshot snapshot,)
+                          {
+
+                            switch(snapshot.connectionState)
+                            {
+                              case ConnectionState.none:
+                                return Text('press button to start');
+                              case ConnectionState.waiting:
+                                return Text("waiting");
+                              default:
+                                if(snapshot.hasError)
+                                {
+                                  return Text('error');
+                                }
+                                else
+                                {
+                                  return Scrollbar(
+                                    radius: Radius.circular(30),
+                                    isAlwaysShown: true,
+                                    child: ListView.builder(
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index){
+                                        return TweetCard(index: index,tweet: snapshot.data[index],user:Provider.of<UserProvider>(context).fetchUserByUserId(widget.user.id));
+                                      },
+                                      itemCount:snapshot.data.length,
+                                    ),
+                                  );
+                                }
+                            }
+
+                          }
+                      ),
+                      StreamBuilder(
+                          builder: (BuildContext context,AsyncSnapshot snapshot,)
+                          {
+
+                            switch(snapshot.connectionState)
+                            {
+                              case ConnectionState.none:
+                                return Text('press button to start');
+                              case ConnectionState.waiting:
+                                return Text("waiting");
+                              default:
+                                if(snapshot.hasError)
+                                {
+                                  return Text('error');
+                                }
+                                else
+                                {
+                                  return Scrollbar(
+                                    radius: Radius.circular(30),
+                                    isAlwaysShown: true,
+                                    child: ListView.builder(
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index){
+                                        return TweetCard(index: index,tweet: snapshot.data[index],user:Provider.of<UserProvider>(context).fetchUserByUserId(widget.user.id));
+                                      },
+                                      itemCount:snapshot.data.length,
+                                    ),
+                                  );
+                                }
+                            }
+
+                          }
+                      ),
+                      StreamBuilder(
+                          builder: (BuildContext context,AsyncSnapshot snapshot,)
+                          {
+
+                            switch(snapshot.connectionState)
+                            {
+                              case ConnectionState.none:
+                                return Text('press button to start');
+                              case ConnectionState.waiting:
+                                return Text("waiting");
+                              default:
+                                if(snapshot.hasError)
+                                {
+                                  return Text('error');
+                                }
+                                else
+                                {
+                                  return Scrollbar(
+                                    radius: Radius.circular(30),
+                                    isAlwaysShown: true,
+                                    child: ListView.builder(
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index){
+                                        return TweetCard(index: index,tweet: snapshot.data[index],user:Provider.of<UserProvider>(context).fetchUserByUserId(widget.user.id));
+                                      },
+                                      itemCount:snapshot.data.length,
+                                    ),
+                                  );
+                                }
+                            }
+
+                          }
+                      ),
                     ],
                   ),
                 ),
@@ -660,9 +676,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
               profilePictureFunctionality: () {
                 Scaffold.of(context).openDrawer();
               },
-              profilePictureImage: UsersData
-                  .getMyData()
-                  .profilePicture,
+              profilePictureImage:widget.user.profilePicUrl,
               profilePictureSize: 40,
             ),
           ),

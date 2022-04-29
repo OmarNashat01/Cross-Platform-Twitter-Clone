@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/users_profiles.dart';
 import 'navigation_drawer_button.dart';
 import 'navigation_drawer_labels.dart';
 import 'profile_picture.dart';
@@ -39,13 +40,13 @@ class NavigationDrawer extends StatelessWidget {
                       ProfilePicture(
                         profilePictureFunctionality: () {
                           //go to profile screen upon pressing it
-                          Navigator.of(context).push(
-                            CustomPageRoute(
-                                child: ProfileScreen(), beginX: 1, beginY: 0),
-                          );
+                          // Navigator.of(context).push(
+                          //   CustomPageRoute(
+                          //       child: (UsersProfile()), beginX: 1, beginY: 0),
+                          // );
                         },
                         profilePictureImage:
-                            UsersData.getMyData().profilePicture,
+                            Auth.profilePicUrl,
                         profilePictureSize: navigationDrawerProfilePicSize,
                       ),
 

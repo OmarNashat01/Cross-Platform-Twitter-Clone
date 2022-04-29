@@ -436,7 +436,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
 
             ),
           ),
-          bottomNavigationBar: TimelineBottomBar(controller: controller),
+          bottomNavigationBar: TimelineBottomBar(controller: controller,pop: true,),
 
         ),
       ),

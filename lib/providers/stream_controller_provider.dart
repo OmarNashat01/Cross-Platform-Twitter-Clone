@@ -5,26 +5,32 @@ import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/services/tweets_service.dart';
 import '../models/tweet_complete_model.dart';
 class StreamControllerProvider extends ChangeNotifier {
-  StreamController streamController = StreamController();
+  List<StreamController> streamController=[];
 
-  dynamic tweetsList=[];
-  Stream stream = StreamController().stream;
-
-  updateStreamController(dynamic data) {
-    if(data!=null) {
-      for (int i = 0; i < data.length; i++) {
-        tweetsList.insert(0, data[i]);
-      }
+  dynamic myTweetsList=[];
+  dynamic userTweetsList=[];
+  updateMyStreamController(dynamic data,int index) {
+     if(data!=null) {
+       for (int i = 0; i < data.length; i++) {
+        myTweetsList.add(data[i]);
+       }
     }
-    streamController.add(tweetsList);
+    streamController[index].add(myTweetsList);
+    print(streamController[index].stream);
+    //stream = streamController.stream;
+    notifyListeners();
+  }
+  updateUserStreamController(dynamic data,int index) {
+
+    streamController[index].add(data);
     //stream = streamController.stream;
     notifyListeners();
   }
 
-  disposed()
+  disposed(int index)
   {
-    streamController.onCancel;
-    streamController.close();
+    streamController[index].onCancel;
+    streamController[index].close();
     print("ok");
   }
 
@@ -33,18 +39,21 @@ class StreamControllerProvider extends ChangeNotifier {
     //fetch then add
     dynamic tweet=await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetIdWithoutAddingToStream(tweetId);
     print(tweet[0].tweet.likeCount);
-    tweetsList.insert(index, tweet[0]);
-    streamController.add(tweetsList);
-    stream = streamController.stream;
+    // tweetsList.insert(index, tweet[0]);
+    // streamController[index].add(tweetsList);
     notifyListeners();
   }
-  StreamController getStreamController() {
+  StreamController getStreamController(int index) {
     notifyListeners();
-    return streamController;
+    return streamController[index];
   }
-
-  Stream getStream() {
-    notifyListeners();
-    return stream;
+  StreamController addStreamController(StreamController streamControlleri,int index)
+  {
+    streamController.insert(index, streamControlleri);
+    return streamController[index];
   }
+  // Stream getStream() {
+  //   notifyListeners();
+  //   return stream;
+  // }
 }

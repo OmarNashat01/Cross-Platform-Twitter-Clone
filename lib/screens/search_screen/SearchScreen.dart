@@ -164,7 +164,7 @@ class SearchScreen_state extends State<SearchScreen>{
 
             ),
           ),
-          bottomNavigationBar: TimelineBottomBar(controller: controller),
+          bottomNavigationBar: TimelineBottomBar(controller: controller,pop: true,),
 
         ),
       ),
