@@ -22,10 +22,9 @@ import 'image_detail_screen.dart';
 //the tweet need information to be rendered
 //this information will come from class which is TweetCardData
 class TweetCard extends StatelessWidget {
-  TweetCard({required this.index, required this.tweet,required this.user});
+  TweetCard({required this.index, required this.tweet});
   int index;
   TweetMain tweet;
-   Future<User> user;
   @override
   Widget build(BuildContext context) {
 
@@ -39,42 +38,16 @@ class TweetCard extends StatelessWidget {
                     Row(
                         children: [
                           //--here is the profile picture of the one who tweeted
-                          FutureBuilder(
-                            future:user,
-                            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot)
-                            {
-                              switch(snapshot.connectionState)
-                              {
-                                case ConnectionState.none:
-                                  return Text('press button to start');
-                                case ConnectionState.waiting:
-                                  return Container(
-                                      alignment: Alignment.topCenter,
-                                      margin: EdgeInsets.only(top: 20),
-                                      child: CircularProgressIndicator(
-                                        value: 0.8,
-                                      )
-                                  );
-                                default:
-                                  if(snapshot.hasError)
-                                  {
-                                    return Text('error');
-                                  }
-                                  else
-                                    {
-                                      return ProfilePicture (
+
+                                       ProfilePicture (
                                           profilePictureFunctionality: () {
                                             Navigator.of(context).push(
                                               CustomPageRoute(
-                                                  child: (UsersProfile(user:snapshot.data)), beginX: 1, beginY: 0),
+                                                  child: (UsersProfile(userId:tweet.tweet.userId)), beginX: 1, beginY: 0),
                                             );
                                           },
                                           profilePictureImage:tweet.getTweetprofilePicUrl(),
-                                          profilePictureSize: navigationDrawerProfilePicSize);
-                                    }
-                              }
-                            },
-                          ),
+                                          profilePictureSize: navigationDrawerProfilePicSize),
 
                   Padding(
                     padding: const EdgeInsets.only(left: 10),

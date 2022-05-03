@@ -16,7 +16,6 @@ class StreamControllerProvider extends ChangeNotifier {
        }
     }
     streamController[index].add(myTweetsList);
-    print(streamController[index].stream);
     //stream = streamController.stream;
     notifyListeners();
   }

@@ -165,7 +165,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index){
                             //print(snapshot.data.length);
-                            return TweetCard(index: index,tweet: snapshot.data[index],user:Provider.of<UserProvider>(context).fetchUserByUserId(snapshot.data[index].tweet.userId));
+                            return TweetCard(index: index,tweet: snapshot.data[index],);
                           },
                           itemCount:snapshot.data.length,
                         ),
