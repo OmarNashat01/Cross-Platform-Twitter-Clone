@@ -21,19 +21,15 @@ import 'image_detail_screen.dart';
 //TweetCard class is the widget responsible for rendering the tweet card at the timeline and any needed place
 //the tweet need information to be rendered
 //this information will come from class which is TweetCardData
-class TweetCard extends StatelessWidget {
-  TweetCard({required this.index, required this.tweet});
-  int index;
-  TweetMain tweet;
+class TweetCardHit extends StatelessWidget {
+  TweetCardHit({required this.tweetCard});
+  TweetCard tweetCard;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        // Navigator.push(context, CustomPageRoute(
-        //   child: TweetCardHit()
-
-        // ))
+        print("object");
       },
       child: Column(
         children: [

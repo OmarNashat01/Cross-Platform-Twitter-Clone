@@ -11,6 +11,7 @@ import '../models/user_model.dart';
 
 /// Holds user's data and utility functions to send API requests
 class UserProvider with ChangeNotifier {
+  String _id = '626551f44d5786f437cbb25b';
   String _name = '';
   String _email = '';
   String _dob = ''; //! must be in 'yyyy-mm-dd' format
@@ -37,7 +38,7 @@ class UserProvider with ChangeNotifier {
   set gender(gender) => _gender = gender; // 'M' | 'F'
   set location(location) => _location = location;
   set website(website) => _website = website;
-
+  String get id => _id;
   String get name => _name;
   String get email => _email;
   String get dob => _dob;
@@ -158,9 +159,9 @@ class UserProvider with ChangeNotifier {
     log('pass: $_password');
     log('bio: $_bio');
   }
-  Future<User> fetchUserByUserId(String userId) async
-  {
-    User user=await UsersApi().fetchUserByUserId(userId);
+
+  Future<User> fetchUserByUserId(String userId) async {
+    User user = await UsersApi().fetchUserByUserId(userId);
     return user;
     notifyListeners();
   }

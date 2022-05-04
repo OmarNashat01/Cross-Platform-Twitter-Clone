@@ -166,7 +166,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                           onRefresh: () {
                             return Provider.of<TweetsViewModel>(context,
                                     listen: false)
-                                .fetchRandomTweetsOfRandomUsers(context, 2, 0);
+                                .fetchMyTweets(context, 0);
                           },
                           child: ListView.builder(
                             physics: const BouncingScrollPhysics(),
