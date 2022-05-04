@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -33,22 +35,24 @@ class TimelineScreen extends StatefulWidget {
 }
 
 class _TimelineScreenState extends State<TimelineScreen> {
-  ScrollController ?controller;
-  final StreamController _streamController=StreamController();
-  Stream ?_stream;
+  ScrollController? controller;
+  final StreamController _streamController = StreamController();
+  Stream? _stream;
   // fetchingStreamController(String user_id)async
   // {
   //   Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(user_id);
   //   _streamController=Provider.of<TweetsViewModel>(context,listen: false).getStreamController();
   //   _stream=_streamController.stream;
   // }
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller=ScrollController();
-    Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context,0);
+    controller = ScrollController();
+    Provider.of<TweetsViewModel>(context, listen: false)
+        .fetchMyTweets(context, 0);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +61,11 @@ class _TimelineScreenState extends State<TimelineScreen> {
           // await Provider.of<TweetsViewModel>(context,listen: false).addTweet();
           // Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context);
           Navigator.of(context).push(
-            CustomPageRoute
-            (child:AddTweetScreen(hintText: "What's happening?",tweetOrReply: "Tweet"),beginX: 0,beginY: 1),
+            CustomPageRoute(
+                child: AddTweetScreen(
+                    hintText: "What's happening?", tweetOrReply: "Tweet"),
+                beginX: 0,
+                beginY: 1),
           );
         },
         backgroundColor: Colors.blue,
@@ -89,7 +96,8 @@ class _TimelineScreenState extends State<TimelineScreen> {
                 onPressed: () {
                   //this makes when i press on the bar it goes to the first tweet in timeline
                   controller?.animateTo(0.0,
-                      curve: Curves.easeIn, duration: Duration(milliseconds: 200));
+                      curve: Curves.easeIn,
+                      duration: Duration(milliseconds: 200));
                 },
                 style: ButtonStyle(
                   overlayColor: MaterialStateColor.resolveWith(
@@ -128,61 +136,63 @@ class _TimelineScreenState extends State<TimelineScreen> {
           ],
           //--------------------------------------------------------------------
           //tweets list viewer
-        body: StreamBuilder(
-            stream: Provider.of<StreamControllerProvider>(context).addStreamController(_streamController,0).stream,
-            builder: (BuildContext context,AsyncSnapshot snapshot,)
-            {
-
-              switch(snapshot.connectionState)
-              {
-                case ConnectionState.none:
-                  return Text('press button to start');
-                case ConnectionState.waiting:
-                  return Container(
-                      alignment: Alignment.topCenter,
-                      margin: EdgeInsets.only(top: 20),
-                      child: CircularProgressIndicator(
-                        value: 0.8,
-                      )
-                  );
-                default:
-                  if(snapshot.hasError)
-                  {
-                    return Text('error');
-                  }
-
-                  else
-                  {
-                    return Scrollbar(
-                      radius: Radius.circular(30),
-                      isAlwaysShown: true,
-                      child: RefreshIndicator(
-                        color: Colors.grey,
-                        onRefresh: () {
-                          return Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,2,0);
-                        },
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index){
-                            //print(snapshot.data.length);
-                            return TweetCard(index: index,tweet: snapshot.data[index],);
+          body: StreamBuilder(
+              stream: StreamControllerProvider.addStreamController(
+                      _streamController, 0)
+                  .stream,
+              builder: (
+                BuildContext context,
+                AsyncSnapshot snapshot,
+              ) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                    return Text('press button to start');
+                  case ConnectionState.waiting:
+                    return Container(
+                        alignment: Alignment.topCenter,
+                        margin: EdgeInsets.only(top: 20),
+                        child: CircularProgressIndicator(
+                          value: 0.8,
+                        ));
+                  default:
+                    if (snapshot.hasError) {
+                      return Text('error');
+                    } else {
+                      return Scrollbar(
+                        radius: Radius.circular(30),
+                        isAlwaysShown: true,
+                        child: RefreshIndicator(
+                          color: Colors.grey,
+                          onRefresh: () {
+                            return Provider.of<TweetsViewModel>(context,
+                                    listen: false)
+                                .fetchRandomTweetsOfRandomUsers(context, 2, 0);
                           },
-                          itemCount:snapshot.data.length,
+                          child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              //print(snapshot.data.length);
+                              return TweetCard(
+                                index: index,
+                                tweet: snapshot.data[index],
+                              );
+                            },
+                            itemCount: snapshot.data.length,
+                          ),
                         ),
-                      ),
-                    );
-                  }
-              }
-
-            }
+                      );
+                    }
+                }
+              }),
         ),
-
-         ),
-        ),
+      ),
 
       //------------------------------------------------------------------------
       //bottom appbar where each icon has its own function
-      bottomNavigationBar: TimelineBottomBar(controller: controller!,pop: false,),
+      bottomNavigationBar: TimelineBottomBar(
+        controller: controller!,
+        pop: false,
+      ),
     );
   }
 }

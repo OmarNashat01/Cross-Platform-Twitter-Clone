@@ -27,27 +27,28 @@ class TweetCard extends StatelessWidget {
   TweetMain tweet;
   @override
   Widget build(BuildContext context) {
-
     return Column(
-        children: [
-          Padding(
-              padding: const EdgeInsets.only(left: 26, right: 26),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                        children: [
-                          //--here is the profile picture of the one who tweeted
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 26, right: 26),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  //--here is the profile picture of the one who tweeted
 
-                                       ProfilePicture (
-                                          profilePictureFunctionality: () {
-                                            Navigator.of(context).push(
-                                              CustomPageRoute(
-                                                  child: (UsersProfile(userId:tweet.tweet.userId)), beginX: 1, beginY: 0),
-                                            );
-                                          },
-                                          profilePictureImage:tweet.getTweetprofilePicUrl(),
-                                          profilePictureSize: navigationDrawerProfilePicSize),
+                  ProfilePicture(
+                      profilePictureFunctionality: () {
+                        Navigator.of(context).push(
+                          CustomPageRoute(
+                              child: (UsersProfile(userId: tweet.tweet.userId)),
+                              beginX: 1,
+                              beginY: 0),
+                        );
+                      },
+                      profilePictureImage: tweet.getTweetprofilePicUrl(),
+                      profilePictureSize: navigationDrawerProfilePicSize),
 
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
@@ -55,8 +56,7 @@ class TweetCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //here is the name and title of the one who tweeted
-                        Text( tweet.getname(),
-                            style: boldName),
+                        Text(tweet.getname(), style: boldName),
                         Text(tweet.getusername()),
                       ],
                     ),
@@ -65,56 +65,63 @@ class TweetCard extends StatelessWidget {
               ),
 
               //--for decoration sized box
-              SizedBox(height: 5,),
+              const SizedBox(
+                height: 5,
+              ),
               //--here is the text of the tweet
-                    tweet.getTweettext()!=""
+              tweet.getTweettext() != ""
                   ? Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          tweet.getTweettext(),
-                          softWrap: false,
-                          overflow: TextOverflow.ellipsis,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            tweet.getTweettext(),
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
                             //max lines of writing a tweet is 8 like in the main twitter
                             maxLines: 8,
                             style: tweetsTexts,
                           ),
-                      ),
-                    ],
-                  )
+                        ),
+                      ],
+                    )
                   : const SizedBox.shrink(),
             ],
           ),
         ),
-             //--for decoration sized box
-             SizedBox(height: 5,),
+        //--for decoration sized box
+        const SizedBox(
+          height: 5,
+        ),
 
         //--here is the image of the tweet
-            GestureDetector(
-          onTap: ()
-          {
+        GestureDetector(
+          onTap: () {
             Navigator.of(context).push(
-              CustomPageRoute
-                (child:ImageDetailScreen(
-                tweet: tweet,
-                index: index,
-              ),beginX: 0,beginY: 1),
+              CustomPageRoute(
+                  child: ImageDetailScreen(
+                    tweet: tweet,
+                    index: index,
+                  ),
+                  beginX: 0,
+                  beginY: 1),
             );
           },
-               child: tweet.images.length>0?
-               Image.network(
-                 tweet.images[0].url,
-           fit: BoxFit.cover,
-           width: double.infinity,
-           alignment: Alignment.center,
-                 ):
-                   SizedBox.shrink(),
-            ),
-
+          child: tweet.images.length > 0
+              ? Image.network(
+                  tweet.images[0].url,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                )
+              : SizedBox.shrink(),
+        ),
 
         //the row of icons for your reactions on the tweet
-        TweetBottomBar(tweet:tweet,index: index,iconsBoundry: Colors.grey.shade600,),
-
+        TweetBottomBar(
+          tweet: tweet,
+          index: index,
+          iconsBoundry: Colors.grey.shade600,
+        ),
 
         //decoration of tweet at the bottom (divider)
         const SizedBox(
@@ -131,5 +138,3 @@ class TweetCard extends StatelessWidget {
     );
   }
 }
-
-

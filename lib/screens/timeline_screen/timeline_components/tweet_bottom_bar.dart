@@ -13,15 +13,15 @@ import 'add_tweet_screen.dart';
 import 'custom_page_route.dart';
 
 class TweetBottomBar extends StatelessWidget {
-   TweetBottomBar({
+  TweetBottomBar({
     Key? key,
     required this.index,
     required this.iconsBoundry,
-     required this.tweet,
+    required this.tweet,
   }) : super(key: key);
-   TweetMain tweet;
-   int index;
-   Color iconsBoundry;
+  TweetMain tweet;
+  int index;
+  Color iconsBoundry;
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +35,19 @@ class TweetBottomBar extends StatelessWidget {
             onTap: () {
               ///i should get here the id of this tweet to insert the reply to this specific tweet
               Navigator.of(context).push(
-                CustomPageRoute
-                  (child:AddTweetScreen(hintText: "Tweet your reply",tweetOrReply: "Reply",replying:true,name:tweet.tweet.username),beginX: 0,beginY: 1),
+                CustomPageRoute(
+                    child: AddTweetScreen(
+                        hintText: "Tweet your reply",
+                        tweetOrReply: "Reply",
+                        replying: true,
+                        name: tweet.tweet.username),
+                    beginX: 0,
+                    beginY: 1),
               );
             },
             child: Row(
               children: [
-                 Icon(
+                Icon(
                   FontAwesomeIcons.comment,
                   color: iconsBoundry,
                   size: 18,
@@ -49,11 +55,9 @@ class TweetBottomBar extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                tweet.getCommentCount() >
-                        0
+                tweet.getCommentCount() > 0
                     ? Text(
-                  tweet.getCommentCount()
-                            .toString(),
+                        tweet.getCommentCount().toString(),
                         style: titleName,
                       )
                     : const SizedBox.shrink()
@@ -65,10 +69,10 @@ class TweetBottomBar extends StatelessWidget {
             onTap: () {
               // Provider.of<TweetsViewModel>(context,listen: false).getTweetsList()[index].isRetweeted==false?showModalBottomSheet(context: context, builder: (context)=>RetweetScreen(index: index,doOrUndo: 'do',),)
               // :showModalBottomSheet(context: context, builder: (context)=>RetweetScreen(index: index,doOrUndo: 'undo',),);
-              },
+            },
             child: Row(
               children: [
-                 Icon(
+                Icon(
                   FontAwesomeIcons.retweet,
                   // color: Provider.of<TweetsViewModel>(context).getTweetsList()[index].isRetweeted==false?iconsBoundry:Colors.green,
                   size: 18,
@@ -76,11 +80,9 @@ class TweetBottomBar extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                tweet.getRetweetCount()>
-                        0
+                tweet.getRetweetCount() > 0
                     ? Text(
-                 tweet.getRetweetCount()
-                            .toString(),
+                        tweet.getRetweetCount().toString(),
                         //style:Provider.of<TweetsViewModel>(context).getTweetsList()[index].isRetweeted==false?notRetweeted:retweeted,
                       )
                     : const SizedBox.shrink()
@@ -92,8 +94,7 @@ class TweetBottomBar extends StatelessWidget {
           Row(
             children: [
               LikeButton(
-
-                isLiked:tweet.tweet.isLiked,
+                isLiked: tweet.tweet.isLiked,
                 likeCount: tweet.tweet.likeCount,
                 likeBuilder: (isLiked) {
                   final color = isLiked ? Colors.red : Colors.transparent;
@@ -116,16 +117,23 @@ class TweetBottomBar extends StatelessWidget {
                   );
                 },
                 countBuilder: (count, isLiked, text) {
-                  return tweet.getLikesCount()> 0 ? Text(text, style: isLiked?loved:titleName,) : const SizedBox.shrink();
+                  return tweet.getLikesCount() > 0
+                      ? Text(
+                          text,
+                          style: isLiked ? loved : titleName,
+                        )
+                      : const SizedBox.shrink();
                 },
                 onTap: (isLiked) async {
-                  tweet.tweet.isLiked=!isLiked;
+                  tweet.tweet.isLiked = !isLiked;
                   print("tweet id is : ${tweet.tweet.tweetId}");
                   print("is liked of this tweet is : ${tweet.tweet.isLiked}");
 
                   //await Provider.of<TweetsViewModel>(context,listen: false).likeTweet(tweetId: tweet.tweet.tweetId);
-                  await Provider.of<StreamControllerProvider>(context,listen: false).removeTweetFromStreamControllerThenFetchToUpdateUI(index, tweet.tweet.tweetId, context);
-
+                  // await Provider.of<StreamControllerProvider>(context,
+                  //         listen: false)
+                  //     .removeTweetFromStreamControllerThenFetchToUpdateUI(
+                  //         index, tweet.tweet.tweetId, context);
                 },
               ),
               SizedBox(
@@ -136,7 +144,7 @@ class TweetBottomBar extends StatelessWidget {
           //--share tweet
           GestureDetector(
             onTap: () {},
-            child:  Icon(
+            child: Icon(
               FontAwesomeIcons.arrowUpFromBracket,
               color: iconsBoundry,
               size: 18,

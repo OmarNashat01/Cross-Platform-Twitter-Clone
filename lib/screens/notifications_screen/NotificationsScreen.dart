@@ -7,7 +7,6 @@ import '../timeline_screen/timeline_components/profile_picture.dart';
 import '../timeline_screen/timeline_components/navigation_drawer.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 
-
 class NotificationsScreen extends StatefulWidget {
   static const routeName = '/notifications-screen';
 
@@ -17,19 +16,15 @@ class NotificationsScreen extends StatefulWidget {
   }
 }
 
-class NotificationsScreen_state extends State<NotificationsScreen>{
-
+class NotificationsScreen_state extends State<NotificationsScreen> {
   final controller = ScrollController();
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          drawer:
-          NavigationDrawer(),
-
+          drawer: NavigationDrawer(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {},
             backgroundColor: Colors.blue,
@@ -38,13 +33,11 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
               size: 20,
             ),
           ),
-
           body: SafeArea(
             child: NestedScrollView(
               controller: controller,
               floatHeaderSlivers: true,
-              headerSliverBuilder: (context, innerBoxIsScrolled) =>
-              [
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
                 SliverAppBar(
                     floating: true,
                     pinned: true,
@@ -55,10 +48,13 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                     automaticallyImplyLeading: false,
                     title: TextButton(
                       onPressed: () {
-                        controller.animateTo(0.0, curve: Curves.easeIn, duration: Duration(seconds: 1));
+                        controller.animateTo(0.0,
+                            curve: Curves.easeIn,
+                            duration: Duration(seconds: 1));
                       },
                       style: ButtonStyle(
-                        overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
+                        overlayColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.transparent),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,25 +63,34 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                             profilePictureFunctionality: () {
                               Scaffold.of(context).openDrawer();
                             },
-                            profilePictureImage: UsersData
-                                .getMyData()
-                                .profilePicture,
+                            profilePictureImage:
+                                UsersData.getMyData().profilePicture,
                             profilePictureSize: 15,
                           ),
                           //twitter icon in the appbar
-                          Text('Notifications', style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),),
-                          IconButton(onPressed: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context){ return TimelineScreen(); },
-                              ),
-                            );
-                          }, icon: Icon(Icons.settings, color: Colors.grey,)),
+                          Text(
+                            'Notifications',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return TimelineScreen();
+                                    },
+                                  ),
+                                );
+                              },
+                              icon: Icon(
+                                Icons.settings,
+                                color: Colors.grey,
+                              )),
                           //sparkle icon in the appbar
                         ],
                       ),
@@ -133,8 +138,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -144,8 +148,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -155,8 +158,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -166,8 +168,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -177,8 +178,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -188,8 +188,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -199,8 +198,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -210,8 +208,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -221,8 +218,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -232,8 +228,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -243,8 +238,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -254,8 +248,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -265,8 +258,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -286,8 +278,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -297,8 +288,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -308,8 +298,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -319,8 +308,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -330,8 +318,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -341,8 +328,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -352,8 +338,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -363,8 +348,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -374,8 +358,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -385,8 +368,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -396,8 +378,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -407,8 +388,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -418,8 +398,7 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                                     leading: FlutterLogo(size: 50.0),
                                     title: Text('Ahmed Mostafa'),
                                     subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'
-                                    ),
+                                        'A sufficiently long subtitle warrants three lines.'),
                                     trailing: Icon(Icons.more_vert),
                                     isThreeLine: true,
                                   ),
@@ -433,11 +412,12 @@ class NotificationsScreen_state extends State<NotificationsScreen>{
                   ),
                 ],
               ),
-
             ),
           ),
-          bottomNavigationBar: TimelineBottomBar(controller: controller,pop: true,),
-
+          bottomNavigationBar: TimelineBottomBar(
+            controller: controller,
+            pop: false,
+          ),
         ),
       ),
     );

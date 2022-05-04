@@ -9,7 +9,6 @@ import '../timeline_screen/timeline_components/profile_picture.dart';
 import '../timeline_screen/timeline_components/navigation_drawer.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 
-
 class SearchScreen extends StatefulWidget {
   static const routeName = '/search-screen';
 
@@ -19,19 +18,15 @@ class SearchScreen extends StatefulWidget {
   }
 }
 
-class SearchScreen_state extends State<SearchScreen>{
-
+class SearchScreen_state extends State<SearchScreen> {
   final controller = ScrollController();
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          drawer:
-          NavigationDrawer(),
-
+          drawer: NavigationDrawer(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {},
             backgroundColor: Colors.blue,
@@ -40,13 +35,11 @@ class SearchScreen_state extends State<SearchScreen>{
               size: 20,
             ),
           ),
-
           body: SafeArea(
             child: NestedScrollView(
               controller: controller,
               floatHeaderSlivers: true,
-              headerSliverBuilder: (context, innerBoxIsScrolled) =>
-              [
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
                 SliverAppBar(
                     floating: true,
                     pinned: true,
@@ -57,10 +50,11 @@ class SearchScreen_state extends State<SearchScreen>{
                     automaticallyImplyLeading: false,
                     title: TextButton(
                       onPressed: () {
-                        controller.animateTo(0.0, curve: Curves.easeIn, duration: Duration(seconds: 1));
+                        Navigator.pushNamed(context, TimelineScreen.routeName);
                       },
                       style: ButtonStyle(
-                        overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
+                        overlayColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.transparent),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,25 +63,34 @@ class SearchScreen_state extends State<SearchScreen>{
                             profilePictureFunctionality: () {
                               Scaffold.of(context).openDrawer();
                             },
-                            profilePictureImage: UsersData
-                                .getMyData()
-                                .profilePicture,
+                            profilePictureImage:
+                                UsersData.getMyData().profilePicture,
                             profilePictureSize: 15,
                           ),
                           //twitter icon in the appbar
-                          Text('Search', style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),),
-                          IconButton(onPressed: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context){ return TimelineScreen(); },
-                              ),
-                            );
-                          }, icon: Icon(Icons.settings, color: Colors.grey,)),
+                          Text(
+                            'Search',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return TimelineScreen();
+                                    },
+                                  ),
+                                );
+                              },
+                              icon: Icon(
+                                Icons.settings,
+                                color: Colors.grey,
+                              )),
                           //sparkle icon in the appbar
                         ],
                       ),
@@ -136,7 +139,7 @@ class SearchScreen_state extends State<SearchScreen>{
                               physics: const BouncingScrollPhysics(),
                               padding: EdgeInsets.symmetric(vertical: 20),
                               itemBuilder: (context, index) {
-                                return Text('');//TweetCard(index: index);
+                                return Text(''); //TweetCard(index: index);
                               },
                               itemCount: 0,
                             ),
@@ -150,7 +153,7 @@ class SearchScreen_state extends State<SearchScreen>{
                               physics: const BouncingScrollPhysics(),
                               padding: EdgeInsets.symmetric(vertical: 20),
                               itemBuilder: (context, index) {
-                                return Text('');//TweetCard(index: index);
+                                return Text(''); //TweetCard(index: index);
                               },
                               itemCount: 0,
                             ),
@@ -161,11 +164,12 @@ class SearchScreen_state extends State<SearchScreen>{
                   ),
                 ],
               ),
-
             ),
           ),
-          bottomNavigationBar: TimelineBottomBar(controller: controller,pop: true,),
-
+          bottomNavigationBar: TimelineBottomBar(
+            controller: controller,
+            pop: true,
+          ),
         ),
       ),
     );
