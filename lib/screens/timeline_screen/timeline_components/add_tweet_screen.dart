@@ -76,16 +76,14 @@ class AddTweetScreen extends StatelessWidget {
                             image1=[];
                           }
                           print(parts[0]);
+                          print(image1);
                           var now = new DateTime.now();
                           var formatter = new DateFormat('yyyy-MM-dd');
                           String formattedDate = formatter.format(now);
                           //if i am adding a tweet from scratch do this without showing the inner tweet
-                          var uuid = Uuid();
-                          String id=uuid.v4();
-                          String tweetId=uuid.v4();
                           await Provider.of<TweetsViewModel>(context,listen: false).addTweet(text: parts[0],images: image1,videos: []);
-                          //Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context,"126");
-                          //await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(context,tweetId);
+                          await Provider.of<TweetsViewModel>(context,listen: false).getAddedTweet();
+
                           Navigator.pop(context);
                         },
                         style: ButtonStyle(

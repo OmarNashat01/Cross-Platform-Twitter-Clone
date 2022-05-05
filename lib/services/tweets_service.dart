@@ -475,7 +475,7 @@ class TweetsApi {
     var request =
         http.Request('POST', Uri.parse('http://45.79.245.94:5000/tweets'));
     request.body =
-        json.encode({"text": "wholaaaaa", "images": [], "videos": []});
+        json.encode({"text": text, "images": images, "videos": videos});
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
 
@@ -485,44 +485,13 @@ class TweetsApi {
       print(response.reasonPhrase);
     }
   }
+  Future<TweetMain>getAddedTweet()async
+  {
+    dynamic myTweets=await fetchMyTweets();
+    return myTweets.last;
 
-  // Future<void> addTweet(
-  //     {required String dateOfCreation, required String id, required String tweetId, required String text, required List<
-  //         dynamic>images, required List<dynamic>videos}) async
-  // {
-  //   var headers = {
-  //     'Content-Type': 'application/json'
-  //   };
-  //   var request = http.Request(
-  //       'POST', Uri.parse('$androidMobileBaseUrl/tweets'));
-  //   request.body = json.encode({
-  //     "id": id, //random id
-  //     "tweet_id": tweetId, //random id for tweet created
-  //     "user_id": Auth.userId,
-  //     "name": "mohamed",
-  //     "username": "Maho",
-  //     "prof_pic_url": "https://pbs.twimg.com/media/EEI178KWsAEC79p.jpg",
-  //     "bio": Auth.bio,
-  //     "followers_count": 100,
-  //     "following_count": 200,
-  //     "text": text,
-  //     "created_at": dateOfCreation,
-  //     "like_count": 0,
-  //     "comment_count": 0,
-  //     "retweet_count": 0,
-  //     "images": images,
-  //     "videos": videos,
-  //   });
-  //   request.headers.addAll(headers);
-  //   http.StreamedResponse response = await request.send();
-  //   print(response.toString());
-  //   if (response.statusCode == 200) {
-  //     print(await response.stream.bytesToString());
-  //   }
-  //   else {
-  //     print(response.reasonPhrase);
-  //   }
-  // }
+  }
+
   Future<void> deleteTweet({required String tweetId}) async {
     final queryParameters = {
       'tweet_id': tweetId,

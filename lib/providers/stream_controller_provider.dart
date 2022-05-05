@@ -12,7 +12,7 @@ class StreamControllerProvider {
   static dynamic userTweetsList = [];
   static updateMyStreamController(dynamic data, int index) {
     if (data != null) {
-      for (int i = data.length - 1; i >= 0; i--) {
+      for (int i =0; i <data.length; i++) {
         myTweetsList.insert(0, data[i]);
       }
     }
@@ -22,7 +22,12 @@ class StreamControllerProvider {
   }
 
   static updateUserStreamController(dynamic data, int index) {
-    streamController[index].add(data);
+    if (data != null) {
+      for (int i =0; i <data.length; i++) {
+        userTweetsList.insert(0, data[i]);
+      }
+    }
+    streamController[index].add(userTweetsList);
     //stream = streamController.stream;
     // notifyListeners();
   }

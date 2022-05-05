@@ -37,23 +37,11 @@ class TweetsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> fetchTweetByTweetId(BuildContext context,String tweetId,int streamControllerIndex) async
-  // {
-  //   addedDataToStream = await TweetsApi().fetchTweetByTweetId(tweetId);
-  //   Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream,streamControllerIndex);
-  //   notifyListeners();
-  // }
   Future<List<dynamic>> fetchTweetByTweetIdWithoutAddingToStream(
       String tweetId) async {
     return TweetsApi().fetchTweetByTweetId(tweetId);
   }
 
-  // Future<void> deleteTweet(String tweetId) async
-  // {
-  //    await TweetsApi().deleteTweet(tweetId: tweetId);
-  //   //=Provider.of<StreamControllerProvider>(context,listen: false).updateStreamController(addedDataToStream);
-  //   notifyListeners();
-  // }
   Future<void> addTweet(
       {required String text,
       required List<dynamic> images,
@@ -61,17 +49,15 @@ class TweetsViewModel extends ChangeNotifier {
     await TweetsApi().addTweet(text: text, images: images, videos: videos);
     notifyListeners();
   }
-  // Future<void> likeTweet({required String tweetId}) async
-  // {
-  //   await TweetsApi().addLike(tweetId: tweetId);
-  //   notifyListeners();
-  // }
-  // List<TweetMain> getTweetsList()
-  // {
-  //   return _tweetsList;
-  // }
-  // StreamController getStreamController()
-  // {
-  //   return streamController;
-  // }
+  Future<void>getAddedTweet()async
+  {
+   addedDataToStream= await TweetsApi().getAddedTweet();
+   print(addedDataToStream.images[0].url);
+   List<TweetMain>addedTweet=[];
+   addedTweet.add(addedDataToStream);
+    StreamControllerProvider.updateMyStreamController(
+        addedTweet, 0);
+    notifyListeners();
+  }
+
 }
