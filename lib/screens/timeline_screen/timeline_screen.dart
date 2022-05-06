@@ -12,7 +12,9 @@ import 'package:twitter/dummy/timeline_list.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
+import 'package:twitter/providers/list_view_tweet_provider.dart';
 import 'package:twitter/providers/stream_controller_provider.dart';
+import 'package:twitter/providers/ui_colors_provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/quote_tweet_card.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
@@ -166,12 +168,12 @@ class _TimelineScreenState extends State<TimelineScreen> {
                           onRefresh: () {
                             return Provider.of<TweetsViewModel>(context,
                                     listen: false)
-                                .fetchMyTweets(context, 0);
+                                .fetchRandomTweetsOfRandomUsers(context,2, 0);
                           },
                           child: ListView.builder(
+
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
-                              //print(snapshot.data.length);
                               return TweetCard(
                                 index: index,
                                 tweet: snapshot.data[index],

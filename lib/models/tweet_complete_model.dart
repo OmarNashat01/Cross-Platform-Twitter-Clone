@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/models/comment_model.dart';
 import 'package:twitter/models/reply_model.dart';
@@ -13,6 +15,7 @@ class TweetMain
   List<List<dynamic>>?replies;
   List<dynamic>images;
   List<dynamic>videos;
+  Color threeDotsColor=Color(0xffAFD9F4);
 
   //tweet info getters------------------------------------
   //get tweet id

@@ -20,14 +20,22 @@ class StreamControllerProvider {
     //stream = streamController.stream;
     // notifyListeners();
   }
+  static removeTheDeletedTweetFromStreamController(int index) {
 
+    myTweetsList.removeAt(index);
+    streamController[0].add(myTweetsList);
+    //stream = streamController.stream;
+    // notifyListeners();
+  }
   static updateUserStreamController(dynamic data, int index) {
     if (data != null) {
       for (int i =0; i <data.length; i++) {
         userTweetsList.insert(0, data[i]);
+        print(data[i].tweet.text);
       }
     }
     streamController[index].add(userTweetsList);
+    userTweetsList=[];
     //stream = streamController.stream;
     // notifyListeners();
   }

@@ -65,6 +65,10 @@ class TweetsApi {
       List<dynamic> videos = [];
       //--------------------------------------------------------------------------
       for (int i = 0; i < tweetsList.length; i++) {
+        images=[];
+        comments=[];
+        likers=[];
+        videos=[];
         if (jsonData[i].length == 17) {
           List<List<dynamic>> replies = [];
           if (tweetsList[i].comments.length > 0) {
@@ -163,6 +167,10 @@ class TweetsApi {
       List<dynamic> videos = [];
       //--------------------------------------------------------------------------
       for (int i = 0; i < tweetsList.length; i++) {
+        images=[];
+        comments=[];
+        likers=[];
+        videos=[];
         if (jsonData[i].length == 17) {
           List<List<dynamic>> replies = [];
           if (tweetsList[i].comments.length > 0) {
@@ -212,6 +220,7 @@ class TweetsApi {
       }
       return tweetsMain;
     }
+    return null;
   }
 
   Future<List<TweetMain>?> fetchRandomTweetsOfRandomUsers(int page) async {
@@ -270,6 +279,10 @@ class TweetsApi {
       List<dynamic> videos = [];
       //--------------------------------------------------------------------------
       for (int i = 0; i < tweetsList.length; i++) {
+        images=[];
+        comments=[];
+        likers=[];
+        videos=[];
         if (jsonData[i].length == 17) {
           List<List<dynamic>> replies = [];
           if (tweetsList[i].comments.length > 0) {
@@ -335,14 +348,12 @@ class TweetsApi {
     List<dynamic> dataGood = [];
     List<dynamic> dataBad = [];
     List<dynamic> tweetsList = [];
-    print(jsonData.length);
 
     for (int i = 0; i < jsonData.length; i++) {
       if (jsonData[i].length == 17) {
         dataGood.add(jsonData[i]);
       } else {
         dataBad.add(jsonData[i]);
-        print(dataBad[0]);
       }
     }
     List<dynamic> tweetsGood = [];
@@ -362,6 +373,10 @@ class TweetsApi {
     //--------------------------------------------------------------------------
     for (int i = 0; i < tweetsList.length; i++) {
       if (tweetsList.length == 17) {
+        images=[];
+        comments=[];
+        likers=[];
+        videos=[];
         List<List<dynamic>> replies = [];
         comments =
             tweetsList[i].comments.map((e) => Comment.fromJson(e)).toList();
@@ -395,7 +410,6 @@ class TweetsApi {
   }
 
   Future<List<TweetMain>> fetchTweetByTweetId(String tweetId) async {
-    print("hello");
     final queryParameters = {
       'tweet_id': tweetId,
       //'token': _email,
@@ -406,10 +420,8 @@ class TweetsApi {
     );
     String data = response.body;
     var jsonData = jsonDecode(data);
-    print(jsonData[0]);
-    print(jsonData[0].length);
+
     List<dynamic> tweet;
-    print("hello");
     if (jsonData[0].length == 17) {
       tweet = jsonData.map((e) => Tweet.fromJson(e, false)).toList();
     } else {
@@ -454,7 +466,6 @@ class TweetsApi {
           TweetMain(tweet: tweet[0], videos: videos, images: images);
       tweetMain = tweetIMain;
     }
-    print("hello");
     List<TweetMain> tweetSent = [];
     tweetSent.add(tweetMain);
     return tweetSent;
@@ -493,14 +504,20 @@ class TweetsApi {
   }
 
   Future<void> deleteTweet({required String tweetId}) async {
-    final queryParameters = {
-      'tweet_id': tweetId,
-      //'token': _email,
+    var headers = {
+      'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4'
     };
-    final uri = Uri.http(Http().getMobileBaseUrl(), '/tweets', queryParameters);
-    http.Response response = await http.delete(uri);
+    var request = http.Request('DELETE', Uri.parse('http://45.79.245.94:5000/tweets?Id=$tweetId'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
     if (response.statusCode == 200) {
-      print("tweet with id$tweetId is deleted successfully ");
+      print(await response.stream.bytesToString());
+    }
+    else {
+      print(response.reasonPhrase);
     }
   }
 
@@ -538,12 +555,9 @@ class TweetsApi {
       },
     );
     String data = response.body;
-    print(data);
     var jsonData = jsonDecode(data);
-    print(jsonData[0]);
-    print(jsonData[0].length);
+
     List<dynamic> tweet;
-    print("hello");
     if (jsonData[0].length == 17) {
       tweet = jsonData.map((e) => Tweet.fromJson(e, false)).toList();
     } else {
@@ -588,7 +602,6 @@ class TweetsApi {
           TweetMain(tweet: tweet[0], videos: videos, images: images);
       tweetMain = tweetIMain;
     }
-    print("hello");
     List<TweetMain> tweetSent = [];
     tweetSent.add(tweetMain);
     return tweetSent;

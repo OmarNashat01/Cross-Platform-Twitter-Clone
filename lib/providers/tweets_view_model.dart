@@ -52,12 +52,16 @@ class TweetsViewModel extends ChangeNotifier {
   Future<void>getAddedTweet()async
   {
    addedDataToStream= await TweetsApi().getAddedTweet();
-   print(addedDataToStream.images[0].url);
    List<TweetMain>addedTweet=[];
    addedTweet.add(addedDataToStream);
     StreamControllerProvider.updateMyStreamController(
         addedTweet, 0);
     notifyListeners();
   }
+  Future<void>  deleteTweet(
+      String tweetId,tweetIndex) async {
 
+     TweetsApi().deleteTweet(tweetId: tweetId);
+     StreamControllerProvider.removeTheDeletedTweetFromStreamController(tweetIndex);
+  }
 }

@@ -68,7 +68,7 @@ class UsersProfile_state extends State<UsersProfile>
     _tabController = TabController(initialIndex: 0, length: 4, vsync: this);
     _scrollController = ScrollController();
     Provider.of<TweetsViewModel>(context, listen: false)
-        .fetchUserTweets(context, x, widget.userId);
+        .fetchUserTweets(context, 1, widget.userId);
     user = Provider.of<UserProvider>(context, listen: false)
         .fetchUserByUserId(widget.userId);
     print(x);
@@ -522,7 +522,7 @@ class UsersProfile_state extends State<UsersProfile>
                                 StreamBuilder(
                                     stream: StreamControllerProvider
                                             .addStreamController(
-                                                tweetsStreamController, x)
+                                                tweetsStreamController, 1)
                                         .stream,
                                     builder: (
                                       BuildContext context,
