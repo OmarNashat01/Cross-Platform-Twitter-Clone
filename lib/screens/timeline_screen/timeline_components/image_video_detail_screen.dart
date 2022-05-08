@@ -7,7 +7,6 @@ import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bot
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/video_player_widget.dart';
 import 'package:video_player/video_player.dart';
-import 'package:export_video_frame/export_video_frame.dart';
 import '../../../models/tweet_complete_model.dart';
 import '../../../providers/tweets_view_model.dart';
 class ImageVideoDetailScreen extends StatefulWidget {
@@ -34,13 +33,12 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
   {
     // var image = await ExportVideoFrame.exportImageBySeconds(widget.videoPlayerController, duration, 0);
 
-    PaletteGenerator paletteGenerator;
+    PaletteGenerator ?paletteGenerator;
     widget.image==true?  paletteGenerator = await PaletteGenerator.fromImageProvider(
       NetworkImage(widget.tweet.images[0].url),
-    ): paletteGenerator = await PaletteGenerator.fromImageProvider(
-  NetworkImage(widget.tweet.videos[0].url));
+    ): null;
 
-    color=paletteGenerator.dominantColor;
+    color=paletteGenerator?.dominantColor;
     setState(() {
 
     });

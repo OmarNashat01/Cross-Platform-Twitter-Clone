@@ -54,6 +54,7 @@ class TweetsViewModel extends ChangeNotifier {
    addedDataToStream= await TweetsApi().getAddedTweet();
    List<TweetMain>addedTweet=[];
    addedTweet.add(addedDataToStream);
+   print(addedDataToStream);
     StreamControllerProvider.updateMyStreamController(
         addedTweet, 0);
     notifyListeners();

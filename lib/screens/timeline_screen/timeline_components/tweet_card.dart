@@ -35,7 +35,7 @@ class TweetCard extends StatefulWidget {
 
 class _TweetCardState extends State<TweetCard> {
   GlobalKey threeDotsKey = GlobalKey();
-  VideoPlayerController? videoPlayerController;
+   VideoPlayerController? videoPlayerController;
   void _showPopupMenu(double x, double y) {
     y = y + 50;
     showMenu<String>(
@@ -214,7 +214,6 @@ class _TweetCardState extends State<TweetCard> {
   void initState() {
     // TODO: implement initState
     if(widget.tweet.videos.length>0) {
-      print('hola');
       videoPlayerController =
       VideoPlayerController.network(widget.tweet.videos[0].url)
         ..addListener(() {
@@ -225,7 +224,6 @@ class _TweetCardState extends State<TweetCard> {
         ..setLooping(true)
         ..initialize().then((_) => videoPlayerController?.play());
     }
-    print("lol");
     super.initState();
   }
   @override
@@ -236,6 +234,8 @@ class _TweetCardState extends State<TweetCard> {
   }
   @override
   Widget build(BuildContext context) {
+    var isMuted;
+    widget.tweet.videos.length>0?isMuted=videoPlayerController?.value.volume==0:isMuted=0;
     return Column(
       children: [
         Padding(
@@ -308,6 +308,7 @@ class _TweetCardState extends State<TweetCard> {
               ),
               //--here is the text of the tweet
               widget.tweet.getTweettext() != ""
+
                   ? Row(
                       children: [
                         Expanded(
@@ -331,7 +332,9 @@ class _TweetCardState extends State<TweetCard> {
           height: 5,
         ),
 
-        //--here is the image of the tweet
+        //--here is the video of the tweet
+
+        widget.tweet.videos.isNotEmpty?
         GestureDetector(
           onTap: () {
             Navigator.of(context).push(
@@ -347,9 +350,16 @@ class _TweetCardState extends State<TweetCard> {
                   beginY: 1),
             );
           },
-          child: widget.tweet.videos.length > 0
-              ? VideoPlayerWidget(videoPlayerController:videoPlayerController!): SizedBox.shrink(),
-        ),
+          child: Column(
+                children: [
+                  videoPlayerController!=null?VideoPlayerWidget(videoPlayerController:videoPlayerController!):SizedBox.shrink()
+
+                ],
+              ),
+        ):
+            SizedBox.shrink(),
+        //--here is the image of the tweet
+        widget.tweet.images.isNotEmpty?
         GestureDetector(
           onTap: () {
             Navigator.of(context).push(
@@ -364,15 +374,14 @@ class _TweetCardState extends State<TweetCard> {
                   beginY: 1),
             );
           },
-          child: widget.tweet.images.length > 0
-              ? Image.network(
+          child: Image.network(
             widget.tweet.images[0].url,
             fit: BoxFit.cover,
             width: double.infinity,
             alignment: Alignment.center,
           )
-              : SizedBox.shrink(),
-        ),
+        ):
+        SizedBox.shrink(),
 
         //the row of icons for your reactions on the tweet
         TweetBottomBar(

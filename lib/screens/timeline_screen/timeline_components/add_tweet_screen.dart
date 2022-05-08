@@ -65,7 +65,6 @@ class AddTweetScreen extends StatelessWidget {
                           {
                             if(text[i]==':')
                             {
-                              print('holaimage');
                               c=1;
                               parts = [text.substring(0,idx).trim(), text.substring(idx+1).trim()];
                               image1=[{ "url": parts[1], "alt_text": "7:45 pm", "height": 0, "width": 0}];
@@ -73,7 +72,6 @@ class AddTweetScreen extends StatelessWidget {
                             }
                             if(text[i]=='-')
                             {
-                              print('holavideo');
                               c=1;
                               parts = [text.substring(0,idx2).trim(), text.substring(idx2+1).trim()];
                               video1=[{ "url": parts[1], "alt_text": "7:45 pm", "height": 0, "width": 0}];
@@ -82,13 +80,14 @@ class AddTweetScreen extends StatelessWidget {
                           }
                           if(c==0)
                           {
-                            print("not hola");
                             parts.add(text);
                             image1=[];
                             video1=[];
                           }
-                          print(parts[0]);
+                          print("-----------------------------------------------------------------------------");
                           print(video1);
+                          print("-----------------------------------------------------------------------------");
+
                           var now = new DateTime.now();
                           var formatter = new DateFormat('yyyy-MM-dd');
                           String formattedDate = formatter.format(now);
