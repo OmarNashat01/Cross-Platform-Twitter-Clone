@@ -84,7 +84,7 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
                 fit: BoxFit.cover,
                 width: double.infinity,
                 alignment: Alignment.center,
-              ):VideoPlayerWidget(videoPlayerController:widget.videoPlayerController!)
+              ):VideoPlayerWidget(videoPlayerController:widget.videoPlayerController!,isMuted: 0,)
             ),
               Column(
                 children: [

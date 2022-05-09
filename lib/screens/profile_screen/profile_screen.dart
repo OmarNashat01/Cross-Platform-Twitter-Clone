@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:custom_nested_scroll_view/custom_nested_scroll_view.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/screens/search_screen/SearchScreen.dart';
-import 'package:twitter/providers/stream_controller_provider.dart';
+import 'package:twitter/providers/timeline_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -59,7 +59,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: TimelineBottomBar(controller: controller,pop: true,),
+      bottomNavigationBar: TimelineBottomBar(controller: controller,pop: true,contextt: context,),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Colors.blue,

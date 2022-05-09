@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:twitter/providers/stream_controller_provider.dart';
+import 'package:twitter/providers/timeline_provider.dart';
 import 'package:twitter/services/tweets_service.dart';
 import '../models/tweet_complete_model.dart';
 
@@ -16,24 +16,24 @@ class TweetsViewModel extends ChangeNotifier {
   Future<void> fetchMyTweets(
       BuildContext context, int streamControllerIndex) async {
     addedDataToStream = await TweetsApi().fetchMyTweets();
-    StreamControllerProvider.updateMyStreamController(
-        addedDataToStream, streamControllerIndex);
+    Provider.of<TimelineProvider>(context,listen: false).updateMyTimeline(
+        addedDataToStream);
     notifyListeners();
   }
 
-  Future<void> fetchUserTweets(
-      BuildContext context, int streamControllerIndex, String userId) async {
-    addedDataToStream = await TweetsApi().fetchUserTweets(userId);
-    StreamControllerProvider.updateUserStreamController(
-        addedDataToStream, streamControllerIndex);
-    notifyListeners();
-  }
+  // Future<void> fetchUserTweets(
+  //     BuildContext context, int streamControllerIndex, String userId) async {
+  //   addedDataToStream = await TweetsApi().fetchUserTweets(userId);
+  //   TimelineProvider.updateUserStreamController(
+  //       addedDataToStream, streamControllerIndex);
+  //   notifyListeners();
+  // }
 
   Future<void> fetchRandomTweetsOfRandomUsers(
       BuildContext context, int page, int streamControllerIndex) async {
     addedDataToStream = await TweetsApi().fetchRandomTweetsOfRandomUsers(page);
-    StreamControllerProvider.updateMyStreamController(
-        addedDataToStream, streamControllerIndex);
+    Provider.of<TimelineProvider>(context,listen: false).updateMyTimeline(
+        addedDataToStream);
     notifyListeners();
   }
 
@@ -49,20 +49,20 @@ class TweetsViewModel extends ChangeNotifier {
     await TweetsApi().addTweet(text: text, images: images, videos: videos);
     notifyListeners();
   }
-  Future<void>getAddedTweet()async
+  Future<void>getAddedTweet(BuildContext context)async
   {
    addedDataToStream= await TweetsApi().getAddedTweet();
    List<TweetMain>addedTweet=[];
    addedTweet.add(addedDataToStream);
-   print(addedDataToStream);
-    StreamControllerProvider.updateMyStreamController(
-        addedTweet, 0);
+   Provider.of<TimelineProvider>(context,listen: false).updateMyTimeline(
+        addedTweet);
     notifyListeners();
   }
-  Future<void>  deleteTweet(
+  Future<void>  deleteTweet(BuildContext context,
       String tweetId,tweetIndex) async {
 
      TweetsApi().deleteTweet(tweetId: tweetId);
-     StreamControllerProvider.removeTheDeletedTweetFromStreamController(tweetIndex);
+     Provider.of<TimelineProvider>(context,listen: false).removeTweetFromTimeline(tweetIndex);
+     notifyListeners();
   }
 }

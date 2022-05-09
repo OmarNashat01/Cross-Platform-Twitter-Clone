@@ -1,7 +1,5 @@
 
-
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +14,7 @@ import 'package:twitter/screens/timeline_screen/timeline_components/profile_pict
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../providers/stream_controller_provider.dart';
+import '../../../providers/timeline_provider.dart';
 
 class AddTweetScreen extends StatelessWidget {
   AddTweetScreen({required this.hintText,required this.tweetOrReply,this.replying,this.name});
@@ -93,7 +91,7 @@ class AddTweetScreen extends StatelessWidget {
                           String formattedDate = formatter.format(now);
                           //if i am adding a tweet from scratch do this without showing the inner tweet
                           await Provider.of<TweetsViewModel>(context,listen: false).addTweet(text: parts[0],images: image1,videos: video1);
-                          await Provider.of<TweetsViewModel>(context,listen: false).getAddedTweet();
+                          await Provider.of<TweetsViewModel>(context,listen: false).getAddedTweet(context);
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: Duration(milliseconds: 1000),

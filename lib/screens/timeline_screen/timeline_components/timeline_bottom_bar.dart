@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:twitter/providers/stream_controller_provider.dart';
+import 'package:twitter/providers/timeline_provider.dart';
 import 'package:twitter/screens/notifications_screen/NotificationsScreen.dart';
 import 'package:twitter/screens/search_screen/SearchScreen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
@@ -11,11 +11,13 @@ import 'custom_page_route.dart';
 class TimelineBottomBar extends StatelessWidget {
   TimelineBottomBar({
     Key? key,
+    required this.contextt,
     required this.controller,
     required this.pop,
   }) : super(key: key);
   bool pop;
   final ScrollController controller;
+  final BuildContext contextt;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +45,7 @@ class TimelineBottomBar extends StatelessWidget {
                       ? controller.animateTo(0.0,
                           curve: Curves.easeIn,
                           duration: const Duration(milliseconds: 200))
-                      : Navigator.popUntil(context,
-                          ModalRoute.withName(TimelineScreen.routeName));
+                      : Navigator.of(context).pushNamed(TimelineScreen.routeName);
                 },
                 icon: Icon(
                   FontAwesomeIcons.house,

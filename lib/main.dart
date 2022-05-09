@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/providers/list_view_tweet_provider.dart';
-import 'package:twitter/providers/stream_controller_provider.dart';
+import 'package:twitter/providers/timeline_provider.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/providers/ui_colors_provider.dart';
 import 'package:twitter/providers/user_provider.dart';
@@ -40,6 +40,7 @@ class TwitterApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => TweetsViewModel()),
+        ChangeNotifierProvider(create: (context) => TimelineProvider()),
         ChangeNotifierProvider(create: (context) => UIColorProvider()),
         ChangeNotifierProvider(create: (context) => ListViewTweetProvider()),
         //ChangeNotifierProvider(create: (context) => StreamControllerProvider()),

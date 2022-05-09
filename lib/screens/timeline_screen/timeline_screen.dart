@@ -13,13 +13,14 @@ import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/providers/list_view_tweet_provider.dart';
-import 'package:twitter/providers/stream_controller_provider.dart';
+import 'package:twitter/providers/timeline_provider.dart';
 import 'package:twitter/providers/ui_colors_provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/quote_tweet_card.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
 import 'package:twitter/services/tweets_service.dart';
+import 'package:video_player/video_player.dart';
 import '../../providers/tweets_view_model.dart';
 import '../../providers/user_provider.dart';
 import 'timeline_components/custom_page_route.dart';
@@ -27,7 +28,8 @@ import 'timeline_components/profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'timeline_components/navigation_drawer.dart';
 import 'package:twitter/models/tweet_model.dart';
-
+import 'package:visibility_detector/visibility_detector.dart';
+import 'package:better_player/better_player.dart';
 // ignore_for_file: prefer_const_constructors
 class TimelineScreen extends StatefulWidget {
   static const routeName = '/timeline-screen';
@@ -40,6 +42,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
   ScrollController? controller;
   final StreamController _streamController = StreamController();
   Stream? _stream;
+  VideoPlayerController ?videoPlayerController;
   // fetchingStreamController(String user_id)async
   // {
   //   Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(user_id);
@@ -51,8 +54,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
     // TODO: implement initState
     super.initState();
     controller = ScrollController();
-    Provider.of<TweetsViewModel>(context, listen: false)
-        .fetchMyTweets(context, 0);
+
   }
 
   @override
@@ -138,60 +140,49 @@ class _TimelineScreenState extends State<TimelineScreen> {
           ],
           //--------------------------------------------------------------------
           //tweets list viewer
-          body: StreamBuilder(
-              stream: StreamControllerProvider.addStreamController(
-                      _streamController, 0)
-                  .stream,
-              builder: (
-                BuildContext context,
-                AsyncSnapshot snapshot,
-              ) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return Text('press button to start');
-                  case ConnectionState.waiting:
-                    return Container(
-                        alignment: Alignment.topCenter,
-                        margin: EdgeInsets.only(top: 20),
-                        child: CircularProgressIndicator(
-                          value: 0.8,
-                        ));
-                  default:
-                    if (snapshot.hasError) {
-                      return Text('error');
-                    } else {
-                      return Scrollbar(
+                       body:  Scrollbar(
                         radius: Radius.circular(30),
                         isAlwaysShown: true,
                         child: RefreshIndicator(
                           color: Colors.grey,
                           onRefresh: () {
-                            return Provider.of<TweetsViewModel>(context,
-                                    listen: false)
-                                .fetchRandomTweetsOfRandomUsers(context,2, 0);
+                            return Provider.of<TweetsViewModel>(context, listen: false).fetchMyTweets(context, 0);
                           },
-                          child: ListView.builder(
-
+                          child: ListView.separated(
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
-                              return TweetCard(
-                                index: index,
-                                tweet: snapshot.data[index],
-                              );
+                              if (Provider
+                                  .of<TimelineProvider>(context,listen: false)
+                                  .timelineList[index].tweet.videos.length > 0) {
+                                return TweetCard(
+                                  index: index,
+                                  tweet: Provider
+                                      .of<TimelineProvider>(context)
+                                      .timelineList[index],
+                                );
+                              }
+                              else {
+                                return TweetCard(
+                                  index: index,
+                                  tweet: Provider
+                                      .of<TimelineProvider>(context)
+                                      .timelineList[index],
+                                  videoPlayerController: videoPlayerController,
+                                );
+                              }
                             },
-                            itemCount: snapshot.data.length,
+                            itemCount: Provider.of<TimelineProvider>(context).timelineList.length, separatorBuilder: (BuildContext context, int index) { return Divider(); },
                           ),
                         ),
-                      );
-                    }
-                }
-              }),
+                      ),
+
         ),
       ),
 
       //------------------------------------------------------------------------
       //bottom appbar where each icon has its own function
       bottomNavigationBar: TimelineBottomBar(
+        contextt: context,
         controller: controller!,
         pop: false,
       ),

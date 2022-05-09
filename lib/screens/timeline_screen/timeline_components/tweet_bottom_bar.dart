@@ -7,7 +7,7 @@ import 'package:twitter/screens/timeline_screen/timeline_components/retweet_scre
 import '../../../constants.dart';
 import '../../../dummy/timeline_list.dart';
 import '../../../models/tweet_complete_model.dart';
-import '../../../providers/stream_controller_provider.dart';
+import '../../../providers/timeline_provider.dart';
 import '../../../providers/tweets_view_model.dart';
 import 'add_tweet_screen.dart';
 import 'custom_page_route.dart';

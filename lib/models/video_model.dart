@@ -6,6 +6,7 @@ class Video
   String altText;
   int height;
   int width;
+  bool isMuted=true;
   factory Video.fromJson(Map<String,dynamic> jsonData)
   {
     return Video(url:jsonData["url"] ,altText:jsonData["alt_text"] ,height:jsonData["height"] ,width:jsonData["width"] );

@@ -26,16 +26,16 @@ import 'package:twitter/screens/timeline_screen/timeline_components/video_player
 //the tweet need information to be rendered
 //this information will come from class which is TweetCardData
 class TweetCard extends StatefulWidget {
-  TweetCard({required this.index, required this.tweet});
+  TweetCard({required this.index, required this.tweet, this.videoPlayerController});
   int index;
   TweetMain tweet;
+  VideoPlayerController? videoPlayerController;
   @override
   State<TweetCard> createState() => _TweetCardState();
 }
 
 class _TweetCardState extends State<TweetCard> {
   GlobalKey threeDotsKey = GlobalKey();
-   VideoPlayerController? videoPlayerController;
   void _showPopupMenu(double x, double y) {
     y = y + 50;
     showMenu<String>(
@@ -178,7 +178,7 @@ class _TweetCardState extends State<TweetCard> {
                            ),
                            VerticalDivider(thickness: 1,color: Colors.grey.shade300,),
                            TextButton(
-                             onPressed: () {Provider.of<TweetsViewModel>(context,listen: false).deleteTweet(widget.tweet.tweet.tweetId, widget.index);
+                             onPressed: () {Provider.of<TweetsViewModel>(context,listen: false).deleteTweet(context,widget.tweet.tweet.tweetId, widget.index);
                                Navigator.pop(context);
                              },
                              child: const Text('Delete',style: TextStyle(color: Colors.red),),
@@ -214,28 +214,33 @@ class _TweetCardState extends State<TweetCard> {
   void initState() {
     // TODO: implement initState
     if(widget.tweet.videos.length>0) {
-      videoPlayerController =
+      widget.videoPlayerController =
       VideoPlayerController.network(widget.tweet.videos[0].url)
         ..addListener(() {
           setState(() {
 
           });
         })
+        ..setVolume(0)
         ..setLooping(true)
-        ..initialize().then((_) => videoPlayerController?.play());
+        ..initialize().then((_) => widget.videoPlayerController?.play());
     }
     super.initState();
   }
   @override
   void dispose() {
     // TODO: implement dispose
-    videoPlayerController?.dispose();
+    widget.videoPlayerController?.dispose();
     super.dispose();
   }
+  var isMuted;
   @override
   Widget build(BuildContext context) {
-    var isMuted;
-    widget.tweet.videos.length>0?isMuted=videoPlayerController?.value.volume==0:isMuted=0;
+
+    if(widget.tweet.videos.length>0)
+      {
+        isMuted=widget.videoPlayerController?.value.volume;
+      }
     return Column(
       children: [
         Padding(
@@ -252,13 +257,13 @@ class _TweetCardState extends State<TweetCard> {
 
                       ProfilePicture(
                           profilePictureFunctionality: () {
-                            Navigator.of(context).push(
-                              CustomPageRoute(
-                                  child: (UsersProfile(
-                                      userId: widget.tweet.tweet.userId)),
-                                  beginX: 1,
-                                  beginY: 0),
-                            );
+                            // Navigator.of(context).push(
+                            //   CustomPageRoute(
+                            //       child: (UsersProfile(
+                            //           userId: widget.tweet.tweet.userId)),
+                            //       beginX: 1,
+                            //       beginY: 0),
+                            // );
                           },
                           profilePictureImage:
                               widget.tweet.getTweetprofilePicUrl(),
@@ -340,7 +345,7 @@ class _TweetCardState extends State<TweetCard> {
             Navigator.of(context).push(
               CustomPageRoute(
                   child: ImageVideoDetailScreen(
-                    videoPlayerController: videoPlayerController,
+                    videoPlayerController: widget.videoPlayerController,
                     image: false,
                     video: true,
                     tweet: widget.tweet,
@@ -350,12 +355,11 @@ class _TweetCardState extends State<TweetCard> {
                   beginY: 1),
             );
           },
-          child: Column(
-                children: [
-                  videoPlayerController!=null?VideoPlayerWidget(videoPlayerController:videoPlayerController!):SizedBox.shrink()
+          child: widget.videoPlayerController!=null?
 
-                ],
-              ),
+                  VideoPlayerWidget(videoPlayerController:widget.videoPlayerController!, isMuted:isMuted)
+
+              :SizedBox.shrink()
         ):
             SizedBox.shrink(),
         //--here is the image of the tweet
