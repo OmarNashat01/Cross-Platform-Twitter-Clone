@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:twitter/providers/image_videos_details_provider.dart';
 import 'package:twitter/providers/list_view_tweet_provider.dart';
 import 'package:twitter/providers/timeline_provider.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/providers/ui_colors_provider.dart';
 import 'package:twitter/providers/user_provider.dart';
+import 'package:twitter/providers/video_provider.dart';
 import 'package:twitter/screens/auth_welcome_screen/auth_welcome_screen.dart';
 import 'package:twitter/screens/bio_screen/bio_screen.dart';
 import 'package:twitter/screens/login_email_screen/login_email_screen.dart';
@@ -43,6 +45,8 @@ class TwitterApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TimelineProvider()),
         ChangeNotifierProvider(create: (context) => UIColorProvider()),
         ChangeNotifierProvider(create: (context) => ListViewTweetProvider()),
+        ChangeNotifierProvider(create: (context) => VideoPlayerProvider()),
+        ChangeNotifierProvider(create: (context) => ImageVideoDetailsProvider())
         //ChangeNotifierProvider(create: (context) => StreamControllerProvider()),
       ],
 

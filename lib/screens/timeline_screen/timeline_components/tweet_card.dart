@@ -15,11 +15,12 @@ import 'package:twitter/providers/user_provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/users_profiles.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/video_detail_screen.dart';
 
 import '../../../models/user_model.dart';
 import '../../../providers/list_view_tweet_provider.dart';
 import 'custom_page_route.dart';
-import 'image_video_detail_screen.dart';
+import 'image_detail_screen.dart';
 import 'package:video_player/video_player.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/video_player_widget.dart';
 //TweetCard class is the widget responsible for rendering the tweet card at the timeline and any needed place
@@ -29,7 +30,7 @@ class TweetCard extends StatefulWidget {
   TweetCard({required this.index, required this.tweet, this.videoPlayerController});
   int index;
   TweetMain tweet;
-  VideoPlayerController? videoPlayerController;
+  dynamic videoPlayerController;
   @override
   State<TweetCard> createState() => _TweetCardState();
 }
@@ -217,29 +218,39 @@ class _TweetCardState extends State<TweetCard> {
       widget.videoPlayerController =
       VideoPlayerController.network(widget.tweet.videos[0].url)
         ..addListener(() {
-          setState(() {
+          if(mounted==true) {
+            setState(() {
 
-          });
+            });
+          }
         })
         ..setVolume(0)
         ..setLooping(true)
-        ..initialize().then((_) => widget.videoPlayerController?.play());
+        ..initialize().then((_) => widget.videoPlayerController.play());
     }
     super.initState();
   }
   @override
   void dispose() {
     // TODO: implement dispose
-    widget.videoPlayerController?.dispose();
+    if(widget.videoPlayerController!=null) {
+      widget.videoPlayerController.dispose();
+    }
     super.dispose();
   }
-  var isMuted;
+  // @override
+  // void deactivate() {
+  //   // TODO: implement deactivate
+  //   widget.videoPlayerController.removeListener(() { });
+  //   super.deactivate();
+  // }
+  dynamic isMuted;
   @override
   Widget build(BuildContext context) {
 
-    if(widget.tweet.videos.length>0)
+    if(widget.tweet.videos.isNotEmpty&&widget.videoPlayerController!=null)
       {
-        isMuted=widget.videoPlayerController?.value.volume;
+        isMuted=widget.videoPlayerController.value.volume;
       }
     return Column(
       children: [
@@ -339,17 +350,22 @@ class _TweetCardState extends State<TweetCard> {
 
         //--here is the video of the tweet
 
-        widget.tweet.videos.isNotEmpty?
+        widget.tweet.videos.isNotEmpty&&widget.videoPlayerController!=null?
         GestureDetector(
           onTap: () {
+            if(widget.videoPlayerController!=null)
+            {widget.videoPlayerController.setVolume(1.0);}
             Navigator.of(context).push(
               CustomPageRoute(
-                  child: ImageVideoDetailScreen(
+                  child: (
+                  ImageVideoDetailScreen(
                     videoPlayerController: widget.videoPlayerController,
-                    image: false,
-                    video: true,
+                    isMuted:isMuted,
+                    image:false,
+                    video:true,
                     tweet: widget.tweet,
                     index: widget.index,
+                  )
                   ),
                   beginX: 0,
                   beginY: 1),
@@ -357,7 +373,7 @@ class _TweetCardState extends State<TweetCard> {
           },
           child: widget.videoPlayerController!=null?
 
-                  VideoPlayerWidget(videoPlayerController:widget.videoPlayerController!, isMuted:isMuted)
+                  VideoPlayerWidget(videoPlayerController:widget.videoPlayerController, isMuted:isMuted,inDetailVideo: false,)
 
               :SizedBox.shrink()
         ):
@@ -366,17 +382,18 @@ class _TweetCardState extends State<TweetCard> {
         widget.tweet.images.isNotEmpty?
         GestureDetector(
           onTap: () {
-            Navigator.of(context).push(
-              CustomPageRoute(
-                  child: ImageVideoDetailScreen(
+            Navigator.of(context).push(PageRouteBuilder(
+              opaque: false,
+              pageBuilder: (_, __, ___) =>
+                  ImageVideoDetailScreen(
+                    videoPlayerController: widget.videoPlayerController,
+                    isMuted: isMuted,
                     image: true,
                     video: false,
                     tweet: widget.tweet,
                     index: widget.index,
                   ),
-                  beginX: 0,
-                  beginY: 1),
-            );
+            ));
           },
           child: Image.network(
             widget.tweet.images[0].url,

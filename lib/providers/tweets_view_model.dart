@@ -54,9 +54,8 @@ class TweetsViewModel extends ChangeNotifier {
    addedDataToStream= await TweetsApi().getAddedTweet();
    List<TweetMain>addedTweet=[];
    addedTweet.add(addedDataToStream);
-   Provider.of<TimelineProvider>(context,listen: false).updateMyTimeline(
-        addedTweet);
-    notifyListeners();
+   Provider.of<TimelineProvider>(context,listen: false).updateMyTimeline(addedTweet);
+    // notifyListeners();
   }
   Future<void>  deleteTweet(BuildContext context,
       String tweetId,tweetIndex) async {

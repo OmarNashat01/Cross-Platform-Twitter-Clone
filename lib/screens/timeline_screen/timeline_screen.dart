@@ -29,7 +29,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'timeline_components/navigation_drawer.dart';
 import 'package:twitter/models/tweet_model.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:better_player/better_player.dart';
 // ignore_for_file: prefer_const_constructors
 class TimelineScreen extends StatefulWidget {
   static const routeName = '/timeline-screen';
@@ -40,18 +39,11 @@ class TimelineScreen extends StatefulWidget {
 
 class _TimelineScreenState extends State<TimelineScreen> {
   ScrollController? controller;
-  final StreamController _streamController = StreamController();
-  Stream? _stream;
-  VideoPlayerController ?videoPlayerController;
-  // fetchingStreamController(String user_id)async
-  // {
-  //   Provider.of<TweetsViewModel>(context,listen: false).fetchTweets(user_id);
-  //   _streamController=Provider.of<TweetsViewModel>(context,listen: false).getStreamController();
-  //   _stream=_streamController.stream;
-  // }
+  dynamic videoPlayerController;
   @override
   void initState() {
     // TODO: implement initState
+    Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context, 0);
     super.initState();
     controller = ScrollController();
 
@@ -148,30 +140,34 @@ class _TimelineScreenState extends State<TimelineScreen> {
                           onRefresh: () {
                             return Provider.of<TweetsViewModel>(context, listen: false).fetchMyTweets(context, 0);
                           },
-                          child: ListView.separated(
+                          child: ListView.custom(
+                            cacheExtent: 1000,
+
                             physics: const BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              if (Provider
-                                  .of<TimelineProvider>(context,listen: false)
-                                  .timelineList[index].tweet.videos.length > 0) {
+                            childrenDelegate:SliverChildBuilderDelegate ((context, index) {
+
+                              if (Provider.of<TimelineProvider>(context,listen: false).timelineList[index].tweet.videos.length > 0) {
                                 return TweetCard(
                                   index: index,
-                                  tweet: Provider
-                                      .of<TimelineProvider>(context)
-                                      .timelineList[index],
+                                  tweet: Provider.of<TimelineProvider>(context,listen: false).timelineList[index],
+                                  videoPlayerController: videoPlayerController,
                                 );
                               }
                               else {
                                 return TweetCard(
                                   index: index,
-                                  tweet: Provider
-                                      .of<TimelineProvider>(context)
-                                      .timelineList[index],
+                                  tweet: Provider.of<TimelineProvider>(context,listen: false).timelineList[index],
                                   videoPlayerController: videoPlayerController,
                                 );
                               }
                             },
-                            itemCount: Provider.of<TimelineProvider>(context).timelineList.length, separatorBuilder: (BuildContext context, int index) { return Divider(); },
+                            childCount: Provider.of<TimelineProvider>(context).timelineList.length,
+                                findChildIndexCallback: (Key key) {
+                                  final ValueKey  valueKey = key as ValueKey ;
+                                  final String data = valueKey.value;
+                                  return Provider.of<TimelineProvider>(context,listen: false).timelineList.indexOf(data);
+                                }
+                          ),
                           ),
                         ),
                       ),

@@ -74,6 +74,7 @@ class TweetBottomBar extends StatelessWidget {
               children: [
                 Icon(
                   FontAwesomeIcons.retweet,
+                  color: iconsBoundry,
                   // color: Provider.of<TweetsViewModel>(context).getTweetsList()[index].isRetweeted==false?iconsBoundry:Colors.green,
                   size: 18,
                 ),

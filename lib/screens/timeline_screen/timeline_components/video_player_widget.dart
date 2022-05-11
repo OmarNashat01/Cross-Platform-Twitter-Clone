@@ -7,15 +7,16 @@ import 'package:visibility_detector/visibility_detector.dart';
 class VideoPlayerWidget extends StatelessWidget {
    VideoPlayerController videoPlayerController;
    double isMuted;
-  VideoPlayerWidget({required this.videoPlayerController,required this.isMuted});
+   dynamic inDetailVideo=false;
+  VideoPlayerWidget({required this.videoPlayerController,required this.isMuted,this.inDetailVideo});
   @override
   Widget build(BuildContext context) =>
-    (videoPlayerController.value.isInitialized)?
+    (videoPlayerController!=null &&videoPlayerController.value.isInitialized)?
     Container(alignment: Alignment.topCenter,child: buildVideo(),)
     : Container(
       height: 200,
       child: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(color: Colors.black38,),
       ),
     );
   Widget buildVideo()=>
@@ -30,10 +31,11 @@ class VideoPlayerWidget extends StatelessWidget {
             }
         },
         key: ObjectKey(videoPlayerController),
+
         child: Stack(
             children: [
               buildVideoPlayer(),
-              Positioned(
+              inDetailVideo==false?Positioned(
                 bottom: 10,
                 right: 0,
                 child: CircleAvatar(
@@ -50,7 +52,7 @@ class VideoPlayerWidget extends StatelessWidget {
                     onPressed:()=>videoPlayerController.setVolume(isMuted==0?1:0),
                   ),
                 ),
-              ),
+              ):SizedBox.shrink(),
    ],
         ),
       );

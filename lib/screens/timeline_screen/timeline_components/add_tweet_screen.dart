@@ -82,10 +82,6 @@ class AddTweetScreen extends StatelessWidget {
                             image1=[];
                             video1=[];
                           }
-                          print("-----------------------------------------------------------------------------");
-                          print(video1);
-                          print("-----------------------------------------------------------------------------");
-
                           var now = new DateTime.now();
                           var formatter = new DateFormat('yyyy-MM-dd');
                           String formattedDate = formatter.format(now);
