@@ -77,7 +77,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: ReturnToTwitterScreen(),
+        home: SettingsScreen(),
         routes: routes,
       ),
     );

@@ -125,7 +125,7 @@ class UserProvider with ChangeNotifier {
 
   Future<http.Response> login() async {
     final response = await http.post(
-      Uri.parse('http://${Http().getBaseUrl()}/Login/'),
+      Uri.parse('http://${Http().getBaseUrl()}/Login'),
       headers: {"Content-Type": "application/json; charset=UTF-8"},
       body: jsonEncode({
         'email': _email,
@@ -138,7 +138,7 @@ class UserProvider with ChangeNotifier {
  // TODO: ...........................
   Future<http.Response> forgotPassword() async {
     final response = await http.put(
-      Uri.parse('http://${Http().getBaseUrl()}/forgot_password'),
+      Uri.parse('http://${Http().getBaseUrl()}/users/forgot_password'),
       headers: {"Content-Type": "application/json; charset=UTF-8"},
       // body: jsonEncode({
       //   'email': _email,
@@ -147,6 +147,21 @@ class UserProvider with ChangeNotifier {
     );
     return response;
   }
+
+  // TODO: ...........................
+  Future<http.Response> updatePassword() async {
+    final response = await http.put(
+      Uri.parse('http://${Http().getBaseUrl()}/users/change_password'),
+      headers: {"Content-Type": "application/json; charset=UTF-8"},
+      // body: jsonEncode({
+      //   'email': _email,
+      //   'password': _password,
+      // }),
+    );
+    return response;
+  }
+
+
 
   void resetAll() {
     name = '';
