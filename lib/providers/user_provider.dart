@@ -135,6 +135,19 @@ class UserProvider with ChangeNotifier {
     return response;
   }
 
+ // TODO: ...........................
+  Future<http.Response> forgotPassword() async {
+    final response = await http.put(
+      Uri.parse('http://${Http().getBaseUrl()}/forgot_password'),
+      headers: {"Content-Type": "application/json; charset=UTF-8"},
+      // body: jsonEncode({
+      //   'email': _email,
+      //   'password': _password,
+      // }),
+    );
+    return response;
+  }
+
   void resetAll() {
     name = '';
     email = '';

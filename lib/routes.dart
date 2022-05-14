@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:twitter/screens/welcome_screen/welcome_screen.dart';
 
@@ -5,6 +6,8 @@ import 'screens/auth_welcome_screen/auth_welcome_screen.dart';
 import 'screens/signup_screen/signup_screen.dart';
 import 'screens/login_email_screen/login_email_screen.dart';
 import 'screens/login_password_screen/login_password_screen.dart';
+import 'screens/forgot_password_screen/forgot_password_screen.dart';
+import 'screens/return_to_twitter_screen/return_to_twitter_screen.dart';
 import 'screens/verification_screen/verification_screen.dart';
 import 'screens/timeline_screen/timeline_screen.dart';
 import 'screens/profile_screen/profile_screen.dart';
@@ -24,6 +27,8 @@ Map<String, WidgetBuilder> routes = {
   SignupScreen.routeName: (context) => SignupScreen(),
   LoginEmailScreen.routeName: (context) => LoginEmailScreen(),
   LoginPasswordScreen.routeName: (context) => LoginPasswordScreen(),
+  ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
+  ReturnToTwitterScreen.routeName: (context) => ReturnToTwitterScreen(),
   TimelineScreen.routeName: (context) => TimelineScreen(),
   ProfileScreen.routeName: (context) => ProfileScreen(),
   PasswordScreen.routeName: (context) => PasswordScreen(),
