@@ -46,7 +46,7 @@ class AuthWelcomeScreen extends StatelessWidget {
                     const Text('Have an account already?'),
                     TextButton(
                       style: TextButton.styleFrom(
-                        primary: Theme.of(context).colorScheme.secondary,
+                        primary: kSecondaryColor,
                       ),
                       onPressed: () => _switchToSigninScreen(context),
                       child: const Text('Log in'),

@@ -4,18 +4,19 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
 /// Switch variable to toggle between using mock backend service or the real backend
-bool isMock = true;
+bool isMock = false;
 
 /// Switch variable to toggle between hasing the password or not
 bool isPasswordHashed = false;
 
 /// Base URL of the real backend
-const String kBaseUrl = '3.90.225.164:5000'; // without https:// or http://
+const String kBaseUrl = '45.79.245.94:5000'; // without https:// or http://
 
 /// Mock server base URL
 const String kMockBaseUrl = '10.0.2.2:8000';
-const String backendUrl="http://45.79.245.94:5000";
-const String androidMobileBaseUrl="http://192.168.1.8:8000";
+const String backendUrl = "http://45.79.245.94:5000";
+const String androidMobileBaseUrl = "http://192.168.1.8:8000";
+
 /// Contains all needed globals across the application navigation after logging in
 class Auth {
   static String token = '';
@@ -23,10 +24,11 @@ class Auth {
   static String userId = '126';
   static String email = '';
   static String password = '';
-  static String profilePicUrl="https://c8.alamy.com/comp/2C5BXFW/robot-cartoon-id-profile-3d-illustration-2C5BXFW.jpg";
-  static String username='abdallah';
-  static String name='abdallah__fawzy';
-  static String bio="hello everyone";
+  static String profilePicUrl =
+      "https://c8.alamy.com/comp/2C5BXFW/robot-cartoon-id-profile-3d-illustration-2C5BXFW.jpg";
+  static String username = 'abdallah';
+  static String name = 'abdallah__fawzy';
+  static String bio = "hello everyone";
 }
 
 /// Singlton class that gives you access to Base URLs
@@ -35,12 +37,14 @@ class Http {
   factory Http() => _singleton;
   Http._internal();
   String getBaseUrl() => isMock == true ? kMockBaseUrl : kBaseUrl;
-  String getMobileBaseUrl() => isMock == true ? "192.168.1.8:8000":kMockBaseUrl ;
-  String getBackendBaseUrl()=>"45.79.245.94:5000";
+  String getMobileBaseUrl() =>
+      isMock == true ? "192.168.1.8:8000" : kMockBaseUrl;
+  String getBackendBaseUrl() => "45.79.245.94:5000";
 }
 
 /// Used to hash the user's password via MD5
-String hashToMd5(String pass) => md5.convert(utf8.encode(pass)).toString();
+String hashToMd5(String pass) =>
+    isPasswordHashed ? md5.convert(utf8.encode(pass)).toString() : pass;
 
 // Profile pictures sizes
 const double timelineProfilePicSize = 15;
@@ -61,6 +65,8 @@ const Color kOnInvertedPrimaryColor = Colors.white;
 
 const Color kSecondaryColor = Color(0xFF1D9BF0);
 const Color kOnSecondaryColor = Colors.white;
+
+const Color kWarningColor = Color.fromARGB(255, 206, 55, 44);
 
 // TextStyles
 const TextStyle tweetsTexts = TextStyle(fontSize: 17, color: Colors.black);
@@ -93,13 +99,12 @@ const Text followersString = Text(
   style: titleName,
 );
 
-
 const TextStyle bio_boldName =
-TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black);
+    TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black);
 const TextStyle bio_titleName =
-TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black);
+    TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black);
 const TextStyle header_titleName =
-TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white);
+    TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white);
 const TextStyle bio_UserName = TextStyle(
   fontSize: 14,
   color: Color(0xff757575),

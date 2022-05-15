@@ -10,6 +10,7 @@ import '../../providers/user_provider.dart';
 
 import '../../themes.dart';
 import '../../constants.dart';
+import '../forgot_password_screen/forgot_password_screen.dart';
 
 /// Login Screen that takes password as an input
 class LoginPasswordScreen extends StatefulWidget {
@@ -84,6 +85,8 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
 
   void _pressForgotPassButton(context) {
     // Todo
+    Navigator.of(context).pushReplacementNamed(ForgotPasswordScreen.routeName);
+
   }
 
   @override

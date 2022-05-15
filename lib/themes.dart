@@ -126,6 +126,24 @@ class FieldDecorations {
       suffixIcon: icon
     );
   }
+
+  static InputDecoration normalWithIconAndLabel(String label, String hint, IconButton icon) {
+    return InputDecoration(
+      focusedBorder: const UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: kSecondaryColor,
+          width: 3,
+        ),
+      ),
+      // label: Text(label),
+      hintText: hint,
+      labelText: label,
+      labelStyle: const TextStyle(fontSize: 20, color: kOnPrimaryColor),
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+      counterStyle: const TextStyle(fontSize: 16),
+      suffixIcon: icon
+    );
+  }
   
 }
 
