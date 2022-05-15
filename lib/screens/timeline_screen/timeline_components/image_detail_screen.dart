@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -25,6 +27,7 @@ class ImageVideoDetailScreen extends StatefulWidget {
 }
 
 class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
+  double progress=0.0;
   GlobalKey imageKey = GlobalKey();
   PaletteColor? color;
   @override
@@ -50,8 +53,13 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
     setState(() {
     });
   }
+  dynamic label;
+  dynamic endVideo;
+
   @override
   Widget build(BuildContext context) {
+     label=widget.videoPlayerController.value.position.toString().split(".")[0];
+
     return Scaffold(
       backgroundColor:widget.image==true?Provider.of<UIColorProvider>(context).imageDetailColor:Colors.blueGrey,
       appBar: Provider.of<ImageVideoDetailsProvider>(context).upperLowerDetails==true?AppBar(
@@ -76,7 +84,7 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
             ),
           ],
         ),
-      ),):null,
+      ),):AppBar(backgroundColor: Colors.transparent,automaticallyImplyLeading: false,),
       body: GestureDetector(
          dragStartBehavior: DragStartBehavior.down,
         onTap: ()
@@ -99,70 +107,113 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children:[
-            widget.image==true?Image.network(
-              widget.tweet.images[0].url,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              alignment: Alignment.center,
-            ):VideoPlayerWidget(videoPlayerController:widget.videoPlayerController,isMuted: widget.isMuted,inDetailVideo: true,),
-
-              Column(
-                children: [
-                  (widget.video==true&&widget.videoPlayerController!=null)?Row(
-                    children: [
-                      GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            widget.videoPlayerController.value.isPlaying?widget.videoPlayerController.pause():widget.videoPlayerController.play();
-                          });
-                        },
-                        child: Icon(
-                          widget.videoPlayerController?.value.isPlaying?Icons.pause:Icons.play_arrow
-                        ),
-                      )
-                    ],
-                  ):SizedBox.shrink(),
-                ],
-              ),
+            widget.image==true?Column(
+              children: [
+                SizedBox(height: 30,),
+                Image.network(
+                  widget.tweet.images[0].url,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                ),
+              ],
+            ):Column(
+              children: [
+                SizedBox(height: 37,),
+                VideoPlayerWidget(videoPlayerController:widget.videoPlayerController,isMuted: widget.isMuted,inDetailVideo: true,),
+              ],
+            ),
             ]
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Provider.of<ImageVideoDetailsProvider>(context).upperLowerDetails==true?BottomAppBar(
+      bottomNavigationBar: Provider.of<ImageVideoDetailsProvider>(context).upperLowerDetails==true?
+      Padding(
+        padding: EdgeInsets.only(left: 15,right: 15),
+        child: BottomAppBar(
           elevation: 0,
           color: Colors.transparent,
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              (widget.video==true&&widget.videoPlayerController!=null)?
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        widget.videoPlayerController.value.isPlaying?widget.videoPlayerController.pause():widget.videoPlayerController.play();
+                      });
+                    },
+                    child: Icon(
+                        widget.videoPlayerController?.value.isPlaying?Icons.pause:Icons.play_arrow,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Slider(
+                    value: progress,
+                    min: 0,
+                    max: 100,
+                    divisions: 100,
+                    label: label.toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        progress = value;
+                      });
+                    },
+                    onChangeStart: (value){
+                      setState(() {
+                        label=value;
+                      });
+                    },
+                    onChangeEnd: (value){
+                      final duration=widget.videoPlayerController.value.duration;
+                      if(duration!=null)
+                        {
+                          var newValue=max(0,min(value,99))*0.01;
+                          var milis=(duration.inMilliseconds*newValue).toInt();
+                          widget.videoPlayerController.seekTo(Duration(milliseconds: milis));
+                        }
+                    },
+                  ),
+                  Text("${widget.videoPlayerController.value.position.toString().split(".")[0]},/ ${widget.videoPlayerController.value.duration.toString().split(".")[0]}",)
+                ],
+              ):SizedBox.shrink(),
+              (widget.video==true&&widget.videoPlayerController!=null)?SizedBox(height: 15,):SizedBox.shrink(),
               TweetBottomBar(tweet:widget.tweet,index: widget.index,iconsBoundry: Colors.white,),
-              TextField(
-                scrollPadding: EdgeInsets.only(bottom:100,top: 100),
-                decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(10.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Colors.white, width: 2),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Colors.white54, width: 1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Colors.white54, width: 1),
-                    ),
+              SizedBox(height: 15,),
+              SizedBox(
+                height: 35,
+                child: TextField(
+                  scrollPadding: EdgeInsets.only(bottom:100,top: 100),
+                  decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(10.0),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Colors.white, width: 2),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Colors.grey.shade500, width: 1.2),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Colors.grey.shade500, width: 1),
+                      ),
 
-                    // filled: true,
-                    hintStyle: TextStyle(color: Colors.grey[800]),
-                    hintText: "Tweet your reply",
-                    fillColor: Colors.transparent),
-              )
+                      // filled: true,
+                      hintStyle: TextStyle(color: Colors.grey[800]),
+                      hintText: "Tweet your reply",
+                      fillColor: Colors.transparent),
+                ),
+              ),
+              SizedBox(height: 25,),
+
             ],
           ),
-        ):null,
-      ),
+        ),
+      ):widget.image==true?SizedBox(height: 105,):SizedBox(height: 144,),
     );
   }
 }

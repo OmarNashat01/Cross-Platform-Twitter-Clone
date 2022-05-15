@@ -235,6 +235,7 @@ class _TweetCardState extends State<TweetCard> {
     // TODO: implement dispose
     if(widget.videoPlayerController!=null) {
       widget.videoPlayerController.dispose();
+
     }
     super.dispose();
   }
