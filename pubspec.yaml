@@ -54,7 +54,7 @@ dependencies:
   dio: ^4.0.6
   http: ^0.13.4
   palette_generator: ^0.3.3
-  visibility_detector: ^0.2.2
+  visibility_detector: ^0.3.3
   dartdoc: ^5.0.1
   crypto: ^3.0.1
   shared_preferences: ^2.0.13
@@ -70,7 +70,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

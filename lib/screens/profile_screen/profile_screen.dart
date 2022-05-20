@@ -1,13 +1,8 @@
-import 'dart:ui';
 import 'package:custom_nested_scroll_view/custom_nested_scroll_view.dart';
-import 'package:provider/provider.dart';
 import 'package:twitter/screens/search_screen/SearchScreen.dart';
-import 'package:twitter/providers/timeline_provider.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'dart:math' as math;
-import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/users_data.dart';
@@ -53,6 +48,8 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
 
       });
     });
+
+    
   }
 
   final controller = ScrollController();
@@ -63,7 +60,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Colors.blue,
-        child: Icon(
+        child: const Icon(
           FontAwesomeIcons.plus,
           size: 20,
         ),
@@ -76,7 +73,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
             DefaultTabController(
               length: 4,
               child: CustomNestedScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 overscrollType: CustomOverscroll.outer,
                 controller: _scrollController,
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -89,7 +86,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                       backgroundColor: Colors.black,
                       leading: Container(
                         height: 90,
-                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: ElevatedButton(
                           onPressed: () {Navigator.push(
                             context,
@@ -98,13 +95,13 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                             ),
                           );
                           },
-                          child: Icon(Icons.arrow_back, color: Colors.white,size: 20,),
+                          child: const Icon(Icons.arrow_back, color: Colors.white,size: 20,),
                           style: ElevatedButton.styleFrom(
-                            shape: CircleBorder(),
-                            maximumSize: Size(30, 30),
-                            minimumSize: Size(30, 30),
+                            shape: const CircleBorder(),
+                            maximumSize: const Size(30, 30),
+                            minimumSize: const Size(30, 30),
 
-                            padding: EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(0),
                             primary: Colors.black.withOpacity(0.5), // <-- Button color
                             onPrimary: Colors.blue, // <-- Splash color
                           ),
@@ -113,7 +110,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                       actions: [
                         Container(
                           height: 90,
-                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: ElevatedButton(
                             onPressed: () {Navigator.push(
                               context,
@@ -122,13 +119,13 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                               ),
                             );
                             },
-                            child: Icon(Icons.search, color: Colors.white,size: 20,),
+                            child: const Icon(Icons.search, color: Colors.white,size: 20,),
                             style: ElevatedButton.styleFrom(
-                              shape: CircleBorder(),
-                              maximumSize: Size(30, 30),
-                              minimumSize: Size(30, 30),
+                              shape: const CircleBorder(),
+                              maximumSize: const Size(30, 30),
+                              minimumSize: const Size(30, 30),
 
-                              padding: EdgeInsets.all(0),
+                              padding: const EdgeInsets.all(0),
                               primary: Colors.black.withOpacity(0.5), // <-- Button color
                               onPrimary: Colors.blue, // <-- Splash color
                             ),
@@ -142,13 +139,13 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                         builder: (context, constraints) {
                           top = constraints.biggest.height;
                           return FlexibleSpaceBar(
-                            stretchModes: [
+                            stretchModes: const [
                               StretchMode.blurBackground,
                               StretchMode.zoomBackground,
                             ],
                             centerTitle: true,
                             title: AnimatedOpacity(
-                                duration: Duration(milliseconds: 200),
+                                duration: const Duration(milliseconds: 200),
                                 opacity: top <= 100 ? 1.0 : 0.0,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -157,7 +154,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                       UsersData.getMyData().name,
                                       style: header_titleName,
                                     ),
-                                    Text(
+                                    const Text(
                                       '200 Tweets',
                                       style: TextStyle(
                                           fontSize: 12,
@@ -171,7 +168,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                             ),
                             background: Stack(
                               children: [
-                                Container(
+                                SizedBox(
                                   child: Image.network('https://images.pexels.com/photos/2531709/pexels-photo-2531709.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', fit: BoxFit.cover,),
                                   width: double.infinity,
                                 ),
@@ -187,7 +184,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                         color: Colors.green[600],
                         child: Container(
                           color: Colors.white,
-                          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),                          child: Column(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),                          child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
@@ -230,8 +227,8 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                   child: Container(
                                     width: 100,
                                     height: 35,
-                                    margin: EdgeInsets.symmetric(vertical: 10),
-                                    padding: EdgeInsets.symmetric(
+                                    margin: const EdgeInsets.symmetric(vertical: 10),
+                                    padding: const EdgeInsets.symmetric(
                                       horizontal: 10,
                                     ),
                                     decoration: BoxDecoration(
@@ -262,7 +259,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Text(
@@ -273,21 +270,21 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                               UsersData.getMyData().title,
                               style: bio_UserName,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
-                            Text(
+                            const Text(
                               'A 20-year Computer Student working as a graphic desogner.',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             RichText(
-                              text: TextSpan(
+                              text: const TextSpan(
                                 children: [
                                   WidgetSpan(
                                     child: Icon(Icons.location_on_outlined, size: 14, color: Colors.black54,),
@@ -299,11 +296,11 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             RichText(
-                              text: TextSpan(
+                              text: const TextSpan(
                                 children: [
                                   WidgetSpan(
                                     child: Icon(Icons.sports_basketball_outlined, size: 14, color: Colors.black54,),
@@ -315,11 +312,11 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             RichText(
-                              text: TextSpan(
+                              text: const TextSpan(
                                 children: [
                                   WidgetSpan(
                                     child: Icon(Icons.calendar_month_outlined, size: 14, color: Colors.black54,),
@@ -331,7 +328,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             Row(
@@ -374,7 +371,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                           color: Colors.white,
                           child: AppBar(
                             bottom: TabBar(
-                              indicator: UnderlineTabIndicator(
+                              indicator: const UnderlineTabIndicator(
                                 borderSide: BorderSide(width: 4.0, color: Colors.blue),
 
                               ),
@@ -384,7 +381,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                               unselectedLabelColor: Colors.black54,
                               indicatorWeight: 2,
                               indicatorColor: Colors.blue,
-                              tabs: [
+                              tabs: const [
                                 Tab(
                                   text: 'Tweets',
                                 ),
@@ -399,7 +396,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                                 ),
                               ],
                             ),
-                            shape: Border(bottom: BorderSide(color: Colors.black12, width: 1),),
+                            shape: const Border(bottom: BorderSide(color: Colors.black12, width: 1),),
                             backgroundColor: Colors.white,
                             elevation: 0,
                           ),
@@ -411,7 +408,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                 body: Container(
                   child: TabBarView(
                     controller: _tabController,
-                    children: [
+                    children: const [
                   //     StreamBuilder(
                   //         stream: Provider.of<StreamControllerProvider>(context).stream,
                   //         builder: (BuildContext context,AsyncSnapshot snapshot,)
@@ -611,9 +608,9 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
 
 
   Widget buildPic (){
-    final double defaultMargin = 120;
-    final double defaultStart = 100;
-    final double defaultEnd = defaultStart /2;
+    const double defaultMargin = 120;
+    const double defaultStart = 100;
+    const double defaultEnd = defaultStart /2;
 
     double top = defaultMargin;
     double scale = 1.0;

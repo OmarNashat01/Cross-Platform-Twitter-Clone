@@ -1,24 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:like_button/like_button.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
-import 'package:twitter/dummy/timeline_list.dart';
-import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
-import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/providers/ui_colors_provider.dart';
-import 'package:twitter/providers/user_provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
-import 'package:twitter/screens/timeline_screen/timeline_components/users_profiles.dart';
-import 'package:twitter/screens/timeline_screen/timeline_components/video_detail_screen.dart';
 
-import '../../../models/user_model.dart';
-import '../../../providers/list_view_tweet_provider.dart';
 import 'custom_page_route.dart';
 import 'image_detail_screen.dart';
 import 'package:video_player/video_player.dart';
@@ -41,7 +31,7 @@ class _TweetCardState extends State<TweetCard> {
     y = y + 50;
     showMenu<String>(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(15.0))),
       position: RelativeRect.fromLTRB(
           x, y, 0.0, 0.0), //position where you want to show the menu on screen
@@ -51,7 +41,7 @@ class _TweetCardState extends State<TweetCard> {
           value: "1",
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: const [
               Text(
                 "Delete Tweet",
                 style: TextStyle(
@@ -66,7 +56,7 @@ class _TweetCardState extends State<TweetCard> {
             ],
           ),
         ),
-        PopupMenuDivider(
+        const PopupMenuDivider(
           height: 0,
         ),
         PopupMenuItem(
@@ -74,7 +64,7 @@ class _TweetCardState extends State<TweetCard> {
           value: "2",
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: const [
               Text(
                 "Pin to your profile",
                 style: TextStyle(
@@ -89,7 +79,7 @@ class _TweetCardState extends State<TweetCard> {
             ],
           ),
         ),
-        PopupMenuDivider(
+        const PopupMenuDivider(
           height: 0,
         ),
         PopupMenuItem(
@@ -97,7 +87,7 @@ class _TweetCardState extends State<TweetCard> {
           value: "3",
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: const [
               Text(
                 "Change who can reply",
                 style: TextStyle(
@@ -112,7 +102,7 @@ class _TweetCardState extends State<TweetCard> {
             ],
           ),
         ),
-        PopupMenuDivider(
+        const PopupMenuDivider(
           height: 0,
         ),
         PopupMenuItem(
@@ -120,7 +110,7 @@ class _TweetCardState extends State<TweetCard> {
           value: "4",
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: const [
               Text(
                 "Add/remove from lists",
                 style: TextStyle(
@@ -140,23 +130,23 @@ class _TweetCardState extends State<TweetCard> {
     ).then<void>((String? itemSelected) {
       if (itemSelected == null) {
         Provider.of<UIColorProvider>(context, listen: false)
-            .changeTweetThreeDotsColor(widget.tweet, Color(0xffAFD9F4));
+            .changeTweetThreeDotsColor(widget.tweet, const Color(0xffAFD9F4));
       } else if (itemSelected == "1") {
         Provider.of<UIColorProvider>(context, listen: false)
-            .changeTweetThreeDotsColor(widget.tweet, Color(0xffAFD9F4));
+            .changeTweetThreeDotsColor(widget.tweet, const Color(0xffAFD9F4));
         showDialog<String>(
           context: context,
           builder: (BuildContext context) {
            return AlertDialog(
-             titlePadding: EdgeInsets.only(top: 15),
+             titlePadding: const EdgeInsets.only(top: 15),
              buttonPadding: EdgeInsets.zero,
              actionsPadding: EdgeInsets.zero,
              contentPadding: EdgeInsets.zero,
              insetPadding: EdgeInsets.zero,
-             shape:RoundedRectangleBorder(
+             shape:const RoundedRectangleBorder(
                  borderRadius: BorderRadius.all(Radius.circular(15.0))) ,
              title: Column(
-               children: [
+               children: const [
                  Center(child: Text("Delete Tweet",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize:20),)),
                  SizedBox(height: 10,),
                  Center(child:(Text("Are you sure you want to delete",style: TextStyle(color: Colors.black,fontSize: 15,fontWeight: FontWeight.normal),)),),
@@ -199,12 +189,12 @@ class _TweetCardState extends State<TweetCard> {
 
       } else if (itemSelected == "2") {
         Provider.of<UIColorProvider>(context, listen: false)
-            .changeTweetThreeDotsColor(widget.tweet, Color(0xffAFD9F4));
+            .changeTweetThreeDotsColor(widget.tweet, const Color(0xffAFD9F4));
 
         //code here
       } else if (itemSelected == "3") {
         Provider.of<UIColorProvider>(context, listen: false)
-            .changeTweetThreeDotsColor(widget.tweet, Color(0xffAFD9F4));
+            .changeTweetThreeDotsColor(widget.tweet, const Color(0xffAFD9F4));
 
         //code here
       } else {}
@@ -214,7 +204,7 @@ class _TweetCardState extends State<TweetCard> {
   @override
   void initState() {
     // TODO: implement initState
-    if(widget.tweet.videos.length>0) {
+    if(widget.tweet.videos.isNotEmpty) {
       widget.videoPlayerController =
       VideoPlayerController.network(widget.tweet.videos[0].url)
         ..addListener(() {
@@ -376,9 +366,9 @@ class _TweetCardState extends State<TweetCard> {
 
                   VideoPlayerWidget(videoPlayerController:widget.videoPlayerController, isMuted:isMuted,inDetailVideo: false,)
 
-              :SizedBox.shrink()
+              :const SizedBox.shrink()
         ):
-            SizedBox.shrink(),
+            const SizedBox.shrink(),
         //--here is the image of the tweet
         widget.tweet.images.isNotEmpty?
         GestureDetector(
@@ -403,7 +393,7 @@ class _TweetCardState extends State<TweetCard> {
             alignment: Alignment.center,
           )
         ):
-        SizedBox.shrink(),
+        const SizedBox.shrink(),
 
         //the row of icons for your reactions on the tweet
         TweetBottomBar(

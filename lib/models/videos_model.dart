@@ -1,4 +1,3 @@
-import 'package:twitter/models/video_model.dart';
 class Videos
 {
   final List<dynamic>videos;

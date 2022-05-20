@@ -6,7 +6,6 @@ import 'package:twitter/screens/username_screen/username_screen.dart';
 import '../../providers/user_provider.dart';
 
 import '../../themes.dart';
-import '../../constants.dart';
 
 class BioScreen extends StatefulWidget {
   static const routeName = '/bio-screen';

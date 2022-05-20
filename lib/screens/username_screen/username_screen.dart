@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:twitter/screens/login_email_screen/login_email_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 import 'package:twitter/screens/welcome_screen/welcome_screen.dart';
 

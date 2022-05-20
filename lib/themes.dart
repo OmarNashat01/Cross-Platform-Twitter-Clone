@@ -153,7 +153,7 @@ class AppColor {
   static const Color darkGrey = Color(0xff1657786);
   static const Color lightGrey = Color(0xffAAB8C2);
   static const Color extraLightGrey = Color(0xffE1E8ED);
-  static const Color extraExtraLightGrey = Color(0xfF5F8FA);
+  static const Color extraExtraLightGrey = Color(0x0ff5f8fa);
   static const Color white = Color(0xFFffffff);
 }
 

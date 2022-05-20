@@ -1,4 +1,3 @@
-import 'package:twitter/models/image_model.dart';
 class Images
 {
   final List<dynamic>images;

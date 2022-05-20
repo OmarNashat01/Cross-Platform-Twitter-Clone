@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:like_button/like_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -11,9 +10,9 @@ class VideoPlayerWidget extends StatelessWidget {
   VideoPlayerWidget({required this.videoPlayerController,required this.isMuted,this.inDetailVideo});
   @override
   Widget build(BuildContext context) =>
-    (videoPlayerController!=null &&videoPlayerController.value.isInitialized)?
+    (videoPlayerController.value.isInitialized)?
     Container(alignment: Alignment.topCenter,child: buildVideo(),)
-    : Container(
+    : const SizedBox(
       height: 200,
       child: Center(
         child: CircularProgressIndicator(color: Colors.black38,),
@@ -52,7 +51,7 @@ class VideoPlayerWidget extends StatelessWidget {
                     onPressed:()=>videoPlayerController.setVolume(isMuted==0?1:0),
                   ),
                 ),
-              ):SizedBox.shrink(),
+              ):const SizedBox.shrink(),
    ],
         ),
       );

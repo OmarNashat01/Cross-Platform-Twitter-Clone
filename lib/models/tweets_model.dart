@@ -1,4 +1,3 @@
-import 'package:twitter/models/tweet_model.dart';
 
 class Tweets
 {

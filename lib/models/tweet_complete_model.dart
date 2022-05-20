@@ -1,11 +1,6 @@
 import 'dart:ui';
 
 import 'package:twitter/models/tweet_model.dart';
-import 'package:twitter/models/comment_model.dart';
-import 'package:twitter/models/reply_model.dart';
-import 'package:twitter/models/likers_model.dart';
-import 'package:twitter/models/image_model.dart';
-import 'package:twitter/models/video_model.dart';
 class TweetMain
 {
   TweetMain({required this.tweet, this.comments, this.replies,required this.images,required this.videos, this.likers});
@@ -15,7 +10,7 @@ class TweetMain
   List<List<dynamic>>?replies;
   List<dynamic>images;
   List<dynamic>videos;
-  Color threeDotsColor=Color(0xffAFD9F4);
+  Color threeDotsColor=const Color(0xffAFD9F4);
 
   //tweet info getters------------------------------------
   //get tweet id

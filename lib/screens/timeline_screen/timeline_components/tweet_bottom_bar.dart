@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
-import 'package:provider/provider.dart';
-import 'package:twitter/screens/timeline_screen/timeline_components/retweet_screen.dart';
 
 import '../../../constants.dart';
-import '../../../dummy/timeline_list.dart';
 import '../../../models/tweet_complete_model.dart';
-import '../../../providers/timeline_provider.dart';
-import '../../../providers/tweets_view_model.dart';
 import 'add_tweet_screen.dart';
 import 'custom_page_route.dart';
 
@@ -52,7 +47,7 @@ class TweetBottomBar extends StatelessWidget {
                   color: iconsBoundry,
                   size: 18,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 tweet.getCommentCount() > 0
@@ -78,7 +73,7 @@ class TweetBottomBar extends StatelessWidget {
                   // color: Provider.of<TweetsViewModel>(context).getTweetsList()[index].isRetweeted==false?iconsBoundry:Colors.green,
                   size: 18,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 tweet.getRetweetCount() > 0
@@ -100,7 +95,7 @@ class TweetBottomBar extends StatelessWidget {
                 likeBuilder: (isLiked) {
                   final color = isLiked ? Colors.red : Colors.transparent;
                   return Padding(
-                    padding: EdgeInsets.only(top: 5),
+                    padding: const EdgeInsets.only(top: 5),
                     child: Stack(
                       children: [
                         Icon(
@@ -129,6 +124,7 @@ class TweetBottomBar extends StatelessWidget {
                   tweet.tweet.isLiked = !isLiked;
                   print("tweet id is : ${tweet.tweet.tweetId}");
                   print("is liked of this tweet is : ${tweet.tweet.isLiked}");
+                  return null;
 
                   //await Provider.of<TweetsViewModel>(context,listen: false).likeTweet(tweetId: tweet.tweet.tweetId);
                   // await Provider.of<StreamControllerProvider>(context,
@@ -137,7 +133,7 @@ class TweetBottomBar extends StatelessWidget {
                   //         index, tweet.tweet.tweetId, context);
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
             ],

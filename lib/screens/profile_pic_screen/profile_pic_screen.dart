@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +9,6 @@ import '../../providers/user_provider.dart';
 import 'widgets/image_holder.dart';
 
 import '../../themes.dart';
-import '../../constants.dart';
 
 class ProfilePicScreen extends StatefulWidget {
   static const routeName = '/profile-pic-screen';

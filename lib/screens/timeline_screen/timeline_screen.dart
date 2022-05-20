@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +26,6 @@ import 'timeline_components/custom_page_route.dart';
 import 'timeline_components/profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'timeline_components/navigation_drawer.dart';
-import 'package:twitter/models/tweet_model.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 // ignore_for_file: prefer_const_constructors
 class TimelineScreen extends StatefulWidget {
@@ -134,7 +132,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
           //tweets list viewer
                        body:  Scrollbar(
                         radius: Radius.circular(30),
-                        isAlwaysShown: true,
+                        thumbVisibility: true,
                         child: RefreshIndicator(
                           color: Colors.grey,
                           onRefresh: () {

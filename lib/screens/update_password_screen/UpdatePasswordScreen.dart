@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:twitter/screens/return_to_twitter_screen/return_to_twitter_screen.dart';
 
 import '../../providers/user_provider.dart';
 
@@ -75,10 +74,10 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Update password'),
+            const Text('Update password'),
             Text(
               '@${Auth.username}',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
           ],
         ),

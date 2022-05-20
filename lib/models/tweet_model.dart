@@ -1,7 +1,6 @@
 
 
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
-import 'package:flutter/material.dart';
 enum TweetImage {
  picture,
  video,

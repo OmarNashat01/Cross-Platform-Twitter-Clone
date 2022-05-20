@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:crypto/crypto.dart';
 
 import '../profile_pic_screen/profile_pic_screen.dart';
 

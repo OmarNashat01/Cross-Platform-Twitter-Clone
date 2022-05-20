@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import'package:twitter/dummy/timeline_list.dart';
-import 'package:palette_generator/palette_generator.dart';
-import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/video_player_widget.dart';
 import 'package:video_player/video_player.dart';
 import '../../../models/tweet_complete_model.dart';
-import '../../../providers/tweets_view_model.dart';
 import '../../../providers/video_provider.dart';
 class VideoDetailScreen extends StatelessWidget {
   int index;
@@ -26,12 +21,12 @@ class VideoDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children:[
                 Padding(
-                  padding: EdgeInsets.only(left: 15,right: 15,top: 15),
+                  padding: const EdgeInsets.only(left: 15,right: 15,top: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        child: Icon(
+                        child: const Icon(
                           Icons.close_outlined,
                           color: Colors.white,
                         ),
@@ -39,7 +34,7 @@ class VideoDetailScreen extends StatelessWidget {
                           Navigator.pop(context);
                         },
                       ),
-                      Icon(
+                      const Icon(
                         Icons.more_horiz_outlined,
                         color: Colors.white,
                       ),
@@ -47,8 +42,8 @@ class VideoDetailScreen extends StatelessWidget {
                   ),
                 ),
                 Dismissible(
-                    movementDuration: Duration(microseconds: 100),
-                    resizeDuration: Duration(microseconds: 100),
+                    movementDuration: const Duration(microseconds: 100),
+                    resizeDuration: const Duration(microseconds: 100),
                     direction: DismissDirection.vertical,
                     key: const Key('key'),
                     onDismissed: (_) {
@@ -60,7 +55,7 @@ class VideoDetailScreen extends StatelessWidget {
                 Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(bottom: 10,right: 10,left: 10,top: 5),
+                      padding: const EdgeInsets.only(bottom: 10,right: 10,left: 10,top: 5),
                       child: Row(
                         children: [
                           GestureDetector(
@@ -87,22 +82,22 @@ class VideoDetailScreen extends StatelessWidget {
                     ),
                     TweetBottomBar(tweet:tweet,index:index,iconsBoundry: Colors.white,),
                     Padding(
-                      padding: EdgeInsets.only(bottom: 10,right: 10,left: 10,top: 5),
+                      padding: const EdgeInsets.only(bottom: 10,right: 10,left: 10,top: 5),
                       child: TextField(
-                        scrollPadding: EdgeInsets.only(bottom:100,top: 100),
+                        scrollPadding: const EdgeInsets.only(bottom:100,top: 100),
                         decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(10.0),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(color: Colors.white, width: 2),
+                              borderSide: const BorderSide(color: Colors.white, width: 2),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(color: Colors.white54, width: 1),
+                              borderSide: const BorderSide(color: Colors.white54, width: 1),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(color: Colors.white54, width: 1),
+                              borderSide: const BorderSide(color: Colors.white54, width: 1),
                             ),
 
                             // filled: true,

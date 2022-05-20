@@ -1,7 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:twitter/models/tweet_model.dart';
-import 'package:twitter/dummy/users_data.dart';
 import 'dart:math';
 class TimelineList extends ChangeNotifier
 {
@@ -71,7 +70,7 @@ class TimelineList extends ChangeNotifier
    Future <void> addRandomTweetOnRefresh() async
    {
      await Future.delayed(const Duration(milliseconds: 500));
-     final _random = new Random();
+     final _random = Random();
      Tweet randomTweet = randomTweets[_random.nextInt(randomTweets.length)];
      addTweet(randomTweet);
    }

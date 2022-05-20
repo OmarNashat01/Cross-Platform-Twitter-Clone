@@ -1,9 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-import 'dart:ui';
-import 'package:uuid/uuid.dart';
-import 'package:twitter/models/likers_model.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/models/comment_model.dart';
@@ -11,10 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../constants.dart';
 import '../models/image_model.dart';
-import '../models/images_model.dart';
-import '../models/replies_model.dart';
 import '../models/reply_model.dart';
-import '../models/tweets_model.dart';
 import '../models/video_model.dart';
 
 class TweetsApi {
@@ -118,6 +111,7 @@ class TweetsApi {
       }
       return tweetsMain;
     }
+    return null;
   }
 
   Future<List<TweetMain>?> fetchUserTweets(String userId) async {
@@ -332,6 +326,7 @@ class TweetsApi {
       }
       return tweetsMain;
     }
+    return null;
   }
 
   Future<List<TweetMain>> fetchTweetsOfCertainUser(String userId) async {

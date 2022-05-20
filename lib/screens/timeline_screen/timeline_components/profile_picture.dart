@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:twitter/constants.dart';
-import 'package:twitter/dummy/users_data.dart';
 class ProfilePicture extends StatelessWidget {
   @override
-  ProfilePicture({
+  const ProfilePicture({
     required this.profilePictureFunctionality,
     required this.profilePictureImage,
     required this.profilePictureSize,
@@ -11,6 +9,7 @@ class ProfilePicture extends StatelessWidget {
   final void Function() profilePictureFunctionality;
   final String profilePictureImage;
   final double profilePictureSize;
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: profilePictureFunctionality,

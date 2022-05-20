@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:twitter/providers/oAuth_api.dart';
 import 'package:twitter/providers/user_provider.dart';
 import 'package:twitter/screens/auth_welcome_screen/auth_welcome_screen.dart';
 
@@ -12,7 +11,7 @@ class SettingsScreen extends StatelessWidget {
   static const routeName = '/settings-screen';
 
   Future<void> _pressLogoutButton(context) async {
-    if (OAuth.isSignedIn()) OAuth.logout();
+    // if (OAuth.isSignedIn()) OAuth.logout();
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     userProvider.resetAll();
@@ -41,10 +40,10 @@ class SettingsScreen extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Your account'),
+            const Text('Your account'),
             Text(
               '@${Auth.username}',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
           ],
         ),
