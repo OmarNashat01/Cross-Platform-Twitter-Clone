@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:twitter/constants.dart';
 import 'opacity_data.dart';
-import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/screens/profile_screen/profile_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/custom_page_route.dart';
 //this class is for the navigation drawer details like name ,title ,followers which all has actions on getting pressed

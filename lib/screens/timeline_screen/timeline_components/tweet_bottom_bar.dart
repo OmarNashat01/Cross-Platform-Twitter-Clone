@@ -95,7 +95,7 @@ class TweetBottomBar extends StatelessWidget {
           Row(
             children: [
               LikeButton(
-                isLiked: tweet.tweet.isLiked,
+                // isLiked: tweet.tweet.isLiked,
                 likeCount: tweet.tweet.likeCount,
                 likeBuilder: (isLiked) {
                   final color = isLiked ? Colors.red : Colors.transparent;
@@ -126,9 +126,9 @@ class TweetBottomBar extends StatelessWidget {
                       : const SizedBox.shrink();
                 },
                 onTap: (isLiked) async {
-                  tweet.tweet.isLiked = !isLiked;
-                  print("tweet id is : ${tweet.tweet.tweetId}");
-                  print("is liked of this tweet is : ${tweet.tweet.isLiked}");
+                  // tweet.tweet.isLiked = !isLiked;
+                  // print("tweet id is : ${tweet.tweet.tweetId}");
+                  // print("is liked of this tweet is : ${tweet.tweet.isLiked}");
 
                   //await Provider.of<TweetsViewModel>(context,listen: false).likeTweet(tweetId: tweet.tweet.tweetId);
                   // await Provider.of<StreamControllerProvider>(context,

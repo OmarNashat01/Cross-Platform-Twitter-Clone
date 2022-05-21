@@ -1,20 +1,12 @@
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/constants.dart';
-import 'package:twitter/dummy/timeline_list.dart';
-import 'package:twitter/dummy/users_data.dart';
-import 'package:twitter/models/image_model.dart';
-import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
-import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
-import 'package:uuid/uuid.dart';
 
-import '../../../providers/timeline_provider.dart';
 
 class AddTweetScreen extends StatelessWidget {
   AddTweetScreen({required this.hintText,required this.tweetOrReply,this.replying,this.name});
@@ -40,7 +32,7 @@ class AddTweetScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Cancel',
                         style: TextStyle(
                           color: Colors.black87,
@@ -82,18 +74,18 @@ class AddTweetScreen extends StatelessWidget {
                             image1=[];
                             video1=[];
                           }
-                          var now = new DateTime.now();
-                          var formatter = new DateFormat('yyyy-MM-dd');
+                          var now = DateTime.now();
+                          var formatter = DateFormat('yyyy-MM-dd');
                           String formattedDate = formatter.format(now);
                           //if i am adding a tweet from scratch do this without showing the inner tweet
                           await Provider.of<TweetsViewModel>(context,listen: false).addTweet(text: parts[0],images: image1,videos: video1);
                           await Provider.of<TweetsViewModel>(context,listen: false).getAddedTweet(context);
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                duration: Duration(milliseconds: 1000),
-                                backgroundColor: Color(0xffE8F5FD),
+                                duration: const Duration(milliseconds: 1000),
+                                backgroundColor: const Color(0xffE8F5FD),
                             content: Padding(
-                              padding: EdgeInsets.only(top: 4,bottom: 4,left: 3,right: 3),
+                              padding: const EdgeInsets.only(top: 4,bottom: 4,left: 3,right: 3),
                               child: Row(
                                               children:  const [
                                                 Icon(
@@ -133,7 +125,7 @@ class AddTweetScreen extends StatelessWidget {
                             )
                         ),
                         child: Text(tweetOrReply,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                           ),
                         ),
@@ -144,7 +136,7 @@ class AddTweetScreen extends StatelessWidget {
               ),
 
             body:SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Column(
                 children: [
                   replying==true?
@@ -164,7 +156,7 @@ class AddTweetScreen extends StatelessWidget {
                                   padding: const EdgeInsets.only(top:10,left: 32),
                                   child: Row(
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Replying to ',
                                         style: TextStyle(
                                           color: Colors.grey
@@ -172,7 +164,7 @@ class AddTweetScreen extends StatelessWidget {
                                       ),
                                       Text(
                                       name!,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                       color: Colors.blue
                                       ),
                                       )
@@ -183,7 +175,7 @@ class AddTweetScreen extends StatelessWidget {
                             ),
                           ),
                         ],
-                      ):SizedBox.shrink(),
+                      ):const SizedBox.shrink(),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

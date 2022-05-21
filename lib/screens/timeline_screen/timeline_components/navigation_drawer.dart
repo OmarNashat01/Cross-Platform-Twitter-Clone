@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:twitter/screens/timeline_screen/timeline_components/users_profiles.dart';
 import 'navigation_drawer_button.dart';
 import 'navigation_drawer_labels.dart';
 import 'profile_picture.dart';
@@ -10,7 +8,6 @@ import 'package:twitter/dummy/users_data.dart';
 import 'package:provider/provider.dart';
 import 'opacity_data.dart';
 import 'package:twitter/screens/profile_screen/profile_screen.dart';
-import 'package:twitter/screens/timeline_screen/timeline_components/custom_page_route.dart';
 import 'package:twitter/screens/settings_screen/settings_screen.dart';
 
 //this navigation drawer is made for whenever the user press on his profile picture in the time line drawer is popped up
@@ -171,7 +168,7 @@ class NavigationDrawer extends StatelessWidget {
             //-------------------------------------------------------------------------------------------------------
             Expanded(
               child: Scrollbar(
-                isAlwaysShown: true,
+                thumbVisibility: true,
                 child: ListView(
                   physics: const BouncingScrollPhysics(),
                   children: [
@@ -366,7 +363,7 @@ class NavigationDrawer extends StatelessWidget {
                     ChangeNotifierProvider(
                       create: (context) => OpacityValue(),
                       child: NavigationDrawerLabels(
-                        widget: Icon(
+                        widget: const Icon(
                           FontAwesomeIcons.lightbulb,
                         ),
                       ),
@@ -374,7 +371,7 @@ class NavigationDrawer extends StatelessWidget {
                     ChangeNotifierProvider(
                       create: (context) => OpacityValue(),
                       child: NavigationDrawerLabels(
-                        widget: Icon(
+                        widget: const Icon(
                           FontAwesomeIcons.qrcode,
                         ),
                       ),

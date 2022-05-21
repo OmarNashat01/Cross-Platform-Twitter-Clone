@@ -2,18 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import'package:twitter/dummy/timeline_list.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:twitter/providers/image_videos_details_provider.dart';
 import 'package:twitter/providers/ui_colors_provider.dart';
-import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/video_player_widget.dart';
-import 'package:video_player/video_player.dart';
 import '../../../models/tweet_complete_model.dart';
-import '../../../providers/tweets_view_model.dart';
 class ImageVideoDetailScreen extends StatefulWidget {
   int index;
   TweetMain tweet;
@@ -48,7 +43,7 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
       NetworkImage(widget.tweet.images[0].url),
     ): null;
 
-    color=paletteGenerator?.dominantColor;
+    color=paletteGenerator?.darkVibrantColor;
     Provider.of<UIColorProvider>(context,listen: false).imageDetailColor=color?.color;
     setState(() {
     });
@@ -58,19 +53,18 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-     label=widget.videoPlayerController.value.position.toString().split(".")[0];
-
+     // label=widget.videoPlayerController.value.position.toString().split(".")[0];
     return Scaffold(
       backgroundColor:widget.image==true?Provider.of<UIColorProvider>(context).imageDetailColor:Colors.blueGrey,
       appBar: Provider.of<ImageVideoDetailsProvider>(context).upperLowerDetails==true?AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading:false,title: Padding(
-        padding: EdgeInsets.only(left: 15,right: 15,top: 15),
+        padding: const EdgeInsets.only(left: 15,right: 15,top: 15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
-              child: Icon(
+              child: const Icon(
                 Icons.close_outlined,
                 color: Colors.white,
               ),
@@ -78,7 +72,7 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
                 Navigator.pop(context);
               },
             ),
-            Icon(
+            const Icon(
               Icons.more_horiz_outlined,
               color: Colors.white,
             ),
@@ -93,8 +87,8 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
 
         },
         child: Dismissible(
-          movementDuration: Duration(microseconds: 100),
-          resizeDuration: Duration(microseconds: 100),
+          movementDuration: const Duration(microseconds: 100),
+          resizeDuration: const Duration(microseconds: 100),
           direction: DismissDirection.vertical,
           key: imageKey,
 
@@ -109,7 +103,7 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
             children:[
             widget.image==true?Column(
               children: [
-                SizedBox(height: 30,),
+                const SizedBox(height: 30,),
                 Image.network(
                   widget.tweet.images[0].url,
                   fit: BoxFit.cover,
@@ -119,7 +113,7 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
               ],
             ):Column(
               children: [
-                SizedBox(height: 37,),
+                const SizedBox(height: 37,),
                 VideoPlayerWidget(videoPlayerController:widget.videoPlayerController,isMuted: widget.isMuted,inDetailVideo: true,),
               ],
             ),
@@ -129,7 +123,7 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
       ),
       bottomNavigationBar: Provider.of<ImageVideoDetailsProvider>(context).upperLowerDetails==true?
       Padding(
-        padding: EdgeInsets.only(left: 15,right: 15),
+        padding: const EdgeInsets.only(left: 15,right: 15),
         child: BottomAppBar(
           elevation: 0,
           color: Colors.transparent,
@@ -179,19 +173,19 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
                   ),
                   Text("${widget.videoPlayerController.value.position.toString().split(".")[0]},/ ${widget.videoPlayerController.value.duration.toString().split(".")[0]}",)
                 ],
-              ):SizedBox.shrink(),
-              (widget.video==true&&widget.videoPlayerController!=null)?SizedBox(height: 15,):SizedBox.shrink(),
+              ):const SizedBox.shrink(),
+              (widget.video==true&&widget.videoPlayerController!=null)?const SizedBox(height: 15,):const SizedBox.shrink(),
               TweetBottomBar(tweet:widget.tweet,index: widget.index,iconsBoundry: Colors.white,),
-              SizedBox(height: 15,),
+              const SizedBox(height: 15,),
               SizedBox(
                 height: 35,
                 child: TextField(
-                  scrollPadding: EdgeInsets.only(bottom:100,top: 100),
+                  scrollPadding: const EdgeInsets.only(bottom:100,top: 100),
                   decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(10.0),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(color: Colors.white, width: 2),
+                        borderSide: const BorderSide(color: Colors.white, width: 2),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -208,12 +202,12 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
                       fillColor: Colors.transparent),
                 ),
               ),
-              SizedBox(height: 25,),
+              const SizedBox(height: 25,),
 
             ],
           ),
         ),
-      ):widget.image==true?SizedBox(height: 105,):SizedBox(height: 144,),
+      ):widget.image==true?const SizedBox(height: 105,):const SizedBox(height: 144,),
     );
   }
 }

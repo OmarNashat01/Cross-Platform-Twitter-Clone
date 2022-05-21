@@ -1,9 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/screens/forgot_password_screen/forgot_password_screen.dart';
-import 'package:twitter/screens/password_screen/password_screen.dart';
 import '../login_password_screen/login_password_screen.dart';
 
 import '../../providers/user_provider.dart';

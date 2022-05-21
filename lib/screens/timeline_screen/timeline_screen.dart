@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +26,6 @@ import 'timeline_components/custom_page_route.dart';
 import 'timeline_components/profile_picture.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'timeline_components/navigation_drawer.dart';
-import 'package:twitter/models/tweet_model.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 // ignore_for_file: prefer_const_constructors
 class TimelineScreen extends StatefulWidget {
@@ -43,7 +41,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context, 0);
+    Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context);
     super.initState();
     controller = ScrollController();
 
@@ -54,8 +52,6 @@ class _TimelineScreenState extends State<TimelineScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // await Provider.of<TweetsViewModel>(context,listen: false).addTweet();
-          // Provider.of<StreamControllerProvider>(context,listen: false).updateTweetStream(context);
           Navigator.of(context).push(
             CustomPageRoute(
                 child: AddTweetScreen(
@@ -134,32 +130,29 @@ class _TimelineScreenState extends State<TimelineScreen> {
           //tweets list viewer
                        body:  Scrollbar(
                         radius: Radius.circular(30),
-                        isAlwaysShown: true,
+                        thumbVisibility: true,
                         child: RefreshIndicator(
                           color: Colors.grey,
                           onRefresh: () {
-                            return Provider.of<TweetsViewModel>(context, listen: false).fetchMyTweets(context, 0);
+                            return Provider.of<TweetsViewModel>(context, listen: false).fetchMyTweets(context);
                           },
                           child: ListView.custom(
                             cacheExtent: 1000,
 
                             physics: const BouncingScrollPhysics(),
                             childrenDelegate:SliverChildBuilderDelegate ((context, index) {
+                              if(index==Provider.of<TimelineProvider>(context,listen: false).timelineList.length-1)
+                                {
+                                   Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
+                                   return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
+                                }
+                                return TweetCard(
+                                  tweetPage:false,
+                                  index: index,
+                                  tweet: Provider.of<TimelineProvider>(context,listen: false).timelineList[index],
+                                  videoPlayerController: videoPlayerController,
+                                );
 
-                              if (Provider.of<TimelineProvider>(context,listen: false).timelineList[index].tweet.videos.length > 0) {
-                                return TweetCard(
-                                  index: index,
-                                  tweet: Provider.of<TimelineProvider>(context,listen: false).timelineList[index],
-                                  videoPlayerController: videoPlayerController,
-                                );
-                              }
-                              else {
-                                return TweetCard(
-                                  index: index,
-                                  tweet: Provider.of<TimelineProvider>(context,listen: false).timelineList[index],
-                                  videoPlayerController: videoPlayerController,
-                                );
-                              }
                             },
                             childCount: Provider.of<TimelineProvider>(context).timelineList.length,
                                 findChildIndexCallback: (Key key) {

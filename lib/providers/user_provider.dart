@@ -1,7 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:twitter/constants.dart';
@@ -11,7 +10,7 @@ import '../models/user_model.dart';
 
 /// Holds user's data and utility functions to send API requests
 class UserProvider with ChangeNotifier {
-  String _id = '626551f44d5786f437cbb25b';
+  final String _id = '626551f44d5786f437cbb25b';
   String _name = '';
   String _email = '';
   String _dob = ''; //! must be in 'yyyy-mm-dd' format
@@ -92,6 +91,7 @@ class UserProvider with ChangeNotifier {
     };
     final uri =
         Uri.http(Http().getBaseUrl(), '/signup/confirm_email', queryParameters);
+      
     final response = await http.get(uri);
     return response;
   }
@@ -111,8 +111,9 @@ class UserProvider with ChangeNotifier {
       // profilePic
     });
     general.forEach((key, value) {
-      if (value.isNotEmpty)
-        mapToFill[key] = value; //! should add empty values as null values
+      if (value.isNotEmpty) {
+        mapToFill[key] = value;
+      } //! should add empty values as null values
     });
 
     final response = await http.post(

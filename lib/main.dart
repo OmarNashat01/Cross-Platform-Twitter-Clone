@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:twitter/providers/comments_provider.dart';
 import 'package:twitter/providers/image_videos_details_provider.dart';
 import 'package:twitter/providers/list_view_tweet_provider.dart';
 import 'package:twitter/providers/timeline_provider.dart';
@@ -47,7 +48,8 @@ class TwitterApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UIColorProvider()),
         ChangeNotifierProvider(create: (context) => ListViewTweetProvider()),
         ChangeNotifierProvider(create: (context) => VideoPlayerProvider()),
-        ChangeNotifierProvider(create: (context) => ImageVideoDetailsProvider())
+        ChangeNotifierProvider(create: (context) => ImageVideoDetailsProvider()),
+        ChangeNotifierProvider(create: (context) => CommentsProvider())
         //ChangeNotifierProvider(create: (context) => StreamControllerProvider()),
       ],
 
@@ -77,7 +79,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: SettingsScreen(),
+        home: TimelineScreen(),
         routes: routes,
       ),
     );

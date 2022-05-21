@@ -11,7 +11,7 @@
 // import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
 //
 // import 'custom_page_route.dart';
-// import 'image_detail_screen.dart';
+// import 'image_video_detail_screen.dart';
 //
 // //TweetCard class is the widget responsible for rendering the tweet card at the timeline and any needed place
 // //the tweet need information to be rendered

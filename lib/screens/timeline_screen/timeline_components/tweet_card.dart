@@ -9,26 +9,28 @@ import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
+import 'package:twitter/providers/comments_provider.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/providers/ui_colors_provider.dart';
 import 'package:twitter/providers/user_provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/tweet_page.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/users_profiles.dart';
-import 'package:twitter/screens/timeline_screen/timeline_components/video_detail_screen.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../../models/user_model.dart';
 import '../../../providers/list_view_tweet_provider.dart';
 import 'custom_page_route.dart';
-import 'image_detail_screen.dart';
+import 'image_video_detail_screen.dart';
 import 'package:video_player/video_player.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/video_player_widget.dart';
 //TweetCard class is the widget responsible for rendering the tweet card at the timeline and any needed place
 //the tweet need information to be rendered
 //this information will come from class which is TweetCardData
 class TweetCard extends StatefulWidget {
-  TweetCard({required this.index, required this.tweet, this.videoPlayerController});
+  TweetCard({required this.index, required this.tweet, this.videoPlayerController,required this.tweetPage});
   int index;
+  bool tweetPage;
   TweetMain tweet;
   dynamic videoPlayerController;
   @override
@@ -239,12 +241,6 @@ class _TweetCardState extends State<TweetCard> {
     }
     super.dispose();
   }
-  // @override
-  // void deactivate() {
-  //   // TODO: implement deactivate
-  //   widget.videoPlayerController.removeListener(() { });
-  //   super.deactivate();
-  // }
   dynamic isMuted;
   @override
   Widget build(BuildContext context) {
@@ -253,177 +249,233 @@ class _TweetCardState extends State<TweetCard> {
       {
         isMuted=widget.videoPlayerController.value.volume;
       }
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 26, right: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      //--here is the profile picture of the one who tweeted
-
-                      ProfilePicture(
-                          profilePictureFunctionality: () {
-                            // Navigator.of(context).push(
-                            //   CustomPageRoute(
-                            //       child: (UsersProfile(
-                            //           userId: widget.tweet.tweet.userId)),
-                            //       beginX: 1,
-                            //       beginY: 0),
-                            // );
-                          },
-                          profilePictureImage:
-                              widget.tweet.getTweetprofilePicUrl(),
-                          profilePictureSize: navigationDrawerProfilePicSize),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            //here is the name and title of the one who tweeted
-                            Text(widget.tweet.getname(), style: boldName),
-                            Text(widget.tweet.getusername()),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    key: threeDotsKey,
-                    splashColor: Colors.transparent,
-                    onPressed: () {
-                      Provider.of<UIColorProvider>(context, listen: false)
-                          .changeTweetThreeDotsColor(widget.tweet, Colors.blue);
-                      RenderBox box = threeDotsKey.currentContext
-                          ?.findRenderObject() as RenderBox;
-                      Offset position = box
-                          .localToGlobal(Offset.zero); //this is global position
-                      double y = position.dy;
-                      double x = position.dx;
-                      _showPopupMenu(x, y);
-
-                    },
-                    icon: Icon(
-                      FontAwesomeIcons.ellipsis,
-                      color: Provider.of<UIColorProvider>(context)
-                          .getTweetThreeDotsColor(widget.tweet),
-                      size: 16,
-                    ),
-                  )
-                ],
-              ),
-
-              //--for decoration sized box
-              const SizedBox(
-                height: 5,
-              ),
-              //--here is the text of the tweet
-              widget.tweet.getTweettext() != ""
-
-                  ? Row(
+    return InkWell(
+      onTap:()
+        {
+          Provider.of<CommentsProvider>(context,listen: false).commentsList=[];
+          widget.tweetPage==false?
+          Navigator.of(context).push(
+            CustomPageRoute(
+                child: TweetPage(
+                    tweetCard: TweetCard(index: widget.index, tweet: widget.tweet, tweetPage: true),
+                     tweet:widget.tweet,
+                ),
+                beginX: 0,
+                beginY: 1),
+          ):print("inside");
+        },
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 8,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 26, right: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
                       children: [
-                        Expanded(
-                          child: Text(
-                            widget.tweet.getTweettext(),
-                            softWrap: false,
-                            overflow: TextOverflow.ellipsis,
-                            //max lines of writing a tweet is 8 like in the main twitter
-                            maxLines: 8,
-                            style: tweetsTexts,
+                        //--here is the profile picture of the one who tweeted
+
+                        ProfilePicture(
+                            profilePictureFunctionality: () {
+                              // Navigator.of(context).push(
+                              //   CustomPageRoute(
+                              //       child: (UsersProfile(
+                              //           userId: widget.tweet.tweet.userId)),
+                              //       beginX: 1,
+                              //       beginY: 0),
+                              // );
+                            },
+                            profilePictureImage:
+                                widget.tweet.getTweetprofilePicUrl(),
+                            profilePictureSize: navigationDrawerProfilePicSize),
+
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //here is the name and title of the one who tweeted
+                              Text(widget.tweet.getname(), style: boldName),
+                              Text(widget.tweet.getusername()),
+                            ],
                           ),
                         ),
                       ],
+                    ),
+                    IconButton(
+                      key: threeDotsKey,
+                      splashColor: Colors.transparent,
+                      onPressed: () {
+                        Provider.of<UIColorProvider>(context, listen: false)
+                            .changeTweetThreeDotsColor(widget.tweet, Colors.blue);
+                        RenderBox box = threeDotsKey.currentContext
+                            ?.findRenderObject() as RenderBox;
+                        Offset position = box
+                            .localToGlobal(Offset.zero); //this is global position
+                        double y = position.dy;
+                        double x = position.dx;
+                        _showPopupMenu(x, y);
+
+                      },
+                      icon: Icon(
+                        FontAwesomeIcons.ellipsis,
+                        color: Provider.of<UIColorProvider>(context)
+                            .getTweetThreeDotsColor(widget.tweet),
+                        size: 16,
+                      ),
                     )
-                  : const SizedBox.shrink(),
-            ],
+                  ],
+                ),
+
+                //--for decoration sized box
+                const SizedBox(
+                  height: 5,
+                ),
+                //--here is the text of the tweet
+                widget.tweet.getTweettext() != ""
+
+                    ? Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.tweet.getTweettext(),
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                              //max lines of writing a tweet is 8 like in the main twitter
+                              maxLines: 8,
+                              style: tweetsTexts,
+                            ),
+                          ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
+              ],
+            ),
           ),
-        ),
-        //--for decoration sized box
-        const SizedBox(
-          height: 5,
-        ),
+          //--for decoration sized box
+          const SizedBox(
+            height: 5,
+          ),
 
-        //--here is the video of the tweet
+          //--here is the video of the tweet
 
-        widget.tweet.videos.isNotEmpty&&widget.videoPlayerController!=null?
-        GestureDetector(
-          onTap: () {
-            if(widget.videoPlayerController!=null)
-            {widget.videoPlayerController.setVolume(1.0);}
-            Navigator.of(context).push(
-              CustomPageRoute(
-                  child: (
-                  ImageVideoDetailScreen(
-                    videoPlayerController: widget.videoPlayerController,
-                    isMuted:isMuted,
-                    image:false,
-                    video:true,
-                    tweet: widget.tweet,
-                    index: widget.index,
-                  )
-                  ),
-                  beginX: 0,
-                  beginY: 1),
-            );
-          },
-          child: widget.videoPlayerController!=null?
+          widget.tweet.videos.isNotEmpty&&widget.videoPlayerController!=null?
+          GestureDetector(
+            onTap: () {
+              if(widget.videoPlayerController!=null)
+              {widget.videoPlayerController.setVolume(1.0);}
+              Navigator.of(context).push(
+                CustomPageRoute(
+                    child: (
+                    ImageVideoDetailScreen(
+                      videoPlayerController: widget.videoPlayerController,
+                      isMuted:isMuted,
+                      image:false,
+                      video:true,
+                      tweet: widget.tweet,
+                      index: widget.index,
+                    )
+                    ),
+                    beginX: 0,
+                    beginY: 1),
+              );
+            },
+            child: widget.videoPlayerController!=null?
 
-                  VideoPlayerWidget(videoPlayerController:widget.videoPlayerController, isMuted:isMuted,inDetailVideo: false,)
+                    VideoPlayerWidget(videoPlayerController:widget.videoPlayerController, isMuted:isMuted,inDetailVideo: false,)
 
-              :SizedBox.shrink()
-        ):
-            SizedBox.shrink(),
-        //--here is the image of the tweet
-        widget.tweet.images.isNotEmpty?
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(PageRouteBuilder(
-              opaque: false,
-              pageBuilder: (_, __, ___) =>
-                  ImageVideoDetailScreen(
-                    videoPlayerController: widget.videoPlayerController,
-                    isMuted: isMuted,
-                    image: true,
-                    video: false,
-                    tweet: widget.tweet,
-                    index: widget.index,
-                  ),
-            ));
-          },
-          child: Image.network(
-            widget.tweet.images[0].url,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            alignment: Alignment.center,
-          )
-        ):
-        SizedBox.shrink(),
+                :SizedBox.shrink()
+          ):
+              SizedBox.shrink(),
+          //--here is the image of the tweet
+          widget.tweet.images.isNotEmpty?
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(PageRouteBuilder(
+                opaque: false,
+                pageBuilder: (_, __, ___) =>
+                    ImageVideoDetailScreen(
+                      videoPlayerController: widget.videoPlayerController,
+                      isMuted: isMuted,
+                      image: true,
+                      video: false,
+                      tweet: widget.tweet,
+                      index: widget.index,
+                    ),
+              ));
+            },
+            child: CachedNetworkImage(
+              imageUrl: widget.tweet.images[0].url,
+              placeholder: (context, url) {
+                return CircularProgressIndicator(color: Colors.black38,);},
+              errorWidget: (context, url, error) => Text("a7aaa"),
+            ),
+          ):
+          SizedBox.shrink(),
 
-        //the row of icons for your reactions on the tweet
-        TweetBottomBar(
-          tweet: widget.tweet,
-          index: widget.index,
-          iconsBoundry: Colors.grey.shade600,
-        ),
+          //here if the tweetCard is being just shown in the timeline this data wont be shown
+          widget.tweetPage==false?
+              SizedBox.shrink():
+              Padding(
+                padding: const EdgeInsets.only(left: 26,right: 15),
+                child: Column(
+                  children:
+                  [
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Text(widget.tweet.tweet.createdAt)
+                      ],
+                    ),
+                    const Divider(
+                      height: 25,
+                      thickness: 1.5,
+                    ),
+                    Row(
+                      children: [
+                        Text(widget.tweet.tweet.retweetCount.toString()+" ",style: TextStyle(fontWeight: FontWeight.bold),),
+                        Text("Retweets ",style: TextStyle(color: Colors.grey),),
+                        Text(0.toString()+" ",style: TextStyle(fontWeight: FontWeight.bold),),
+                        Text("Quotes Tweets ",style: TextStyle(color: Colors.grey),),
+                        Text(widget.tweet.tweet.likeCount.toString()+" ",style: TextStyle(fontWeight: FontWeight.bold),),
+                        Text("Likes ",style: TextStyle(color: Colors.grey),),
+                      ],
+                    ),
+                    const Divider(
+                      height: 25,
+                      thickness: 1.5,
+                    ),
 
-        //decoration of tweet at the bottom (divider)
-        const SizedBox(
-          height: 5,
-        ),
-        //decoration of tweet at the bottom (divider)
-        const Divider(
-          thickness: 1.5,
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-      ],
+                  ],
+                ),
+              ),
+          //here is the TweetBottom bar
+          //the row of icons for your reactions on the tweet
+          TweetBottomBar(
+            tweet: widget.tweet,
+            index: widget.index,
+            iconsBoundry: Colors.grey.shade600,
+          ),
+          //decoration of tweet at the bottom (divider)
+          const SizedBox(
+            height: 5,
+          ),
+          //decoration of tweet at the bottom (divider)
+          const Divider(
+            height: 0,
+            thickness: 1.5,
+          ),
+
+        ],
+      ),
     );
   }
 }

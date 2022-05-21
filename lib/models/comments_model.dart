@@ -1,4 +1,3 @@
-import 'package:twitter/models/comment_model.dart';
 class Comments
 {
   final List<dynamic>comments;

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'widgets/signup_form.dart';
 
 import '../../themes.dart';
-import '../../constants.dart';
 
 class SignupScreen extends StatelessWidget {
   static const routeName = '/signup-screen';

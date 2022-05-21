@@ -1,13 +1,11 @@
 
 class Likers
 {
-  final List<dynamic>likers;
-  Likers({required this.likers});
+  Likers({required this.date,required this.likerId});
+  String date;
+  String likerId;
   factory Likers.fromJson(Map<String,dynamic> jsonData)
   {
-    return Likers(
-      likers: jsonData["liker_ids"],
-      //so here my tweets list should have al the tweets as a form of json data
-    );
+    return Likers(date:jsonData["date"] ,likerId:jsonData["liker"]);
   }
 }

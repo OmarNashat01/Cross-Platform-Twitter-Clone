@@ -13,8 +13,8 @@ class CustomPageRoute extends PageRouteBuilder
  final Widget child;
  CustomPageRoute({required this.child,required this.beginX,required this.beginY}):
  super(
-       transitionDuration:  Duration(milliseconds:150),
-       reverseTransitionDuration:  Duration(milliseconds: 150),
+       transitionDuration:  const Duration(milliseconds:150),
+       reverseTransitionDuration:  const Duration(milliseconds: 150),
        pageBuilder:(context,animation,secondaryAnimation)=>child,
      );
  @override
@@ -22,7 +22,7 @@ class CustomPageRoute extends PageRouteBuilder
      SlideTransition(
          position: Tween<Offset>(
            begin: Offset(beginX,beginY),
-         end: Offset(0,0),
+         end: const Offset(0,0),
          ).animate(animation),
          child: child
 

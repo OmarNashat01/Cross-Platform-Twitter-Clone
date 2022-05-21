@@ -1,8 +1,12 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:twitter/dummy/users_data.dart';
+import 'package:provider/provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
+import '../../providers/notifications_provider.dart';
 import '../timeline_screen/timeline_components/profile_picture.dart';
 import '../timeline_screen/timeline_components/navigation_drawer.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
@@ -18,17 +22,48 @@ class NotificationsScreen extends StatefulWidget {
 
 class NotificationsScreen_state extends State<NotificationsScreen> {
   final controller = ScrollController();
+
+  fetchNotifications(BuildContext context) {
+    final notificationsProvider =
+        Provider.of<NotificationsProvider>(context, listen: false);
+
+    notificationsProvider.fetch().then((res) {
+      switch (res.statusCode) {
+        case 200: // Success
+          log('${res.body}');
+          final response = jsonDecode(res.body);
+          log('$response');
+          final jsonNotificationsList = response['notifications'];
+          notificationsProvider.setNotificationsList(jsonNotificationsList);
+          break;
+        case 204: // User does not have notifications
+          break;
+        case 401: // Unauthorized
+          break;
+        case 404: // User id not found
+          break;
+        default: // Invalid status code
+
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNotifications(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
+    return DefaultTabController(
         length: 2,
         child: Scaffold(
           drawer: NavigationDrawer(),
           floatingActionButton: FloatingActionButton(
             onPressed: () {},
             backgroundColor: Colors.blue,
-            child: Icon(
+            child: const Icon(
               FontAwesomeIcons.plus,
               size: 20,
             ),
@@ -50,7 +85,7 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                       onPressed: () {
                         controller.animateTo(0.0,
                             curve: Curves.easeIn,
-                            duration: Duration(seconds: 1));
+                            duration: const Duration(seconds: 1));
                       },
                       style: ButtonStyle(
                         overlayColor: MaterialStateColor.resolveWith(
@@ -64,11 +99,11 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                               Scaffold.of(context).openDrawer();
                             },
                             profilePictureImage:
-                                UsersData.getMyData().profilePicture,
+                                'https://picsum.photos/id/237/200/300',
                             profilePictureSize: 15,
                           ),
                           //twitter icon in the appbar
-                          Text(
+                          const Text(
                             'Notifications',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -87,7 +122,7 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                                   ),
                                 );
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.settings,
                                 color: Colors.grey,
                               )),
@@ -112,7 +147,7 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                   SizedBox(
                     height: 50,
                     child: AppBar(
-                      bottom: TabBar(
+                      bottom: const TabBar(
                         tabs: [
                           Tab(
                             text: 'All',
@@ -131,139 +166,12 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                         // first tab bar view widget
                         Container(
                           child: Center(
-                            child: ListView(
-                              children: const <Widget>[
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                                Card(
-                                  child: ListTile(
-                                    leading: FlutterLogo(size: 50.0),
-                                    title: Text('Ahmed Mostafa'),
-                                    subtitle: Text(
-                                        'A sufficiently long subtitle warrants three lines.'),
-                                    trailing: Icon(Icons.more_vert),
-                                    isThreeLine: true,
-                                  ),
-                                ),
-                              ],
+                            child: Consumer<NotificationsProvider>(
+                              builder: (context, val, child) => ListView(
+                                children: val.notificationsList == []
+                                    ? [const Text('shit')]
+                                    : val.notificationsList,
+                              ),
                             ),
                           ),
                         ),
@@ -419,8 +327,6 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
             controller: controller,
             pop: false,
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

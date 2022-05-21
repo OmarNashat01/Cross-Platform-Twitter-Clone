@@ -1,11 +1,9 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/user_provider.dart';
 
 import '../../themes.dart';
-import '../../constants.dart';
 
 class ReturnToTwitterScreen extends StatefulWidget {
   static const routeName = '/return-to-twitter-screen';

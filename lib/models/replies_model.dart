@@ -1,4 +1,3 @@
-import 'package:twitter/models/reply_model.dart';
 class Replies
 {
   final List<dynamic>replies;
