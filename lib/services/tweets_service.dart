@@ -1,9 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-import 'dart:ui';
-import 'package:uuid/uuid.dart';
-import 'package:twitter/models/likers_model.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/models/comment_model.dart';
@@ -11,10 +7,8 @@ import 'package:http/http.dart' as http;
 
 import '../constants.dart';
 import '../models/image_model.dart';
-import '../models/images_model.dart';
-import '../models/replies_model.dart';
+import '../models/likers_model.dart';
 import '../models/reply_model.dart';
-import '../models/tweets_model.dart';
 import '../models/video_model.dart';
 
 class TweetsApi {
@@ -22,7 +16,7 @@ class TweetsApi {
     final Uri uri = Uri.parse('$backendUrl/tweets/all/me');
     http.Response response = await http.get(uri, headers: {
       "x-access-token":
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
     });
     String data = response.body;
     var de = jsonDecode(data);
@@ -48,7 +42,8 @@ class TweetsApi {
         comments = tweetsList[i].comments.toList();
       }
       if (tweetsList[i].likerIds.length > 0) {
-        likers = tweetsList[i].likerIds..map((e) => Likers.fromJson(e)).toList();
+        likers = tweetsList[i].likerIds
+          ..map((e) => Likers.fromJson(e)).toList();
       }
       if (tweetsList[i].images.length > 0) {
         images = tweetsList[i].images.map((e) => Imagei.fromJson(e)).toList();
@@ -71,7 +66,7 @@ class TweetsApi {
     final Uri uri = Uri.parse('$backendUrl/tweets/all?Id=$userId');
     http.Response response = await http.get(uri, headers: {
       "x-access-token":
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
     });
     String data = response.body;
     var jsonData = jsonDecode(data)["tweets"];
@@ -95,7 +90,8 @@ class TweetsApi {
         comments = tweetsList[i].comments.toList();
       }
       if (tweetsList[i].likerIds.length > 0) {
-        likers = tweetsList[i].likerIds..map((e) => Likers.fromJson(e)).toList();
+        likers = tweetsList[i].likerIds
+          ..map((e) => Likers.fromJson(e)).toList();
       }
       if (tweetsList[i].images.length > 0) {
         images = tweetsList[i].images.map((e) => Imagei.fromJson(e)).toList();
@@ -126,7 +122,7 @@ class TweetsApi {
       uri,
       headers: {
         "x-access-token":
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
       },
     );
     String data = response.body;
@@ -153,7 +149,8 @@ class TweetsApi {
           comments = tweetsList[i].comments.toList();
         }
         if (tweetsList[i].likerIds.length > 0) {
-          likers = tweetsList[i].likerIds..map((e) => Likers.fromJson(e)).toList();
+          likers = tweetsList[i].likerIds
+            ..map((e) => Likers.fromJson(e)).toList();
         }
         if (tweetsList[i].images.length > 0) {
           images = tweetsList[i].images.map((e) => Imagei.fromJson(e)).toList();
@@ -171,6 +168,7 @@ class TweetsApi {
       }
       return tweetsMain;
     }
+    return null;
   }
 
   // Future<List<TweetMain>> fetchTweetsOfCertainUser(String userId) async {
@@ -227,11 +225,11 @@ class TweetsApi {
     final Uri uri = Uri.parse('$backendUrl/tweets/tweet_id?Id=$tweetId');
     http.Response response = await http.get(uri, headers: {
       "x-access-token":
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
     });
     String data = response.body;
     var jsonData = jsonDecode(data)["tweet"];
-    List<dynamic>d=[];
+    List<dynamic> d = [];
     d.add(jsonData);
     List<dynamic> tweetsList = [];
 
@@ -255,7 +253,8 @@ class TweetsApi {
         comments = tweetsList[i].comments.toList();
       }
       if (tweetsList[i].likerIds.length > 0) {
-        likers = tweetsList[i].likerIds..map((e) => Likers.fromJson(e)).toList();
+        likers = tweetsList[i].likerIds
+          ..map((e) => Likers.fromJson(e)).toList();
       }
       if (tweetsList[i].images.length > 0) {
         images = tweetsList[i].images.map((e) => Imagei.fromJson(e)).toList();
@@ -276,15 +275,18 @@ class TweetsApi {
 
   //add tweet is done using mock server for now as testing in backend stop
 
-  Future<void> addTweet({required String text, required List<dynamic> images, required List<dynamic> videos}) async {
+  Future<void> addTweet(
+      {required String text,
+      required List<dynamic> images,
+      required List<dynamic> videos}) async {
     var headers = {
       'x-access-token':
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4',
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4',
       'follow_redirects': 'true',
       'Content-Type': 'application/json'
     };
     var request =
-    http.Request('POST', Uri.parse('http://45.79.245.94:5000/tweets'));
+        http.Request('POST', Uri.parse('http://45.79.245.94:5000/tweets'));
     request.body =
         json.encode({"text": text, "images": images, "videos": videos});
     request.headers.addAll(headers);
@@ -304,7 +306,8 @@ class TweetsApi {
 
   Future<void> deleteTweet({required String tweetId}) async {
     var headers = {
-      'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4'
+      'x-access-token':
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4'
     };
     var request = http.Request(
         'DELETE', Uri.parse('http://45.79.245.94:5000/tweets?Id=$tweetId'));
@@ -315,8 +318,7 @@ class TweetsApi {
 
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
-    }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
   }
@@ -324,7 +326,7 @@ class TweetsApi {
   Future<void> addLike({required String tweetId}) async {
     var headers = {'Content-Type': 'application/json'};
     var request =
-    http.Request('POST', Uri.parse('http://192.168.1.8:8000/users/likes'));
+        http.Request('POST', Uri.parse('http://192.168.1.8:8000/users/likes'));
     request.body = json.encode({
       "tweet_id": tweetId, //random id for tweet created
       "user_id": Auth.userId,
@@ -338,6 +340,4 @@ class TweetsApi {
       print(response.reasonPhrase);
     }
   }
-
-
 }

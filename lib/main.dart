@@ -4,27 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:twitter/providers/comments_provider.dart';
 import 'package:twitter/providers/image_videos_details_provider.dart';
 import 'package:twitter/providers/list_view_tweet_provider.dart';
+import 'package:twitter/providers/notifications_provider.dart';
 import 'package:twitter/providers/timeline_provider.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/providers/ui_colors_provider.dart';
 import 'package:twitter/providers/user_provider.dart';
 import 'package:twitter/providers/video_provider.dart';
-import 'package:twitter/screens/auth_welcome_screen/auth_welcome_screen.dart';
-import 'package:twitter/screens/bio_screen/bio_screen.dart';
-import 'package:twitter/screens/forgot_password_screen/forgot_password_screen.dart';
-import 'package:twitter/screens/login_email_screen/login_email_screen.dart';
-import 'package:twitter/screens/forgot_password_screen/forgot_password_screen.dart';
-import 'package:twitter/screens/password_screen/password_screen.dart';
-import 'package:twitter/screens/profile_pic_screen/profile_pic_screen.dart';
-import 'package:twitter/screens/profile_pic_screen/widgets/image_holder.dart';
-import 'package:twitter/screens/return_to_twitter_screen/return_to_twitter_screen.dart';
-import 'package:twitter/screens/settings_screen/settings_screen.dart';
-import 'package:twitter/screens/signup_screen/signup_screen.dart';
-import 'package:twitter/screens/username_screen/username_screen.dart';
-
-import 'screens/welcome_screen/welcome_screen.dart';
-import 'screens/timeline_screen/timeline_screen.dart';
-import 'screens/profile_screen/profile_screen.dart';
+import 'package:twitter/screens/notifications_screen/NotificationsScreen.dart';
+import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 
 import 'providers/user_provider.dart';
 // Other imports
@@ -48,9 +35,11 @@ class TwitterApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UIColorProvider()),
         ChangeNotifierProvider(create: (context) => ListViewTweetProvider()),
         ChangeNotifierProvider(create: (context) => VideoPlayerProvider()),
-        ChangeNotifierProvider(create: (context) => ImageVideoDetailsProvider()),
-        ChangeNotifierProvider(create: (context) => CommentsProvider())
+        ChangeNotifierProvider(
+            create: (context) => ImageVideoDetailsProvider()),
+        ChangeNotifierProvider(create: (context) => CommentsProvider()),
         //ChangeNotifierProvider(create: (context) => StreamControllerProvider()),
+        ChangeNotifierProvider(create: (context) => NotificationsProvider())
       ],
 
       child: MaterialApp(

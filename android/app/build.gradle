@@ -52,8 +52,15 @@ android {
 
     }
 
+    // signingConfigs {
+    //     debug {
+    //         keyAlias 'uploadOAuth'
+    //         keyPassword 'TwitterClone'
+    //         storeFile file('oAuthKey.jks')
+    //         storePassword 'TwitterClone'
 
-
+    //     }
+    // }
 
     buildTypes {
         // debug {
