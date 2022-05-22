@@ -173,7 +173,9 @@ class _TimelineScreenState extends State<TimelineScreen> {
       bottomNavigationBar: TimelineBottomBar(
         contextt: context,
         controller: controller!,
-        pop: false,
+        popTimeLine: false,
+        popSearch: true,
+        popNotifications: true,
       ),
     );
   }

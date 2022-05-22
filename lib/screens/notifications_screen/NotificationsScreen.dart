@@ -325,7 +325,9 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
           bottomNavigationBar: TimelineBottomBar(
             contextt: context,
             controller: controller,
-            pop: false,
+            popTimeLine: true,
+            popSearch: true,
+            popNotifications: false,
           ),
         ));
   }

@@ -166,7 +166,9 @@ class SearchScreen_state extends State<SearchScreen> {
         bottomNavigationBar: TimelineBottomBar(
           contextt: context,
           controller: controller,
-          pop: true,
+          popTimeLine: true,
+          popSearch: false,
+          popNotifications: true,
         ),
       ),
     );

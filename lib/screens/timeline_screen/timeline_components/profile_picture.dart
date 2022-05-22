@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:twitter/constants.dart';
+
+
 class ProfilePicture extends StatelessWidget {
   @override
   const ProfilePicture({
@@ -23,7 +26,7 @@ class ProfilePicture extends StatelessWidget {
         ),
         child: CircleAvatar(
           radius: profilePictureSize,
-          backgroundImage:  NetworkImage(profilePictureImage),
+          backgroundImage: NetworkImage(Auth.profilePicUrl),
         ),
       ),
     );

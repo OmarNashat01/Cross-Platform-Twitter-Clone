@@ -27,9 +27,10 @@ import 'package:twitter/models/tweet_model.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../providers/tweets_view_model.dart';
+
 // ignore_for_file: prefer_const_constructors
 class TweetPage extends StatefulWidget {
-  TweetPage({required this.tweetCard,required this.tweet});
+  TweetPage({required this.tweetCard, required this.tweet});
   TweetMain tweet;
   TweetCard tweetCard;
 
@@ -38,25 +39,25 @@ class TweetPage extends StatefulWidget {
 }
 
 class _TweetPageState extends State<TweetPage> {
-
-  ScrollController controller=ScrollController();
+  ScrollController controller = ScrollController();
   dynamic tweetsList;
 
   @override
   void initState() {
     // TODO: implement initState
-    if(widget.tweet.comments!=[]) {
+    if (widget.tweet.comments != []) {
       for (int i = 0; i < widget.tweet.comments.length; i++) {
-        Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetIdForTweetComments(context,widget.tweet.comments[i]);
+        Provider.of<TweetsViewModel>(context, listen: false)
+            .fetchTweetByTweetIdForTweetComments(
+                context, widget.tweet.comments[i]);
       }
     }
     super.initState();
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SafeArea(
         child: NestedScrollView(
           controller: controller,
@@ -79,13 +80,17 @@ class _TweetPageState extends State<TweetPage> {
                 },
                 style: ButtonStyle(
                   overlayColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.transparent),
+                      (states) => Colors.transparent),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 60),
                   child: Center(
                     child: Text(
-                      "Tweet",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 19),
+                      "Tweet",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 19),
                     ),
                   ),
                 ),
@@ -94,7 +99,7 @@ class _TweetPageState extends State<TweetPage> {
           ],
           //--------------------------------------------------------------------
           //tweets list viewer
-          body:  Scrollbar(
+          body: Scrollbar(
             radius: Radius.circular(30),
             thumbVisibility: true,
             child: ListView(
@@ -106,31 +111,38 @@ class _TweetPageState extends State<TweetPage> {
                   shrinkWrap: true,
                   cacheExtent: 1000,
                   physics: const BouncingScrollPhysics(),
-                  childrenDelegate:SliverChildBuilderDelegate ((context, index) {
-                    // if(index==Provider.of<CommentsProvider>(context,listen: false).commentsList.length-1)
-                    // {
-                    //   Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
-                    //   return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
-                    // }
-                    return TweetCard(
-                      index: index,
-                      tweet: Provider.of<CommentsProvider>(context,listen: false).commentsList[index],
-                      videoPlayerController: widget.tweetCard.videoPlayerController, tweetPage: false,
-                    );
-
-                  },
-                      childCount: Provider.of<CommentsProvider>(context).commentsList.length,
+                  childrenDelegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        // if(index==Provider.of<CommentsProvider>(context,listen: false).commentsList.length-1)
+                        // {
+                        //   Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
+                        //   return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
+                        // }
+                        return TweetCard(
+                          index: index,
+                          tweet: Provider.of<CommentsProvider>(context,
+                                  listen: false)
+                              .commentsList[index],
+                          videoPlayerController:
+                              widget.tweetCard.videoPlayerController,
+                          tweetPage: false,
+                        );
+                      },
+                      childCount: Provider.of<CommentsProvider>(context)
+                          .commentsList
+                          .length,
                       findChildIndexCallback: (Key key) {
-                        final ValueKey  valueKey = key as ValueKey ;
+                        final ValueKey valueKey = key as ValueKey;
                         final String data = valueKey.value;
-                        return Provider.of<CommentsProvider>(context,listen: false).commentsList.indexOf(data);
-                      }
-                  ),
+                        return Provider.of<CommentsProvider>(context,
+                                listen: false)
+                            .commentsList
+                            .indexOf(data);
+                      }),
                 ),
               ],
             ),
           ),
-
         ),
       ),
 
@@ -139,7 +151,9 @@ class _TweetPageState extends State<TweetPage> {
       bottomNavigationBar: TimelineBottomBar(
         contextt: context,
         controller: controller!,
-        pop: false,
+        popTimeLine: true,
+        popSearch: true,
+        popNotifications: true,
       ),
     );
   }

@@ -56,7 +56,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: TimelineBottomBar(controller: controller,pop: true,contextt: context,),
+      bottomNavigationBar: TimelineBottomBar(controller: controller,popTimeLine: true,popSearch: true, popNotifications: true,contextt: context,),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Colors.blue,
