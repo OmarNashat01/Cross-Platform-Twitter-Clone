@@ -46,7 +46,7 @@ class TimelineBottomBar extends StatelessWidget {
                       ? controller.animateTo(0.0,
                           curve: Curves.easeIn,
                           duration: const Duration(milliseconds: 200))
-                      :   Navigator.push(
+                      :   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => TimelineScreen(firstTime: false)),
                   );

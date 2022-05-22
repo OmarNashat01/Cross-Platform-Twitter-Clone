@@ -60,6 +60,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBars.welcomeAppBar,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
