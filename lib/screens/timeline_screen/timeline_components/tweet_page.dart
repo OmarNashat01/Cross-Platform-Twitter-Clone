@@ -47,9 +47,8 @@ class _TweetPageState extends State<TweetPage> {
     // TODO: implement initState
     if (widget.tweet.comments != []) {
       for (int i = 0; i < widget.tweet.comments.length; i++) {
-        Provider.of<TweetsViewModel>(context, listen: false)
-            .fetchTweetByTweetIdForTweetComments(
-                context, widget.tweet.comments[i]);
+        print(widget.tweet.comments[i]);
+        Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetIdForTweetComments(context,widget.tweet.comments[i]);
       }
     }
     super.initState();
@@ -74,7 +73,7 @@ class _TweetPageState extends State<TweetPage> {
               title: TextButton(
                 onPressed: () {
                   //this makes when i press on the bar it goes to the first tweet in timeline
-                  controller?.animateTo(0.0,
+                  controller.animateTo(0.0,
                       curve: Curves.easeIn,
                       duration: Duration(milliseconds: 200));
                 },
@@ -150,7 +149,7 @@ class _TweetPageState extends State<TweetPage> {
       //bottom appbar where each icon has its own function
       bottomNavigationBar: TimelineBottomBar(
         contextt: context,
-        controller: controller!,
+        controller: controller,
         popTimeLine: true,
         popSearch: true,
         popNotifications: true,

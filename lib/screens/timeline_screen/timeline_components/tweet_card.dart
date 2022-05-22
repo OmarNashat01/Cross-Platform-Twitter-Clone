@@ -306,7 +306,7 @@ class _TweetCardState extends State<TweetCard> {
                     beginX: 0,
                     beginY: 1),
               )
-            : print("inside");
+            : print("");
       },
       child: Column(
         children: [
@@ -378,8 +378,8 @@ class _TweetCardState extends State<TweetCard> {
                 ),
 
                 //--for decoration sized box
-                const SizedBox(
-                  height: 5,
+                 SizedBox(
+                  height: widget.tweetPage==false?5:20,
                 ),
                 //--here is the text of the tweet
                 widget.tweet.getTweettext() != ""
@@ -392,7 +392,7 @@ class _TweetCardState extends State<TweetCard> {
                               overflow: TextOverflow.ellipsis,
                               //max lines of writing a tweet is 8 like in the main twitter
                               maxLines: 8,
-                              style: tweetsTexts,
+                              style: widget.tweetPage==false?tweetsTexts:innerTweetsTexts,
                             ),
                           ),
                         ],

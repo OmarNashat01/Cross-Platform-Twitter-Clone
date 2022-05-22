@@ -117,7 +117,7 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return TimelineScreen();
+                                      return TimelineScreen(firstTime: false,);
                                     },
                                   ),
                                 );

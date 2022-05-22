@@ -70,6 +70,7 @@ const Color kWarningColor = Color.fromARGB(255, 206, 55, 44);
 
 // TextStyles
 const TextStyle tweetsTexts = TextStyle(fontSize: 17, color: Colors.black);
+const TextStyle innerTweetsTexts = TextStyle(fontSize: 23, color: Colors.black,fontFamily: "Cormorant Garamond");
 const TextStyle boldName =
     TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black);
 const TextStyle titleName = TextStyle(

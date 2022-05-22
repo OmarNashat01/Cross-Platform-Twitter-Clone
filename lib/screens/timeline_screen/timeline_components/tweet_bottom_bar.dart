@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/retweet_screen.dart';
 
 import '../../../constants.dart';
 import '../../../models/tweet_complete_model.dart';
@@ -63,7 +64,7 @@ class TweetBottomBar extends StatelessWidget {
           GestureDetector(
             onTap: () {
               // Provider.of<TweetsViewModel>(context,listen: false).getTweetsList()[index].isRetweeted==false?showModalBottomSheet(context: context, builder: (context)=>RetweetScreen(index: index,doOrUndo: 'do',),)
-              // :showModalBottomSheet(context: context, builder: (context)=>RetweetScreen(index: index,doOrUndo: 'undo',),);
+              showModalBottomSheet(context: context, builder: (context)=>RetweetScreen(index: index,doOrUndo: 'undo',),);
             },
             child: Row(
               children: [

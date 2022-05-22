@@ -68,7 +68,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: TimelineScreen(),
+        home: TimelineScreen(firstTime: true,),
         routes: routes,
       ),
     );
