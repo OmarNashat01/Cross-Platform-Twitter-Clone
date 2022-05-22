@@ -90,47 +90,39 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/tweets_images/
+  fonts:
+  - family: Cormorant Garamond
+    fonts:
+      - asset: assets/fonts/CormorantGaramond-Italic.ttf
+  #  fonts:
+#    - family: Ubuntu
+#      fonts:
+#         - asset: assets/fonts/Ubuntu-Bold.ttf
+#           weight: 700
+#
+#         - asset: assets/fonts/Ubuntu-BoldItalic.ttf
+#           weight: 700
+#           style: italic
+#
+#         - asset: assets/fonts/Ubuntu-Italic.ttf
+#           style: italic
+#
+#         - asset: assets/fonts/Ubuntu-Light.ttf
+#           weight: 300
+#
+#         - asset: assets/fonts/Ubuntu-LightItalic.ttf
+#           weight: 300
+#           style: italic
+#
+#         - asset: assets/fonts/Ubuntu-Medium.ttf
+#           weight: 500
+#
+#         - asset: assets/fonts/Ubuntu-MediumItalic.ttf
+#           weight: 500
+#           style: italic
+#
+#         - asset: assets/fonts/Ubuntu-Regular.ttf
+#           weight: 400
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware.
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Ubuntu
-  #     fonts:
-  #       - asset: assets/fonts/Ubuntu-Bold.ttf
-  #         weight: 700
-
-  #       - asset: assets/fonts/Ubuntu-BoldItalic.ttf
-  #         weight: 700
-  #         style: italic
-
-  #       - asset: assets/fonts/Ubuntu-Italic.ttf
-  #         style: italic
-
-  #       - asset: assets/fonts/Ubuntu-Light.ttf
-  #         weight: 300
-
-  #       - asset: assets/fonts/Ubuntu-LightItalic.ttf
-  #         weight: 300
-  #         style: italic
-
-  #       - asset: assets/fonts/Ubuntu-Medium.ttf
-  #         weight: 500
-
-  #       - asset: assets/fonts/Ubuntu-MediumItalic.ttf
-  #         weight: 500
-  #         style: italic
-
-  #       - asset: assets/fonts/Ubuntu-Regular.ttf
-  #         weight: 400
-  #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

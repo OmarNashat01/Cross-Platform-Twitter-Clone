@@ -79,7 +79,7 @@ class SearchScreen_state extends State<SearchScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return TimelineScreen();
+                                    return TimelineScreen(firstTime: false,);
                                   },
                                 ),
                               );

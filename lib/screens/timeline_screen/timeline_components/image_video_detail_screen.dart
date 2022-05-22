@@ -8,6 +8,7 @@ import 'package:twitter/providers/image_videos_details_provider.dart';
 import 'package:twitter/providers/ui_colors_provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/video_player_widget.dart';
+import 'package:video_player/video_player.dart';
 import '../../../models/tweet_complete_model.dart';
 class ImageVideoDetailScreen extends StatefulWidget {
   int index;
@@ -22,14 +23,21 @@ class ImageVideoDetailScreen extends StatefulWidget {
 }
 
 class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
+  String convertToMinutesSeconds(Duration duration){
+    final minutes=duration.inMinutes;
+    final seconds=duration.inSeconds;
+    return'$minutes:$seconds';
+  }
   double progress=0.0;
   GlobalKey imageKey = GlobalKey();
   PaletteColor? color;
+  Duration ?videoLength;
+  Duration ?videoPosition;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    // widget.videoPlayerController.addListie
     color;
     _updatePalette();
     Provider.of<UIColorProvider>(context,listen: false).opacity=1;
@@ -48,9 +56,6 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
     setState(() {
     });
   }
-  dynamic label;
-  dynamic endVideo;
-
   @override
   Widget build(BuildContext context) {
      // label=widget.videoPlayerController.value.position.toString().split(".")[0];
@@ -145,33 +150,8 @@ class _ImageVideoDetailScreenState extends State<ImageVideoDetailScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  Slider(
-                    value: progress,
-                    min: 0,
-                    max: 100,
-                    divisions: 100,
-                    label: label.toString(),
-                    onChanged: (double value) {
-                      setState(() {
-                        progress = value;
-                      });
-                    },
-                    onChangeStart: (value){
-                      setState(() {
-                        label=value;
-                      });
-                    },
-                    onChangeEnd: (value){
-                      final duration=widget.videoPlayerController.value.duration;
-                      if(duration!=null)
-                        {
-                          var newValue=max(0,min(value,99))*0.01;
-                          var milis=(duration.inMilliseconds*newValue).toInt();
-                          widget.videoPlayerController.seekTo(Duration(milliseconds: milis));
-                        }
-                    },
-                  ),
-                  Text("${widget.videoPlayerController.value.position.toString().split(".")[0]},/ ${widget.videoPlayerController.value.duration.toString().split(".")[0]}",)
+                  Expanded(child: VideoProgressIndicator(widget.videoPlayerController, allowScrubbing: true)),
+                  Text("  ${convertToMinutesSeconds(widget.videoPlayerController.value.position)} / ${convertToMinutesSeconds(widget.videoPlayerController.value.duration)}",style: TextStyle(color: Colors.white),)
                 ],
               ):const SizedBox.shrink(),
               (widget.video==true&&widget.videoPlayerController!=null)?const SizedBox(height: 15,):const SizedBox.shrink(),

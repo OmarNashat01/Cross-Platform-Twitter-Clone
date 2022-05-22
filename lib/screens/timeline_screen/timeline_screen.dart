@@ -29,8 +29,9 @@ import 'timeline_components/navigation_drawer.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 // ignore_for_file: prefer_const_constructors
 class TimelineScreen extends StatefulWidget {
+  TimelineScreen({required this.firstTime});
   static const routeName = '/timeline-screen';
-
+  bool firstTime=true;
   @override
   State<TimelineScreen> createState() => _TimelineScreenState();
 }
@@ -41,7 +42,10 @@ class _TimelineScreenState extends State<TimelineScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    Provider.of<TweetsViewModel>(context,listen: false).fetchMyTweets(context);
+    if(widget.firstTime==true) {
+      Provider.of<TweetsViewModel>(context, listen: false).fetchMyTweets(
+          context);
+    }
     super.initState();
     controller = ScrollController();
 

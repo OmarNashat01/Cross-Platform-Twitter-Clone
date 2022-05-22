@@ -42,7 +42,11 @@ class TimelineBottomBar extends StatelessWidget {
                       ? controller.animateTo(0.0,
                           curve: Curves.easeIn,
                           duration: const Duration(milliseconds: 200))
-                      : Navigator.of(context).pushNamed(TimelineScreen.routeName);
+                      :   Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TimelineScreen(firstTime: false)),
+                  );
+
                 },
                 icon: const Icon(
                   FontAwesomeIcons.house,

@@ -45,7 +45,7 @@ class TweetsApi {
         likers = tweetsList[i].likerIds
           ..map((e) => Likers.fromJson(e)).toList();
       }
-      if (tweetsList[i].images.length > 0) {
+      if (tweetsList[i].images.length ==1) {
         images = tweetsList[i].images.map((e) => Imagei.fromJson(e)).toList();
       }
       if (tweetsList[i].videos.length > 0) {
@@ -171,55 +171,6 @@ class TweetsApi {
     return null;
   }
 
-  // Future<List<TweetMain>> fetchTweetsOfCertainUser(String userId) async {
-  //   final queryParameters = {
-  //     'user_id': userId,
-  //     //'token': _email,
-  //   };
-  //   final uri =
-  //   Uri.http(Http().getMobileBaseUrl(), '/tweets/all', queryParameters);
-  //   // final Uri url = Uri.parse('http://192.168.1.8:8000/tweets/all');
-  //   http.Response response = await http.get(uri);
-  //   String data = response.body;
-  //   var jsonData = jsonDecode(data);
-  //   List<dynamic> tweetsList = [];
-  //
-  //   //see if comments in this
-  //   tweetsList = jsonData.map((e) => Tweet.fromJson(e)).toList(); //[2],[3]
-  //   //----------------------------------------------------------------------
-  //   List<TweetMain> tweetsMain = [];
-  //   List<dynamic> comments = [];
-  //   List<dynamic> likers = [];
-  //   List<dynamic> images = [];
-  //   List<dynamic> videos = [];
-  //   //--------------------------------------------------------------------------
-  //   for (int i = 0; i < tweetsList.length; i++) {
-  //     images = [];
-  //     comments = [];
-  //     likers = [];
-  //     videos = [];
-  //     if (tweetsList[i].comments.length > 0) {
-  //       comments = tweetsList[i].comments.toList();
-  //     }
-  //     if (tweetsList[i].likerIds.length > 0) {
-  //       likers = tweetsList[i].likerIds..map((e) => Likers.fromJson(e)).toList();
-  //     }
-  //     if (tweetsList[i].images.length > 0) {
-  //       images = tweetsList[i].images.map((e) => Imagei.fromJson(e)).toList();
-  //     }
-  //     if (tweetsList[i].videos.length > 0) {
-  //       videos = tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
-  //     }
-  //     TweetMain tweetIMain = TweetMain(
-  //         tweet: tweetsList[i],
-  //         comments: comments,
-  //         likers: likers,
-  //         videos: videos,
-  //         images: images);
-  //     tweetsMain.add(tweetIMain);
-  //   }
-  //   return tweetsMain;
-  // }
 
   Future<List<TweetMain>?> fetchTweetByTweetId(String tweetId) async {
     final Uri uri = Uri.parse('$backendUrl/tweets/tweet_id?Id=$tweetId');

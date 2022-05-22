@@ -10,6 +10,7 @@ class VideoPlayerProvider extends ChangeNotifier
   //   videoPlayerController.setVolume(0);
   //   notifyListeners();
   // }
+
   void setVolume(dynamic videoPlayerController,double v) {
     if (v == 1){
       isMuted=1;

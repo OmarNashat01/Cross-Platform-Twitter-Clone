@@ -91,7 +91,7 @@ class ProfileScreen_state extends State<ProfileScreen> with SingleTickerProvider
                           onPressed: () {Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context){ return TimelineScreen(); },
+                              builder: (context){ return TimelineScreen(firstTime: false,); },
                             ),
                           );
                           },
