@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:twitter/screens/forgot_pass_email_screen/forgot_pass_email_screen.dart';
+import 'package:twitter/screens/forgot_pass_otp_screen/forgot_pass_otp_screen.dart';
 import 'package:twitter/screens/forgot_password_screen/forgot_password_screen.dart';
 import '../login_password_screen/login_password_screen.dart';
 
@@ -11,14 +11,14 @@ import '../../themes.dart';
 import '../../constants.dart';
 
 /// Login screen to handle email input field
-class LoginEmailScreen extends StatefulWidget {
-  static const routeName = '/login-email-screen';
+class ForgotPassEmailScreen extends StatefulWidget {
+  static const routeName = '/forgot_pass_email_screen';
 
   @override
-  State<LoginEmailScreen> createState() => LoginEmailScreenState();
+  State<ForgotPassEmailScreen> createState() => ForgotPassEmailScreeState();
 }
 
-class LoginEmailScreenState extends State<LoginEmailScreen> {
+class ForgotPassEmailScreeState extends State<ForgotPassEmailScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final _emailFieldController = TextEditingController();
@@ -31,19 +31,23 @@ class LoginEmailScreenState extends State<LoginEmailScreen> {
   }
 
   void _pressNextButton(context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     if (_formKey.currentState!.validate()) {
-      log('Login Email PASSED');
+      log('Forgot password Email PASSED');
       _formKey.currentState!.save();
-      Navigator.of(context).pushReplacementNamed(LoginPasswordScreen.routeName);
-    } else {
-      log('Login Email FAILED');
-    }
-  }
+      userProvider.forgotPassEmail().then((res) async {
+        if (res.statusCode == 200) {
+          log('Forgot password email SUCCESS : OTP: ${res.body}');
+        } else {
+          log('Bad Forgot password email NOT FOUND');
+        }
+        Navigator.of(context)
+            .pushReplacementNamed(ForgotPassOtpScreen.routeName);
+      });
 
-  /// Go to forgot password screen to handle this functionality
-  void _pressForgotPassButton(context) {
-    // Todo: Navigate to forgot password screen
-    Navigator.of(context).pushReplacementNamed(ForgotPassEmailScreen.routeName);
+    } else {
+      log('Forgot password FAILED');
+    }
   }
 
   @override
@@ -63,7 +67,7 @@ class LoginEmailScreenState extends State<LoginEmailScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 25),
                       child: Text(
-                        'To get started, first enter your email',
+                        'Find your Twitter account',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -85,7 +89,7 @@ class LoginEmailScreenState extends State<LoginEmailScreen> {
                               .email = email,
                       onFieldSubmitted: (_) => _pressNextButton(context),
                       keyboardType: TextInputType.text,
-                      decoration: FieldDecorations.normal('Email'),
+                      decoration: FieldDecorations.normal('Enter your email'),
                     ),
                   ),
                 ],
@@ -95,20 +99,10 @@ class LoginEmailScreenState extends State<LoginEmailScreen> {
               flex: 2,
               child: Align(
                 alignment: Alignment.centerRight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    OutlinedButton(
-                      onPressed: () => _pressForgotPassButton(context),
-                      style: CustomButtons.whiteButton(),
-                      child: const Text('Forgot password?'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => _pressNextButton(context),
-                      style: CustomButtons.blackButton(),
-                      child: const Text('Next'),
-                    ),
-                  ],
+                child: ElevatedButton(
+                  onPressed: () => _pressNextButton(context),
+                  style: CustomButtons.blackButton(),
+                  child: const Text('Search'),
                 ),
               ),
             ),

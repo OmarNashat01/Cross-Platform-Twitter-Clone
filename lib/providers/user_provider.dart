@@ -142,14 +142,36 @@ class UserProvider with ChangeNotifier {
   }
 
   // TODO: ...........................
+  Future<http.Response> forgotPassEmail() async {
+    final response = await http.post(
+      Uri.parse('http://${Http().getBaseUrl()}/users/forgot_password/OTP'),
+      headers: {"Content-Type": "application/json; charset=UTF-8"},
+      body: jsonEncode({
+        'email': _email,
+      }),
+    );
+    return response;
+  }
+
+  // TODO: ...........................
+  Future<http.Response> forgotPassOtp() async {
+    final queryParameters = {
+      'OTP': _verificationCode,
+      'email': _email,
+    };
+    final uri = Uri.http(
+        Http().getBaseUrl(), '/users/forgot_password/OTP', queryParameters);
+    final response = await http
+        .get(uri, headers: {"Content-Type": "application/json; charset=UTF-8"});
+    return response;
+  }
+
+  // TODO: ...........................
   Future<http.Response> forgotPassword() async {
     final response = await http.put(
       Uri.parse('http://${Http().getBaseUrl()}/users/forgot_password'),
       headers: {"Content-Type": "application/json; charset=UTF-8"},
-      // body: jsonEncode({
-      //   'email': _email,
-      //   'password': _password,
-      // }),
+      body: jsonEncode({'password': _newPassword}),
     );
     return response;
   }

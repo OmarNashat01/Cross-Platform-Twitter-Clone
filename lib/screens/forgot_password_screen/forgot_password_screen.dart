@@ -48,6 +48,11 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
       userProvider.forgotPassword().then((res) async {
         // TODO: is to be implemented
+        if (res.statusCode == 200) {
+          log('Forgot password success');
+        } else {
+          log('Forgot password Bad');
+        }
         Navigator.of(context)
             .pushReplacementNamed(ReturnToTwitterScreen.routeName);
       });
@@ -101,7 +106,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           validator: validatePassword1,
                           controller: _passwordFieldController1,
                           onSaved: (pass) =>
-                              userProvider.password = hashToMd5(pass as String),
+                              userProvider.newPassword = hashToMd5(pass as String),
                           onFieldSubmitted: (_) =>
                               _pressResetPasswordButton(context),
                           keyboardType: TextInputType.visiblePassword,

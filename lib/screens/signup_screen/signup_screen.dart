@@ -10,6 +10,7 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBars.welcomeAppBar,
       body: Center(
         child: Padding(
