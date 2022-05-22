@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/models/comment_model.dart';
@@ -338,6 +339,29 @@ class TweetsApi {
       print(await response.stream.bytesToString());
     } else {
       print(response.reasonPhrase);
+    }
+
+    // SEND NOTIFICATION
+    sendLikeNotification();
+  }
+
+  Future<void> sendLikeNotification() async {
+    var response = await http.post(
+      Uri.parse('${Http().getBaseUrl()}/users/notifications'),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': Auth.token
+      },
+      body: jsonEncode({
+        "user_id": Auth.userId,
+        "notification_type": "string", //! to be changed
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      log('Like Notification SENT');
+    } else {
+      log('Like Notification Unauthorized');
     }
   }
 }
