@@ -25,7 +25,7 @@ class Auth {
   static String email = '';
   static String password = '';
   static String profilePicUrl =
-      "https://c8.alamy.com/comp/2C5BXFW/robot-cartoon-id-profile-3d-illustration-2C5BXFW.jpg";
+      "https://marketplace.canva.com/EAE6OK9SZTU/1/0/1600w/canva-astronaut-character-twitch-profile-picture-grRMsFmpHE0.jpg";
   static String username = 'abdallah';
   static String name = 'abdallah__fawzy';
   static String bio = "hello everyone";

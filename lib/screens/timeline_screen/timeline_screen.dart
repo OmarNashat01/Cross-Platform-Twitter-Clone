@@ -59,7 +59,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
           Navigator.of(context).push(
             CustomPageRoute(
                 child: AddTweetScreen(
-                    hintText: "What's happening?", tweetOrReply: "Tweet"),
+                    hintText: "What's happening?", tweetOrReply: "tweet"),
                 beginX: 0,
                 beginY: 1),
           );
@@ -141,19 +141,21 @@ class _TimelineScreenState extends State<TimelineScreen> {
                             return Provider.of<TweetsViewModel>(context, listen: false).fetchMyTweets(context);
                           },
                           child: ListView.custom(
-                            cacheExtent: 1000,
 
                             physics: const BouncingScrollPhysics(),
                             childrenDelegate:SliverChildBuilderDelegate ((context, index) {
+                              print(Provider.of<TimelineProvider>(context).timelineList.length);
                               if(index==Provider.of<TimelineProvider>(context,listen: false).timelineList.length-1)
                                 {
                                    Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
                                    return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
                                 }
                                 return TweetCard(
+                                  userId: "",
+                                  shiftTweets: false,
                                   tweetPage:false,
                                   index: index,
-                                  tweet: Provider.of<TimelineProvider>(context,listen: false).timelineList[index],
+                                  tweet: Provider.of<TimelineProvider>(context).timelineList[index],
                                   videoPlayerController: videoPlayerController,
                                 );
 
@@ -162,7 +164,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                                 findChildIndexCallback: (Key key) {
                                   final ValueKey  valueKey = key as ValueKey ;
                                   final String data = valueKey.value;
-                                  return Provider.of<TimelineProvider>(context,listen: false).timelineList.indexOf(data);
+                                  return Provider.of<TimelineProvider>(context).timelineList.indexOf(data);
                                 }
                           ),
                           ),

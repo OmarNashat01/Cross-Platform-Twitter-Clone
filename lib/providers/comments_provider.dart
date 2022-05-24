@@ -10,9 +10,20 @@ class CommentsProvider extends ChangeNotifier {
   updateTweetCommentList(dynamic data) {
     if (data != null) {
       for (int i =0; i <data.length; i++) {
-        commentsList.add(data[i]);
+        commentsList.insert(0,data[i]);
       }
     }
+    notifyListeners();
+  }
+  updateComment(dynamic data) {
+    if (data != null) {
+      commentsList.insert(0, data);
+    }
+    notifyListeners();
+  }
+  updateLikeInfoOfTweet(int index,int likeCount,bool isLiked) {
+    // commentsList[index].tweet.likeCount=likeCount;
+    // commentsList[index].tweet.isLiked=isLiked;
     notifyListeners();
   }
   // void removeTweetFromTimeline(int index) {

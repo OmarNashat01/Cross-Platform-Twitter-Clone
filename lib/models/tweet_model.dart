@@ -30,7 +30,8 @@ class Tweet {
   String? bio;
   int followingCount;
   int followersCount;
-
+  //should be modified
+  bool isLiked=false;
   String createdAt;
 
   //videos content------------------------------------------
@@ -54,6 +55,10 @@ class Tweet {
 //-----------------------------------------------------
 
   //reading from json
+  void setTweetLike(bool liked)
+  {
+    isLiked=liked;
+  }
   factory Tweet.fromJson(Map<String, dynamic> jsonData) {
     return Tweet(
         tweetId: jsonData["tweet_id"],

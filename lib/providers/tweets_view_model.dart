@@ -42,7 +42,13 @@ class TweetsViewModel extends ChangeNotifier {
     updateRandomTweetsPageNumber();
     notifyListeners();
   }
-
+  Future<dynamic> fetchTweetByTweetId(String tweetId) async
+  {
+    addedDataToStream =await TweetsApi().fetchTweetByTweetId(tweetId);
+    return addedDataToStream;
+    // Provider.of<CommentsProvider>(context,listen: false).updateTweetCommentList(addedDataToStream);
+    // notifyListeners();
+  }
   Future<void> fetchTweetByTweetIdForTweetComments(BuildContext context, String tweetId) async
   {
     addedDataToStream= await TweetsApi().fetchTweetByTweetId(tweetId);
@@ -60,11 +66,25 @@ class TweetsViewModel extends ChangeNotifier {
   }
   Future<void>getAddedTweet(BuildContext context)async
   {
+    //we need to know the tweet id of the tweet which got added recently
    addedDataToStream= await TweetsApi().getAddedTweet();
-   List<TweetMain>addedTweet=[];
-   addedTweet.add(addedDataToStream);
-   Provider.of<TimelineProvider>(context,listen: false).updateMyTimeline(addedTweet);
-    // notifyListeners();
+   await Provider.of<TimelineProvider>(context,listen: false).addTweetToMyTimeline(addedDataToStream);
+   print(addedDataToStream.tweet.text);
+     notifyListeners();
+  }
+  Future<void> addComment(
+      {required String text,
+        required List<dynamic> images,
+        required List<dynamic> videos,required String tweetId,required BuildContext context}) async {
+    await TweetsApi().addComment(text: text, images: images, videos: videos,tweetId:tweetId);
+    addedDataToStream=await TweetsApi().fetchTweetByTweetId(tweetId);
+    dynamic addedComment=await TweetsApi().fetchTweetByTweetId(addedDataToStream[0].comments.last);
+    Provider.of<CommentsProvider>(context, listen: false).updateComment(addedComment[0]);
+    print(addedDataToStream[0].comments.last);
+    await Provider.of<TimelineProvider>(context,listen: false).notify();
+
+
+    notifyListeners();
   }
   Future<void>  deleteTweet(BuildContext context,
       String tweetId,tweetIndex) async {
@@ -72,5 +92,10 @@ class TweetsViewModel extends ChangeNotifier {
      TweetsApi().deleteTweet(tweetId: tweetId);
      Provider.of<TimelineProvider>(context,listen: false).removeTweetFromTimeline(tweetIndex);
      notifyListeners();
+  }
+  Future<void>likeUnlike(String tweetId,TweetMain tweet)async
+  {
+    await TweetsApi().likeUnlike(tweetId: tweetId,tweet: tweet);
+    notifyListeners();
   }
 }

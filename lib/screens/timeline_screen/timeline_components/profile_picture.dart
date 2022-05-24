@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 class ProfilePicture extends StatelessWidget {
   @override
@@ -23,7 +24,7 @@ class ProfilePicture extends StatelessWidget {
         ),
         child: CircleAvatar(
           radius: profilePictureSize,
-          backgroundImage:  NetworkImage(profilePictureImage),
+          // child:  CachedNetworkImage(imageUrl: profilePictureImage,),
         ),
       ),
     );

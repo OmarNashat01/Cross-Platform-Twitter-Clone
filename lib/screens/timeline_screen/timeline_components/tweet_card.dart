@@ -6,6 +6,7 @@ import 'package:twitter/constants.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/providers/comments_provider.dart';
+import 'package:twitter/providers/timeline_provider.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/providers/ui_colors_provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
@@ -15,6 +16,7 @@ import 'package:twitter/screens/timeline_screen/timeline_components/users_profil
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../models/user_model.dart';
 import '../../../providers/list_view_tweet_provider.dart';
+import '../../../providers/user_provider.dart';
 import 'custom_page_route.dart';
 import 'image_video_detail_screen.dart';
 import 'package:video_player/video_player.dart';
@@ -28,10 +30,15 @@ class TweetCard extends StatefulWidget {
       {required this.index,
       required this.tweet,
       this.videoPlayerController,
-      required this.tweetPage});
+      required this.tweetPage,
+        this.shiftTweets,
+        required this.userId,
+      });
+  String userId="";
   int index;
   bool tweetPage;
   TweetMain tweet;
+  bool ?shiftTweets=false;
   dynamic videoPlayerController;
   @override
   State<TweetCard> createState() => _TweetCardState();
@@ -255,6 +262,13 @@ class _TweetCardState extends State<TweetCard> {
       } else {}
     });
   }
+  void toggleTweetsInfo(bool isLiked,int likesCount)
+  {
+    setState(() {
+      widget.tweet.tweet.likeCount=likesCount;
+      widget.tweet.tweet.isLiked=isLiked;
+    });
+  }
 
   @override
   void initState() {
@@ -273,7 +287,7 @@ class _TweetCardState extends State<TweetCard> {
     }
     super.initState();
   }
-
+String username="";
   @override
   void dispose() {
     // TODO: implement dispose
@@ -286,22 +300,37 @@ class _TweetCardState extends State<TweetCard> {
   dynamic isMuted;
   @override
   Widget build(BuildContext context) {
+
     if (widget.tweet.videos.isNotEmpty &&
         widget.videoPlayerController != null) {
       isMuted = widget.videoPlayerController.value.volume;
     }
     return InkWell(
-      onTap: () {
-        Provider.of<CommentsProvider>(context, listen: false).commentsList = [];
+
+      onTap: ()async {
+        widget.userId=widget.tweet.tweet.userId;
+        if(widget.tweetPage==false)
+       {
+         username=widget.userId;
+       }
+        dynamic tweeta=await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(widget.tweet.tweet.tweetId);
+        setState(() {
+          widget.tweet=tweeta[0];
+          widget.tweet.tweet.likeCount=tweeta[0].tweet.likeCount;
+        });
         widget.tweetPage == false
             ? Navigator.of(context).push(
                 CustomPageRoute(
                     child: TweetPage(
+                      shiftTweets:true,
                       tweetCard: TweetCard(
+                        userId: "",
+                        shiftTweets: false,
                           index: widget.index,
-                          tweet: widget.tweet,
+                          tweet: tweeta[0],
                           tweetPage: true),
-                      tweet: widget.tweet,
+                      tweet: tweeta[0],
+                      userId:widget.tweet.tweet.username,
                     ),
                     beginX: 0,
                     beginY: 1),
@@ -383,7 +412,7 @@ class _TweetCardState extends State<TweetCard> {
                 ),
                 //--here is the text of the tweet
                 widget.tweet.getTweettext() != ""
-                    ? Row(
+                    ? (widget.shiftTweets==false)?Row(
                         children: [
                           Expanded(
                             child: Text(
@@ -397,7 +426,46 @@ class _TweetCardState extends State<TweetCard> {
                           ),
                         ],
                       )
-                    : const SizedBox.shrink(),
+                    : Column(
+                      children: [
+                        widget.userId!=""?
+                        Padding(padding: EdgeInsets.only(left: 50),
+                            child:InkWell(
+                              onTap: (){
+                                ///here i should call the user profile on the person i am replying to
+                                print("loool");
+                              },
+                              child: Row(
+                                children: [
+                                  Text("Replying to  ",style: TextStyle(color: Colors.blueGrey),),
+                                  Text(widget.userId,style: TextStyle(color: Colors.blue),),
+                                ],
+                              ),
+                            )
+                        )
+                        :
+                        SizedBox.shrink(),
+                        widget.userId!=""?SizedBox(height: 10,):SizedBox.shrink(),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 50),
+                          child: Row(
+                            children: [
+                          Expanded(
+                            child: Text(
+                               widget.tweet.getTweettext(),
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                              //max lines of writing a tweet is 8 like in the main twitter
+                              maxLines: 8,
+                              style: widget.tweetPage==false?tweetsTexts:innerTweetsTexts,
+                            ),
+                          ),
+                  ],
+                ),
+                        ),
+                      ],
+                    )
+                :const SizedBox.shrink(),
               ],
             ),
           ),
@@ -428,13 +496,7 @@ class _TweetCardState extends State<TweetCard> {
                           beginY: 1),
                     );
                   },
-                  child: widget.videoPlayerController != null
-                      ? VideoPlayerWidget(
-                          videoPlayerController: widget.videoPlayerController,
-                          isMuted: isMuted,
-                          inDetailVideo: false,
-                        )
-                      : SizedBox.shrink())
+              child: SizedBox.shrink())
               : SizedBox.shrink(),
           //--here is the image of the tweet
           widget.tweet.images.isNotEmpty
@@ -452,15 +514,16 @@ class _TweetCardState extends State<TweetCard> {
                       ),
                     ));
                   },
-                  child: CachedNetworkImage(
-                    imageUrl: widget.tweet.images[0].url,
-                    placeholder: (context, url) {
-                      return CircularProgressIndicator(
-                        color: Colors.black38,
-                      );
-                    },
-                    errorWidget: (context, url, error) => Text("a7aaa"),
-                  ),
+                  // child: CachedNetworkImage(
+                  //   imageUrl: widget.tweet.images[0].url,
+                  //   placeholder: (context, url) {
+                  //     return CircularProgressIndicator(
+                  //       color: Colors.black38,
+                  //     );
+                  //   },
+                  //   errorWidget: (context, url, error) => Text("a7aaa"),
+                  // ),
+            child: SizedBox.shrink(),
                 )
               : SizedBox.shrink(),
 
@@ -503,9 +566,18 @@ class _TweetCardState extends State<TweetCard> {
                             widget.tweet.tweet.likeCount.toString() + " ",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            "Likes ",
-                            style: TextStyle(color: Colors.grey),
+                          GestureDetector(
+                            onTap: ()async
+                            {
+                              // dynamic twet=await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(widget.tweet.tweet.tweetId);
+                              // setState(() {
+                              //   widget.tweet.tweet.likeCount=twet[0].tweet.likeCount;
+                              // });
+                            },
+                            child: Text(
+                              "Likes ",
+                              style: TextStyle(color: Colors.grey),
+                            ),
                           ),
                         ],
                       ),
@@ -518,10 +590,21 @@ class _TweetCardState extends State<TweetCard> {
                 ),
           //here is the TweetBottom bar
           //the row of icons for your reactions on the tweet
+          widget.shiftTweets==false?
           TweetBottomBar(
             tweet: widget.tweet,
             index: widget.index,
             iconsBoundry: Colors.grey.shade600,
+            likeInfoCallBack:toggleTweetsInfo,
+          ):
+          Padding(
+            padding: const EdgeInsets.only(left: 50),
+            child: TweetBottomBar(
+              tweet: widget.tweet,
+              index: widget.index,
+              iconsBoundry: Colors.grey.shade600,
+              likeInfoCallBack:toggleTweetsInfo,
+            ),
           ),
           //decoration of tweet at the bottom (divider)
           const SizedBox(
