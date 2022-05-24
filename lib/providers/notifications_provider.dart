@@ -11,8 +11,6 @@ class NotificationsProvider with ChangeNotifier {
   List<Widget> get notificationsList => _notificationsList;
 
   Future<http.Response> fetch() async {
-
-
     final queryParameters = {
       'user_id': Auth.userId,
     };
@@ -24,7 +22,10 @@ class NotificationsProvider with ChangeNotifier {
 
     final response = await http.get(
       uri,
-      headers: {'x-access-token': Auth.token},
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        'x-access-token': Auth.token
+      },
     );
 
     return response;

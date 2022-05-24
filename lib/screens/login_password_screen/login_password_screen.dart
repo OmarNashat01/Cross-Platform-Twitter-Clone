@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:twitter/screens/forgot_pass_email_screen/forgot_pass_email_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 
 import '../../providers/user_provider.dart';
@@ -84,7 +85,7 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
 
   void _pressForgotPassButton(context) {
     // Todo
-    Navigator.of(context).pushReplacementNamed(ForgotPasswordScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(ForgotPassEmailScreen.routeName);
 
   }
 

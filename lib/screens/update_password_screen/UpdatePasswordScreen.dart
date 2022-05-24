@@ -29,12 +29,18 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     if (pass == null || pass.isEmpty || pass.length < 8) {
       return '';
     }
+    if (pass != Auth.password) {
+      return 'Your old password was entered incorrectly, please enter it again.';
+    }
     return null;
   }
 
   String? validatePassword2(pass) {
     if (pass == null || pass.isEmpty || pass.length < 8) {
       return 'Your password needs to be at least 8 characters.\nPlease enter a longer one.';
+    }
+    if (pass == _passwordFieldController1.text) {
+      return 'New password cannot be same as the old password.';
     }
     return null;
   }
@@ -52,13 +58,24 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     if (_formKey.currentState!.validate()) {
       log('update Password PASSED');
-      _formKey.currentState!.save(); //? Password is saved in user provider
+      _formKey.currentState!
+          .save(); //? Password and new Password are saved in user provider
 
       userProvider.updatePassword().then((res) async {
-        // TODO: is to be implemented
-
-        // TODO: add snack bar for successful update
-        Navigator.of(context).pop();
+        if (res.statusCode == 200) {
+          // TODO: add snack bar for successful update
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Your password has been updated successfully'),
+          ));
+          log('Updated successfully');
+          Navigator.of(context).pop();
+        } else if (res.statusCode == 406) {
+          //todo: it should check for the current password if it is entered successfully
+          log('Bad: Old password entered ');
+        } else {
+          log('Bad: Unauthorized ');
+          Navigator.of(context).pop();
+        }
       });
     } else {
       log('update Password FAILED');
@@ -69,6 +86,7 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
         title: Column(
@@ -77,7 +95,8 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
             const Text('Update password'),
             Text(
               '@${Auth.username}',
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+              style:
+                  const TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
           ],
         ),
@@ -90,13 +109,11 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
               flex: 8,
               child: Column(
                 children: [
-                  
                   Form(
                     key: _formKey,
                     child: Column(
                       children: [
                         TextFormField(
-                          
                           autofocus: true,
                           obscureText: _isObsecure1,
                           cursorColor: kSecondaryColor,
@@ -132,6 +149,8 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                           style: const TextStyle(fontSize: 20),
                           validator: validatePassword2,
                           controller: _passwordFieldController2,
+                          onSaved: (newPass) => userProvider.newPassword =
+                              hashToMd5(newPass as String),
                           onFieldSubmitted: (_) =>
                               _pressUpdatePasswordButton(context),
                           keyboardType: TextInputType.visiblePassword,

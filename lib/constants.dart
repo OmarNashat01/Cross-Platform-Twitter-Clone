@@ -19,7 +19,7 @@ const String androidMobileBaseUrl = "http://192.168.1.8:8000";
 
 /// Contains all needed globals across the application navigation after logging in
 class Auth {
-  static String token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4';
+  static String token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4NDc5MDMxNH0.axaRtOFjFV9lMF0WjfRhjmuVp5adpJo9dZZ4SGjlaws';
   // static String refreshToken = '';
   static String userId = '626551f44d5786f437cbb25b';
   static String email = '';

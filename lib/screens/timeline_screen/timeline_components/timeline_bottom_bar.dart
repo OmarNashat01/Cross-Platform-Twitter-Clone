@@ -4,15 +4,19 @@ import 'package:twitter/screens/notifications_screen/NotificationsScreen.dart';
 import 'package:twitter/screens/search_screen/SearchScreen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 
-
 class TimelineBottomBar extends StatelessWidget {
   TimelineBottomBar({
     Key? key,
     required this.contextt,
     required this.controller,
-    required this.pop,
+    required this.popTimeLine,
+    required this.popSearch,
+    required this.popNotifications,
   }) : super(key: key);
-  bool pop;
+  bool popTimeLine;
+  bool popSearch;
+  bool popNotifications;
+
   final ScrollController controller;
   final BuildContext contextt;
 
@@ -38,57 +42,49 @@ class TimelineBottomBar extends StatelessWidget {
               },
               child: IconButton(
                 onPressed: () {
-                  pop == false
+                  popTimeLine == false
                       ? controller.animateTo(0.0,
                           curve: Curves.easeIn,
                           duration: const Duration(milliseconds: 200))
-                      :   Navigator.push(
+                      :   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => TimelineScreen(firstTime: false)),
                   );
 
                 },
-                icon: const Icon(
+                icon: FaIcon(
                   FontAwesomeIcons.house,
+                  color: (popTimeLine == false ? Colors.black : Colors.grey),
                 ),
               ),
             ),
             IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SearchScreen();
-                    },
-                  ),
-                );
+                popSearch == false
+                    ? controller.animateTo(0.0,
+                        curve: Curves.easeIn,
+                        duration: const Duration(milliseconds: 200))
+                    : Navigator.of(context)
+                        .pushReplacementNamed(SearchScreen.routeName);
               },
-              icon: const Icon(
-                Icons.search,
-                size: 30,
+              icon: FaIcon(
+                FontAwesomeIcons.magnifyingGlass,
+                color: (popSearch == false ? Colors.black : Colors.grey),
               ),
-            ),
-            const Icon(
-              FontAwesomeIcons.microphone,
             ),
             IconButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return NotificationsScreen();
-                    },
-                  ),
-                );
+                popNotifications == false
+                    ? controller.animateTo(0.0,
+                        curve: Curves.easeIn,
+                        duration: const Duration(milliseconds: 200))
+                    : Navigator.of(context)
+                        .pushReplacementNamed(NotificationsScreen.routeName);
               },
-              icon: const Icon(
-                FontAwesomeIcons.bell,
+              icon: FaIcon(
+                FontAwesomeIcons.solidBell,
+                color: (popNotifications == false ? Colors.black : Colors.grey),
               ),
-            ),
-            const Icon(
-              Icons.mail_outline_outlined,
             ),
           ],
         ),

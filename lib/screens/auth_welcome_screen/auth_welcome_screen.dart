@@ -25,7 +25,7 @@ class AuthWelcomeScreen extends StatelessWidget {
           child: Column(
             children: [
               const Expanded(
-                flex: 4,
+                flex: 3,
                 child: Center(
                     child: Text(
                   'See what\'s happening in the world right \nnow.',

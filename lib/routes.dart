@@ -1,4 +1,5 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:twitter/screens/welcome_screen/welcome_screen.dart';
 
@@ -20,6 +21,8 @@ import 'screens/profile_screen/edit_profile_screen.dart';
 import 'screens/notifications_screen/NotificationsScreen.dart';
 import 'screens/search_screen/SearchScreen.dart';
 import 'screens/settings_screen/settings_screen.dart';
+import 'screens/forgot_pass_email_screen/forgot_pass_email_screen.dart';
+import 'screens/forgot_pass_otp_screen/forgot_pass_otp_screen.dart';
 
 /// All app routes
 Map<String, WidgetBuilder> routes = {
@@ -41,5 +44,7 @@ Map<String, WidgetBuilder> routes = {
   NotificationsScreen.routeName: (context) => NotificationsScreen(),
   SearchScreen.routeName: (context) => SearchScreen(),
   EditProfileScreen.routeName: (context) => EditProfileScreen(),
-  SettingsScreen.routeName: (context) => SettingsScreen()
+  SettingsScreen.routeName: (context) => SettingsScreen(),
+  ForgotPassEmailScreen.routeName: (context) => ForgotPassEmailScreen(),
+  ForgotPassOtpScreen.routeName: (context) => ForgotPassOtpScreen()
 };

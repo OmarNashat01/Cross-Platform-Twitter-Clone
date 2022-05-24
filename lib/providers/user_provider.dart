@@ -26,6 +26,8 @@ class UserProvider with ChangeNotifier {
   bool _isEmailTaken = false;
   bool _isUsernameTaken = false;
 
+  String _newPassword = '';
+
   set name(name) => _name = name;
   set email(email) => _email = email;
   set dob(dob) => _dob = dob;
@@ -37,6 +39,8 @@ class UserProvider with ChangeNotifier {
   set gender(gender) => _gender = gender; // 'M' | 'F'
   set location(location) => _location = location;
   set website(website) => _website = website;
+  set newPassword(newPass) => _newPassword = newPass;
+
   String get id => _id;
   String get name => _name;
   String get email => _email;
@@ -49,6 +53,7 @@ class UserProvider with ChangeNotifier {
   String get gender => _gender;
   String get location => _location;
   String get website => _website;
+  String get newPassword => _newPassword;
 
   bool get isEmailTaken => _isEmailTaken;
   bool get isUsernameTaken => _isUsernameTaken;
@@ -91,7 +96,7 @@ class UserProvider with ChangeNotifier {
     };
     final uri =
         Uri.http(Http().getBaseUrl(), '/signup/confirm_email', queryParameters);
-      
+
     final response = await http.get(uri);
     return response;
   }
@@ -136,33 +141,53 @@ class UserProvider with ChangeNotifier {
     return response;
   }
 
- // TODO: ...........................
+  // TODO: ...........................
+  Future<http.Response> forgotPassEmail() async {
+    final response = await http.post(
+      Uri.parse('http://${Http().getBaseUrl()}/users/forgot_password/OTP'),
+      headers: {"Content-Type": "application/json; charset=UTF-8"},
+      body: jsonEncode({
+        'email': _email,
+      }),
+    );
+    return response;
+  }
+
+  // TODO: ...........................
+  Future<http.Response> forgotPassOtp() async {
+    final queryParameters = {
+      'OTP': _verificationCode,
+      'email': _email,
+    };
+    final uri = Uri.http(
+        Http().getBaseUrl(), '/users/forgot_password/OTP', queryParameters);
+    final response = await http
+        .get(uri, headers: {"Content-Type": "application/json; charset=UTF-8"});
+    return response;
+  }
+
+  // TODO: ...........................
   Future<http.Response> forgotPassword() async {
     final response = await http.put(
       Uri.parse('http://${Http().getBaseUrl()}/users/forgot_password'),
       headers: {"Content-Type": "application/json; charset=UTF-8"},
-      // body: jsonEncode({
-      //   'email': _email,
-      //   'password': _password,
-      // }),
+      body: jsonEncode({'password': _newPassword}),
     );
     return response;
   }
 
   // TODO: ...........................
   Future<http.Response> updatePassword() async {
-    final response = await http.put(
-      Uri.parse('http://${Http().getBaseUrl()}/users/change_password'),
-      headers: {"Content-Type": "application/json; charset=UTF-8"},
-      // body: jsonEncode({
-      //   'email': _email,
-      //   'password': _password,
-      // }),
-    );
+    // new password to send
+    final queryParameters = {'password': _newPassword};
+    final uri = Uri.http(
+        Http().getBaseUrl(), '/users/change_password', queryParameters);
+    final response = await http.get(uri, headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+      "x-access-token": Auth.token,
+    });
     return response;
   }
-
-
 
   void resetAll() {
     name = '';

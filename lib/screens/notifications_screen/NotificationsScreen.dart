@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
+import '../../constants.dart';
 import '../../providers/notifications_provider.dart';
 import '../timeline_screen/timeline_components/profile_picture.dart';
 import '../timeline_screen/timeline_components/navigation_drawer.dart';
@@ -32,7 +33,6 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
         case 200: // Success
           log('${res.body}');
           final response = jsonDecode(res.body);
-          log('$response');
           final jsonNotificationsList = response['notifications'];
           notificationsProvider.setNotificationsList(jsonNotificationsList);
           break;
@@ -99,7 +99,7 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                               Scaffold.of(context).openDrawer();
                             },
                             profilePictureImage:
-                                'https://picsum.photos/id/237/200/300',
+                                Auth.profilePicUrl, // TODO: to be changed
                             profilePictureSize: 15,
                           ),
                           //twitter icon in the appbar
@@ -325,7 +325,9 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
           bottomNavigationBar: TimelineBottomBar(
             contextt: context,
             controller: controller,
-            pop: false,
+            popTimeLine: true,
+            popSearch: true,
+            popNotifications: false,
           ),
         ));
   }
