@@ -30,10 +30,15 @@ import '../../../providers/tweets_view_model.dart';
 
 // ignore_for_file: prefer_const_constructors
 class TweetPage extends StatefulWidget {
-  TweetPage({required this.tweetCard, required this.tweet});
+  TweetPage(
+      {required this.tweetCard,
+      required this.tweet,
+      required this.shiftTweets,
+      required this.userId});
   TweetMain tweet;
   TweetCard tweetCard;
-
+  bool shiftTweets = false;
+  String userId;
   @override
   State<TweetPage> createState() => _TweetPageState();
 }
@@ -45,13 +50,15 @@ class _TweetPageState extends State<TweetPage> {
   @override
   void initState() {
     // TODO: implement initState
+    super.initState();
+    Provider.of<CommentsProvider>(context, listen: false).commentsList = [];
     if (widget.tweet.comments != []) {
       for (int i = 0; i < widget.tweet.comments.length; i++) {
-        print(widget.tweet.comments[i]);
-        Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetIdForTweetComments(context,widget.tweet.comments[i]);
+        Provider.of<TweetsViewModel>(context, listen: false)
+            .fetchTweetByTweetIdForTweetComments(
+                context, widget.tweet.comments[i]);
       }
     }
-    super.initState();
   }
 
   @override
@@ -118,9 +125,10 @@ class _TweetPageState extends State<TweetPage> {
                         //   return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
                         // }
                         return TweetCard(
+                          userId: widget.userId,
+                          shiftTweets: true,
                           index: index,
-                          tweet: Provider.of<CommentsProvider>(context,
-                                  listen: false)
+                          tweet: Provider.of<CommentsProvider>(context)
                               .commentsList[index],
                           videoPlayerController:
                               widget.tweetCard.videoPlayerController,

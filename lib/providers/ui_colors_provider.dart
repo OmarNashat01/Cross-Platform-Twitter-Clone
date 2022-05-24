@@ -6,7 +6,6 @@ class UIColorProvider extends ChangeNotifier
 {
   dynamic imageDetailColor;
   dynamic opacity;
-
   void changeTweetThreeDotsColor(TweetMain tweet,Color color)
   {
     tweet.threeDotsColor=color;
