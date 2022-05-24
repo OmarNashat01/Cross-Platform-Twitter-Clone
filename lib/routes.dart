@@ -1,6 +1,8 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:twitter/screens/others_profile_screen/others_profile_screen.dart';
+import 'package:twitter/screens/search_results_screen/search_results_screen.dart';
 import 'package:twitter/screens/welcome_screen/welcome_screen.dart';
 
 import 'screens/auth_welcome_screen/auth_welcome_screen.dart';
@@ -46,5 +48,7 @@ Map<String, WidgetBuilder> routes = {
   EditProfileScreen.routeName: (context) => EditProfileScreen(),
   SettingsScreen.routeName: (context) => SettingsScreen(),
   ForgotPassEmailScreen.routeName: (context) => ForgotPassEmailScreen(),
-  ForgotPassOtpScreen.routeName: (context) => ForgotPassOtpScreen()
+  ForgotPassOtpScreen.routeName: (context) => ForgotPassOtpScreen(),
+  OthersProfileScreen.routeName: (context) => OthersProfileScreen(),
+  SearchResultsScreen.routeName: (context) => SearchResultsScreen()
 };

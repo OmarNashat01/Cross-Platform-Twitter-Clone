@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/users_data.dart';
+import 'package:twitter/screens/settings_screen/settings_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
+import '../search_results_screen/search_results_screen.dart';
 import '../timeline_screen/timeline_components/profile_picture.dart';
 import '../timeline_screen/timeline_components/navigation_drawer.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
@@ -17,12 +21,21 @@ class SearchScreen extends StatefulWidget {
 }
 
 class SearchScreen_state extends State<SearchScreen> {
+  final _searchQueryController = TextEditingController();
+
   final controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        bottomNavigationBar: TimelineBottomBar(
+          contextt: context,
+          controller: controller,
+          popTimeLine: true,
+          popSearch: false,
+          popNotifications: true,
+        ),
         drawer: NavigationDrawer(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
@@ -38,139 +51,158 @@ class SearchScreen_state extends State<SearchScreen> {
             floatHeaderSlivers: true,
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(
-                  floating: true,
-                  pinned: true,
-                  centerTitle: true,
-                  backgroundColor: Colors.white,
-                  forceElevated: innerBoxIsScrolled,
-                  shadowColor: Colors.white,
-                  automaticallyImplyLeading: false,
-                  title: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, TimelineScreen.routeName);
-                    },
-                    style: ButtonStyle(
-                      overlayColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.transparent),
+                floating: true,
+                pinned: true,
+                centerTitle: true,
+                backgroundColor: Colors.white,
+                forceElevated: innerBoxIsScrolled,
+                shadowColor: Colors.white,
+                automaticallyImplyLeading: false,
+                title: TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, TimelineScreen.routeName);
+                  },
+                  style: ButtonStyle(
+                    overlayColor: MaterialStateColor.resolveWith(
+                      (states) => Colors.transparent,
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ProfilePicture(
-                          profilePictureFunctionality: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          profilePictureImage:
-                              UsersData.getMyData().profilePicture,
-                          profilePictureSize: 15,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ProfilePicture(
+                        profilePictureFunctionality: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        profilePictureImage: Auth.profilePicUrl.isEmpty
+                            ? kDefaultPictureUrl
+                            : Auth.profilePicUrl,
+                        profilePictureSize: 15,
+                      ),
+                      //twitter icon in the appbar
+                      const Text(
+                        'Search',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: kOnPrimaryColor,
                         ),
-                        //twitter icon in the appbar
-                        const Text(
-                          'Search',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.black,
-                          ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(SettingsScreen.routeName);
+                        },
+                        icon: const Icon(
+                          Icons.settings,
+                          color: Colors.grey,
                         ),
-                        IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return TimelineScreen(firstTime: false,);
-                                  },
-                                ),
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.settings,
-                              color: Colors.grey,
-                            )),
-                        //sparkle icon in the appbar
-                      ],
-                    ),
-                  )),
+                      ),
+                      //sparkle icon in the appbar
+                    ],
+                  ),
+                ),
+              ),
             ],
             body: Column(
               children: [
-                SizedBox(
-                  height: 70,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    child: TextFormField(
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: 'Search Twitter',
-                      ),
-                    ),
+                Container(
+                  height: 50,
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 30,
+                  ),
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    autofocus: true,
+                    cursorWidth: 2,
+                    cursorColor: kOnPrimaryColor,
+                    controller: _searchQueryController,
+                    onFieldSubmitted: (query) {
+                      Navigator.of(context)
+                          .pushNamed(SearchResultsScreen.routeName, arguments: query as String);
+                    },
+                    style: const TextStyle(fontSize: 15),
+                    decoration: decorateFields('Search Twitter'),
                   ),
                 ),
 
                 // the tab bar with two items
-                SizedBox(
-                  height: 50,
-                  child: AppBar(
-                    bottom: const TabBar(
-                      tabs: [
-                        Tab(
-                          text: 'Trending',
-                        ),
-                        Tab(
-                          text: 'News',
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                // SizedBox(
+                //   height: 50,
+                //   child: AppBar(
+                //     bottom: const TabBar(
+                //       labelColor: kOnPrimaryColor,
+                //       tabs: [
+                //         Tab(
+                //           text: 'Trending',
+                //         ),
+                //         Tab(
+                //           text: 'News',
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
 
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      // first tab bar view widget
-                      Container(
-                        child: Center(
-                          child: ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            itemBuilder: (context, index) {
-                              return const Text(''); //TweetCard(index: index);
-                            },
-                            itemCount: 0,
-                          ),
-                        ),
-                      ),
+                // Expanded(
+                //   child: TabBarView(
+                //     children: [
+                //       // first tab bar view widget
+                //       Container(
+                //         child: Center(
+                //           child: ListView.builder(
+                //             physics: const BouncingScrollPhysics(),
+                //             padding: const EdgeInsets.symmetric(vertical: 20),
+                //             itemBuilder: (context, index) {
+                //               return const Text(''); //TweetCard(index: index);
+                //             },
+                //             itemCount: 0,
+                //           ),
+                //         ),
+                //       ),
 
-                      // second tab bar viiew widget
-                      Container(
-                        child: Center(
-                          child: ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            itemBuilder: (context, index) {
-                              return const Text(''); //TweetCard(index: index);
-                            },
-                            itemCount: 0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                //       // second tab bar viiew widget
+                //       Container(
+                //         child: Center(
+                //           child: ListView.builder(
+                //             physics: const BouncingScrollPhysics(),
+                //             padding: const EdgeInsets.symmetric(vertical: 20),
+                //             itemBuilder: (context, index) {
+                //               return const Text(''); //TweetCard(index: index);
+                //             },
+                //             itemCount: 0,
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),
         ),
-        bottomNavigationBar: TimelineBottomBar(
-          contextt: context,
-          controller: controller,
-          popTimeLine: true,
-          popSearch: false,
-          popNotifications: true,
-        ),
       ),
     );
   }
+}
+
+InputDecoration decorateFields(String label) {
+  return InputDecoration(
+    hintText: label,
+    fillColor: Colors.grey,
+    focusColor: Colors.grey,
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(100),
+      borderSide: const BorderSide(
+        color: kOnPrimaryColor,
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(100),
+      borderSide: const BorderSide(
+        color: kOnPrimaryColor,
+      ),
+    ),
+  );
 }

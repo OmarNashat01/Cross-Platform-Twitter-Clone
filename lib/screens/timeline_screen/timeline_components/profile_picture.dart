@@ -26,7 +26,7 @@ class ProfilePicture extends StatelessWidget {
         ),
         child: CircleAvatar(
           radius: profilePictureSize,
-          backgroundImage: NetworkImage(Auth.profilePicUrl),
+          backgroundImage: NetworkImage(profilePictureImage),
         ),
       ),
     );

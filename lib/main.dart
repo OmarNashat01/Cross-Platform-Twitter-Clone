@@ -13,7 +13,10 @@ import 'package:twitter/providers/video_provider.dart';
 import 'package:twitter/screens/forgot_pass_email_screen/forgot_pass_email_screen.dart';
 import 'package:twitter/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:twitter/screens/notifications_screen/NotificationsScreen.dart';
+import 'package:twitter/screens/others_profile_screen/others_profile_screen.dart';
+import 'package:twitter/screens/search_screen/SearchScreen.dart';
 import 'package:twitter/screens/settings_screen/settings_screen.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/users_profiles.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 import 'package:twitter/screens/welcome_screen/welcome_screen.dart';
 
@@ -72,7 +75,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: WelcomeScreen(),
+        home: SearchScreen(),
         routes: routes,
       ),
     );

@@ -53,7 +53,8 @@ class UsersApi {
         location: userList[0].location,
         profilePicUrl: userList[0].profilePicUrl,
         coverPicUrl: userList[0].coverPicUrl,
-        gender: userList[0].gender);
+        gender: userList[0].gender,
+        bio: userList[0].bio);
 
     return user;
   }

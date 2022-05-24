@@ -219,4 +219,34 @@ class UserProvider with ChangeNotifier {
     return user;
     notifyListeners();
   }
+
+  Future<http.Response> sendFollowRequest(String targetUserId) async {
+    final response = await http.post(
+      Uri.parse('http://${Http().getBaseUrl()}/users/following'),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        "x-access-token": Auth.token,
+      },
+      body: jsonEncode({
+        "source_user_id": Auth.userId,
+        "target_user_id": targetUserId,
+      }),
+    );
+    return response;
+  }
+
+  Future<http.Response> sendUnfollowRequest(String targetUserId) async {
+    final queryParameters = {
+      'source_user_id': Auth.userId,
+      'target_user_id': targetUserId,
+    };
+
+    final uri =
+        Uri.http(Http().getBaseUrl(), '/users/following', queryParameters);
+    final response = await http.delete(uri, headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+      "x-access-token": Auth.token,
+    });
+    return response;
+  }
 }
