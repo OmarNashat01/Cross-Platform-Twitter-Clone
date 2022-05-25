@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twitter/providers/oAuth_api.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../signup_screen/signup_screen.dart';
 
 import '../../../themes.dart';
 import '../../../constants.dart';
+import 'package:http/http.dart' as http;
 
 /// Widgets of Buttons inside the signup / login screen
 class SignUpButtons extends StatelessWidget {
@@ -17,7 +19,9 @@ class SignUpButtons extends StatelessWidget {
 
   Future<void> _oAuth() async {
     final user = await OAuth.login();
-    log('${user.email}');
+    // Future<http.Response> res = OAuth.signup();
+    // final Uri url = Uri.parse('https://accounts.google.com/');
+    // await launchUrl(url);
   }
 
   @override

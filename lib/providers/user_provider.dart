@@ -186,7 +186,7 @@ class UserProvider with ChangeNotifier {
     final queryParameters = {'password': _newPassword};
     final uri = Uri.http(
         Http().getBaseUrl(), '/users/change_password', queryParameters);
-    final response = await http.get(uri, headers: {
+    final response = await http.put(uri, headers: {
       "Content-Type": "application/json; charset=UTF-8",
       "x-access-token": Auth.token,
     });

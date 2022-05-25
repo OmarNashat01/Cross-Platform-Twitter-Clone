@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:twitter/models/user_model.dart';
+import 'package:twitter/providers/user_provider.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/custom_page_route.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
@@ -15,47 +17,49 @@ import '../timeline_screen/timeline_components/profile_picture.dart';
 import '../timeline_screen/timeline_components/navigation_drawer.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 
-class NotificationsScreen extends StatefulWidget {
-  static const routeName = '/notifications-screen';
+class FollowingScreen extends StatefulWidget {
+  static const routeName = '/following-screen';
+
+  String userId;
+  FollowingScreen({required this.userId});
 
   @override
   State<StatefulWidget> createState() {
-    return NotificationsScreen_state();
+    return FollowingScreen_state();
   }
 }
 
-class NotificationsScreen_state extends State<NotificationsScreen> {
+class FollowingScreen_state extends State<FollowingScreen>
+    with SingleTickerProviderStateMixin {
   final controller = ScrollController();
 
-  fetchNotifications(BuildContext context) {
-    final notificationsProvider =
-        Provider.of<NotificationsProvider>(context, listen: false);
-
-    notificationsProvider.fetch().then((res) {
-      switch (res.statusCode) {
-        case 200: // Success
-          log('${res.body}');
-          final response = jsonDecode(res.body);
-          final jsonNotificationsList = response['notifications'];
-          notificationsProvider.setNotificationsList(
-              jsonNotificationsList, context);
-          break;
-        case 204: // User does not have notifications
-          break;
-        case 401: // Unauthorized
-          break;
-        case 404: // User id not found
-          break;
-        default: // Invalid status code
-
-      }
-    });
+  double getOffset() {
+    double o;
+    if (_scrollController.hasClients) {
+      o = _scrollController.offset;
+    } else {
+      o = 0.0;
+    }
+    return o;
   }
+
+  late Future<User> user;
+  late ScrollController _scrollController;
+
+  late TabController _tabController =
+      TabController(initialIndex: 0, length: 4, vsync: this);
 
   @override
   void initState() {
     super.initState();
-    fetchNotifications(context);
+    _tabController = TabController(initialIndex: 0, length: 4, vsync: this);
+    _scrollController = ScrollController();
+    user = Provider.of<UserProvider>(context, listen: false)
+        .fetchUserByUserId(widget.userId);
+
+    _scrollController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -117,7 +121,7 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                           ),
                           //twitter icon in the appbar
                           const Text(
-                            'Notifications',
+                            'Followings',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -146,56 +150,27 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                       ),
                     )),
               ],
-              body: Column(
-                children: [
-                  // construct the profile details widget here
-                  // SizedBox(
-                  //   height: 180,
-                  //   child: Center(
-                  //     child: Text(
-                  //       'Profile Details Goes here',
-                  //     ),
-                  //   ),
-                  // ),
-
-                  // the tab bar with two items
-                  SizedBox(
-                    height: 50,
-                    child: AppBar(
-                      bottom: const TabBar(
-                        labelColor: kOnPrimaryColor,
-                        tabs: [
-                          Tab(
-                            text: 'All',
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  Expanded(
-                    child: TabBarView(
-                      children: [
-                        // first tab bar view widget
-                        Center(
-                          child: Consumer<NotificationsProvider>(
-                            builder: (context, val, child) =>
-                                val.notificationsList.isEmpty
-                                    ? const CircularLoader()
-                                    : ListView.builder(
-                                        itemCount: val.notificationsList.length,
-                                        itemBuilder: (context, index) {
-                                          return val.notificationsList[index];
-                                        },
-                                      ),
-                          ),
+              body: FutureBuilder(
+                future: user,
+                builder:
+                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.data == null) return const CircularLoader();
+                  return ListView.builder(
+                    itemCount: snapshot.data.following.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          leading: Image.network(
+                              snapshot.data.following[index].profilePicUrl),
+                          title: Text(snapshot.data.following[index].name),
+                          subtitle: Text(
+                              '@${snapshot.data.following[index].username}'),
+                          isThreeLine: true,
                         ),
-
-                        // second tab bar viiew widget
-                      ],
-                    ),
-                  ),
-                ],
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ),

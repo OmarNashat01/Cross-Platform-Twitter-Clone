@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:custom_nested_scroll_view/custom_nested_scroll_view.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/models/small_user_model.dart';
+import 'package:twitter/screens/followers_screen/followers_screen.dart';
+import 'package:twitter/screens/following_screen/following_screen.dart';
 import 'package:twitter/screens/search_screen/SearchScreen.dart';
 
 import 'package:flutter/material.dart';
@@ -10,6 +12,8 @@ import 'dart:math' as math;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/users_data.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/custom_page_route.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 import '../../models/user_model.dart';
 import '../../providers/user_provider.dart';
@@ -24,7 +28,7 @@ import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bot
 
 class OthersProfileScreen extends StatefulWidget {
   static const routeName = '/others-profile-screen';
-  String _userId = '62686629137ec6c6db13b245';
+  String _userId = '626551f44d5786f437cbb25b';
 
   @override
   State<StatefulWidget> createState() {
@@ -73,8 +77,6 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
         .then((res) async {
       if (res.statusCode == 200) {
         log('GOOD: Send follow request Successfully');
-        //! snapshot.user.followers //=> to change the button shape
-        // setState(() => _isFollowPressed = false);
       } else if (res.statusCode == 401) {
         log('BAD: Unauthorized FOLLOW request');
       } else {
@@ -89,8 +91,6 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
         .then((res) async {
       if (res.statusCode == 200) {
         log('GOOD: Send unfollow request Successfully');
-        //! snapshot.user.followers //=> to change the button shape
-        // setState(() => _isFollowPressed = true);
       } else if (res.statusCode == 401) {
         log('BAD: Unauthorized UNFOLLOW request');
       } else {
@@ -130,7 +130,16 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
         contextt: context,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            CustomPageRoute(
+              child: AddTweetScreen(
+                  hintText: "What's happening?", tweetOrReply: "tweet"),
+              beginX: 0,
+              beginY: 1,
+            ),
+          );
+        },
         backgroundColor: Colors.blue,
         child: const Icon(
           FontAwesomeIcons.plus,
@@ -494,7 +503,22 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
                                                     .toString(),
                                                 style: boldName,
                                               ),
-                                              followingString,
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return FollowingScreen(
+                                                          userId:
+                                                              widget._userId,
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                                child: followingString,
+                                              ),
                                             ],
                                           ),
                                           Row(
@@ -504,7 +528,24 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
                                                     .toString(),
                                                 style: boldName,
                                               ),
-                                              followersString,
+
+                                              //!----
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return FollowersScreen(
+                                                          userId:
+                                                              widget._userId,
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                                child: followersString,
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -560,7 +601,7 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
                             ),
                           ];
                         },
-                        body: Text('sssssssssshittt')
+                        body: Text('')
                         // Container(
                         //   child: TabBarView(
                         //     controller: _tabController,
