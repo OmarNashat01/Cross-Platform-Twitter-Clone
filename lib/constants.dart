@@ -10,11 +10,15 @@ bool isMock = false;
 bool isPasswordHashed = false;
 
 /// Base URL of the real backend
-const String kBaseUrl = '45.79.245.94:5000'; // without https:// or http://
+/// 
+// 45.79.245.94:5000
+const String kBaseUrl = '54.91.86.151:5000'; // without https:// or http://
 
 /// Mock server base URL
 const String kMockBaseUrl = '10.0.2.2:8000';
-const String backendUrl = "http://45.79.245.94:5000";
+
+
+const String backendUrl = "http://54.91.86.151:5000";
 const String androidMobileBaseUrl = "http://192.168.1.8:8000";
 
 /// Contains all needed globals across the application navigation after logging in

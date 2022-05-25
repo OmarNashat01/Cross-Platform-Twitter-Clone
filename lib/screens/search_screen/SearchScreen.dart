@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/users_data.dart';
+import 'package:twitter/providers/search_tweets_provider.dart';
 import 'package:twitter/screens/settings_screen/settings_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 import '../search_results_screen/search_results_screen.dart';
@@ -119,8 +121,11 @@ class SearchScreen_state extends State<SearchScreen> {
                     cursorColor: kOnPrimaryColor,
                     controller: _searchQueryController,
                     onFieldSubmitted: (query) {
+                      Provider.of<SearchTweetsProvider>(context, listen: false)
+                          .query = query;
+
                       Navigator.of(context)
-                          .pushNamed(SearchResultsScreen.routeName, arguments: query as String);
+                          .pushNamed(SearchResultsScreen.routeName);
                     },
                     style: const TextStyle(fontSize: 15),
                     decoration: decorateFields('Search Twitter'),

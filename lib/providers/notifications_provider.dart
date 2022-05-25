@@ -38,7 +38,7 @@ class NotificationsProvider with ChangeNotifier {
         child: ListTile(
           leading: const FlutterLogo(size: 50.0),
           title: const Text('Ahmed Mostafa'),
-          subtitle: Text(item['content']),
+          subtitle: Text(item['message']),
           trailing: const Icon(Icons.more_vert),
           isThreeLine: true,
         ),

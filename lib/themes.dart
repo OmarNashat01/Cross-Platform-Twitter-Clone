@@ -172,3 +172,17 @@ class TwitterColor {
   static Color ceriseRed = const Color.fromRGBO(224, 36, 94, 1.0);
   static Color paleSky50 = const Color.fromRGBO(101, 118, 133, 0.5);
 }
+
+class CircularLoader extends StatelessWidget {
+  const CircularLoader({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(kSecondaryColor)),
+    );
+  }
+}

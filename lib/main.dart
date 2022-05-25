@@ -5,6 +5,7 @@ import 'package:twitter/providers/comments_provider.dart';
 import 'package:twitter/providers/image_videos_details_provider.dart';
 import 'package:twitter/providers/list_view_tweet_provider.dart';
 import 'package:twitter/providers/notifications_provider.dart';
+import 'package:twitter/providers/search_tweets_provider.dart';
 import 'package:twitter/providers/timeline_provider.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/providers/ui_colors_provider.dart';
@@ -14,6 +15,7 @@ import 'package:twitter/screens/forgot_pass_email_screen/forgot_pass_email_scree
 import 'package:twitter/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:twitter/screens/notifications_screen/NotificationsScreen.dart';
 import 'package:twitter/screens/others_profile_screen/others_profile_screen.dart';
+import 'package:twitter/screens/profile_screen/profile_screen.dart';
 import 'package:twitter/screens/search_screen/SearchScreen.dart';
 import 'package:twitter/screens/settings_screen/settings_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/users_profiles.dart';
@@ -46,7 +48,8 @@ class TwitterApp extends StatelessWidget {
             create: (context) => ImageVideoDetailsProvider()),
         ChangeNotifierProvider(create: (context) => CommentsProvider()),
         //ChangeNotifierProvider(create: (context) => StreamControllerProvider()),
-        ChangeNotifierProvider(create: (context) => NotificationsProvider())
+        ChangeNotifierProvider(create: (context) => NotificationsProvider()),
+        ChangeNotifierProvider(create: (context) => SearchTweetsProvider()),
       ],
 
       child: MaterialApp(
@@ -75,7 +78,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: SearchScreen(),
+        home: NotificationsScreen(),
         routes: routes,
       ),
     );
