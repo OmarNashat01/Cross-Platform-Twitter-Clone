@@ -183,13 +183,18 @@ class UserProvider with ChangeNotifier {
   // TODO: ...........................
   Future<http.Response> updatePassword() async {
     // new password to send
-    final queryParameters = {'password': _newPassword};
-    final uri = Uri.http(
-        Http().getBaseUrl(), '/users/change_password', queryParameters);
-    final response = await http.put(uri, headers: {
-      "Content-Type": "application/json; charset=UTF-8",
-      "x-access-token": Auth.token,
-    });
+
+    final uri = Uri.http(Http().getBaseUrl(), '/users/change_password');
+    final response = await http.put(
+      uri,
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        "x-access-token": Auth.token,
+      },
+      body: jsonEncode({
+        'password': _newPassword,
+      }),
+    );
     return response;
   }
 
