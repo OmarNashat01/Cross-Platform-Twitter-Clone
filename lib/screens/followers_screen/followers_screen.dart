@@ -164,7 +164,7 @@ class FollowersScreen_state extends State<FollowersScreen>
                               snapshot.data.followers[index].profilePicUrl),
                           title: Text(snapshot.data.followers[index].name),
                           subtitle:
-                              Text('@${snapshot.data.follower[index].username}'),
+                              Text('@${snapshot.data.followers[index].username}'),
                           isThreeLine: true,
                         ),
                       );

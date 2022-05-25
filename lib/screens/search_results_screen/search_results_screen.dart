@@ -44,6 +44,10 @@ class SearchResultsScreen_state extends State<SearchResultsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Search Results'),
+        centerTitle: true,
+      ),
       bottomNavigationBar: TimelineBottomBar(
         contextt: context,
         controller: controller,
@@ -73,53 +77,60 @@ class SearchResultsScreen_state extends State<SearchResultsScreen> {
         future: Provider.of<SearchTweetsProvider>(context, listen: false)
             .searchAllTweets(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.data == null) return const CircularLoader();
+          if (snapshot.data == null)
+            return Center(child: Text('No results found'));
           log('${snapshot.data[0].text}');
 
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) {
-              SearchTweet searchTweet = snapshot.data[index];
-              return TweetCard(
-                userId: searchTweet.userId,
-                shiftTweets: false,
-                tweetPage: false,
-                index: index,
-                tweet: TweetMain(
-                  outerTweet: Tweet(
-                    commentCount: searchTweet.commentCount,
-                    comments: searchTweet.comments,
-                    createdAt: searchTweet.createdAt,
-                    followersCount: searchTweet.followersCount,
-                    followingCount: searchTweet.followingCount,
-                    images: searchTweet.images ?? [],
-                    likeCount: searchTweet.likeCount,
-                    likerIds: searchTweet.likedByIds,
-                    name: searchTweet.name,
-                    profilePicUrl: searchTweet.profilePicUrl,
-                    retweetCount: searchTweet.retweetCount,
-                    text: searchTweet.text,
-                    tweetId: searchTweet.tweetId,
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 30),
+            child: ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                SearchTweet searchTweet = snapshot.data[index];
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: TweetCard(
                     userId: searchTweet.userId,
-                    username: searchTweet.userName ?? '',
-                    videos: searchTweet.videos ?? [],
+                    shiftTweets: false,
+                    tweetPage: false,
+                    index: index,
+                    tweet: TweetMain(
+                      outerTweet: Tweet(
+                        commentCount: searchTweet.commentCount,
+                        comments: searchTweet.comments,
+                        createdAt: searchTweet.createdAt,
+                        followersCount: searchTweet.followersCount,
+                        followingCount: searchTweet.followingCount,
+                        images: searchTweet.images ?? [],
+                        likeCount: searchTweet.likeCount,
+                        likerIds: searchTweet.likedByIds,
+                        name: searchTweet.name,
+                        profilePicUrl: searchTweet.profilePicUrl,
+                        retweetCount: searchTweet.retweetCount,
+                        text: searchTweet.text,
+                        tweetId: searchTweet.tweetId,
+                        userId: searchTweet.userId,
+                        username: searchTweet.userName ?? '',
+                        videos: searchTweet.videos ?? [],
+                      ),
+                      comments: searchTweet.comments,
+                      images: searchTweet.images ?? [],
+                      likers: searchTweet.likedByIds,
+                      videos: searchTweet.videos ?? [],
+                    ),
                   ),
-                  comments: searchTweet.comments,
-                  images: searchTweet.images ?? [],
-                  likers: searchTweet.likedByIds,
-                  videos: searchTweet.videos ?? [], 
-                ),
-              );
+                );
 
-              // Card(
-              //   child: ListTile(
-              //     // leading: ,
-              //     title: Text(snapshot.data[index].name),
-              //     subtitle: Text(snapshot.data[index].text),
-              //     isThreeLine: true,
-              //   ),
-              // );
-            },
+                // Card(
+                //   child: ListTile(
+                //     // leading: ,
+                //     title: Text(snapshot.data[index].name),
+                //     subtitle: Text(snapshot.data[index].text),
+                //     isThreeLine: true,
+                //   ),
+                // );
+              },
+            ),
           );
         },
       ),

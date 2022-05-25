@@ -42,8 +42,11 @@ class SettingsScreen extends StatelessWidget {
           children: [
             const Text('Your account'),
             Text(
-              '@${Auth.username}',
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+              Auth.username.isEmpty
+                  ? 'You don\'t have a username yet'
+                  : '@${Auth.username}',
+              style:
+                  const TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
           ],
         ),

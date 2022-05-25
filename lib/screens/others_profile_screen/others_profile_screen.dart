@@ -28,7 +28,7 @@ import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bot
 
 class OthersProfileScreen extends StatefulWidget {
   static const routeName = '/others-profile-screen';
-  String _userId = '626551f44d5786f437cbb25b';
+  String _userId = '62686629137ec6c6db13b245';
 
   @override
   State<StatefulWidget> createState() {
