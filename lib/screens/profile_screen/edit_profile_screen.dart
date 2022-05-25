@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:twitter/constants.dart';
 import 'package:twitter/screens/profile_screen/profile_screen.dart';
 import '../timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/dummy/users_data.dart';
@@ -25,7 +26,6 @@ class EditProfileScreen_State extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-
     myFocusNode = FocusNode();
   }
 
@@ -61,7 +61,7 @@ class EditProfileScreen_State extends State<EditProfileScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return ProfileScreen();
+                            return ProfileScreen(userId: Auth.userId);
                           },
                         ),
                       );
@@ -86,7 +86,7 @@ class EditProfileScreen_State extends State<EditProfileScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return ProfileScreen();
+                            return ProfileScreen(userId: Auth.userId);
                           },
                         ),
                       );
@@ -128,7 +128,7 @@ class EditProfileScreen_State extends State<EditProfileScreen> {
                     profilePictureFunctionality: () {
                       Scaffold.of(context).openDrawer();
                     },
-                    profilePictureImage: UsersData.getMyData().profilePicture,
+                    profilePictureImage: Auth.profilePicUrl,
                     profilePictureSize: 40,
                   ),
                 ),

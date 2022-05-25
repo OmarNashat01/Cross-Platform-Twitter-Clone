@@ -24,7 +24,9 @@ import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bot
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = '/profile-screen';
-  String _userId = '626894b7137ec6c6db13b24a';
+  // String userId = '626551f44d5786f437cbb25b';
+  String userId;
+  ProfileScreen({required this.userId});
 
   @override
   State<StatefulWidget> createState() {
@@ -34,7 +36,6 @@ class ProfileScreen extends StatefulWidget {
 
 class ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
-  bool isMyProfile = false;
   var top = 0.0;
 
   double getOffset() {
@@ -53,57 +54,13 @@ class ProfileScreenState extends State<ProfileScreen>
   late TabController _tabController =
       TabController(initialIndex: 0, length: 4, vsync: this);
 
-  // Search if you are a follower to this userId
-  bool isFollower(AsyncSnapshot<User> snapshot) {
-    List<dynamic> followersList = (snapshot.data!.followers);
-    for (var follower in followersList) {
-      if (follower.userId == Auth.userId) {
-        log('You are a follower');
-        return true;
-      }
-    }
-    return false;
-  }
-
-  void sendFollowRequest(context, snapshot) {
-    Provider.of<UserProvider>(context, listen: false)
-        .sendFollowRequest(widget._userId)
-        .then((res) async {
-      if (res.statusCode == 200) {
-        log('GOOD: Send follow request Successfully');
-        //! snapshot.user.followers //=> to change the button shape
-
-      } else if (res.statusCode == 401) {
-        log('BAD: Unauthorized FOLLOW request');
-      } else {
-        log('BAD: NOT FOUND FOLLOW (already followed) request');
-      }
-    });
-  }
-
-  void sendUnfollowRequest(context, snapshot) {
-    Provider.of<UserProvider>(context, listen: false)
-        .sendUnfollowRequest(widget._userId)
-        .then((res) async {
-      if (res.statusCode == 200) {
-        log('GOOD: Send unfollow request Successfully');
-        //! snapshot.user.followers //=> to change the button shape
-
-      } else if (res.statusCode == 401) {
-        log('BAD: Unauthorized UNFOLLOW request');
-      } else {
-        log('BAD: NOT FOUND UNFOLLOW request');
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     _tabController = TabController(initialIndex: 0, length: 4, vsync: this);
     _scrollController = ScrollController();
     user = Provider.of<UserProvider>(context, listen: false)
-        .fetchUserByUserId(widget._userId);
+        .fetchUserByUserId(widget.userId);
 
     _scrollController.addListener(() {
       setState(() {});
@@ -115,7 +72,7 @@ class ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(),
+      drawer: const Drawer(),
       bottomNavigationBar: TimelineBottomBar(
         controller: controller,
         popTimeLine: true,
@@ -315,18 +272,8 @@ class ProfileScreenState extends State<ProfileScreen>
                                           //! Follow BUTTON
                                           GestureDetector(
                                             onTap: () {
-                                              if (isMyProfile) {
-                                                Navigator.of(context).pushNamed(
-                                                    EditProfileScreen
-                                                        .routeName);
-                                              } else if (isFollower(snapshot
-                                                  as AsyncSnapshot<User>)) {
-                                                sendUnfollowRequest(
-                                                    context, snapshot);
-                                              } else {
-                                                sendFollowRequest(
-                                                    context, snapshot);
-                                              }
+                                              Navigator.of(context).pushNamed(
+                                                  EditProfileScreen.routeName);
                                             },
                                             child: Container(
                                               width: 100,
@@ -339,42 +286,21 @@ class ProfileScreenState extends State<ProfileScreen>
                                                 horizontal: 10,
                                               ),
                                               decoration: BoxDecoration(
-                                                color: isMyProfile
-                                                    ? TwitterColor.white
-                                                    : isFollower(snapshot
-                                                            as AsyncSnapshot<
-                                                                User>)
-                                                        ? TwitterColor.white
-                                                        : TwitterColor.black,
+                                                color: TwitterColor.white,
                                                 border: Border.all(
-                                                    color: isMyProfile
-                                                        ? Colors.black87
-                                                            .withAlpha(180)
-                                                        : Colors.black,
+                                                    color: Colors.black87
+                                                        .withAlpha(180),
                                                     width: 1),
                                                 borderRadius:
                                                     BorderRadius.circular(20),
                                               ),
                                               child: Center(
                                                 child: Text(
-                                                  isMyProfile
-                                                      ? 'Edit'
-                                                      : isFollower(snapshot
-                                                              as AsyncSnapshot<
-                                                                  User>)
-                                                          ? 'Unfollow'
-                                                          : 'Follow',
+                                                  'Edit',
                                                   style: TextStyle(
                                                     fontSize: 17,
-                                                    color: isMyProfile
-                                                        ? Colors.black87
-                                                            .withAlpha(180)
-                                                        : isFollower(snapshot
-                                                                as AsyncSnapshot<
-                                                                    User>)
-                                                            ? TwitterColor.black
-                                                            : TwitterColor
-                                                                .white,
+                                                    color: Colors.black87
+                                                        .withAlpha(180),
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),

@@ -100,7 +100,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: NotificationsScreen(),
+        home: ProfileScreen(userId: '626551f44d5786f437cbb25b',),
         routes: routes,
       ),
     );

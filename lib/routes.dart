@@ -5,6 +5,7 @@ import 'package:twitter/screens/others_profile_screen/others_profile_screen.dart
 import 'package:twitter/screens/search_results_screen/search_results_screen.dart';
 import 'package:twitter/screens/welcome_screen/welcome_screen.dart';
 
+import 'constants.dart';
 import 'screens/auth_welcome_screen/auth_welcome_screen.dart';
 import 'screens/signup_screen/signup_screen.dart';
 import 'screens/login_email_screen/login_email_screen.dart';
@@ -37,7 +38,7 @@ Map<String, WidgetBuilder> routes = {
   ReturnToTwitterScreen.routeName: (context) => ReturnToTwitterScreen(),
   UpdatePasswordScreen.routeName: (context) => UpdatePasswordScreen(),
   TimelineScreen.routeName: (context) => TimelineScreen(firstTime: true,),
-  ProfileScreen.routeName: (context) => ProfileScreen(),
+  ProfileScreen.routeName: (context) => ProfileScreen(userId: Auth.userId),
   PasswordScreen.routeName: (context) => PasswordScreen(),
   ProfilePicScreen.routeName: (context) => ProfilePicScreen(),
   BioScreen.routeName: (context) => BioScreen(),

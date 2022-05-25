@@ -189,7 +189,7 @@ class NavigationDrawer extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return ProfileScreen();
+                              return ProfileScreen(userId: Auth.userId);
                             },
                           ),
                         );

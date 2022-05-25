@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:twitter/constants.dart';
 import 'opacity_data.dart';
 import 'package:twitter/screens/profile_screen/profile_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/custom_page_route.dart';
@@ -17,7 +18,7 @@ class NavigationDrawerLabels extends StatelessWidget {
         Provider.of<OpacityValue>(context, listen: false).setOpacity(0.6);
         if (jumpToProfile == true) {
           //go to profile screen upon pressing it
-          Navigator.of(context).push(CustomPageRoute(child:ProfileScreen(),beginX: 1,beginY: 0),);
+          Navigator.of(context).push(CustomPageRoute(child:ProfileScreen(userId: Auth.userId),beginX: 1,beginY: 0),);
           Provider.of<OpacityValue>(context, listen: false).setOpacity(1);
         }
       },

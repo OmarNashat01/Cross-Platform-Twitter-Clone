@@ -2,6 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:twitter/models/user_model.dart';
+import 'package:twitter/providers/user_provider.dart';
 
 import '../constants.dart';
 
@@ -31,20 +34,26 @@ class NotificationsProvider with ChangeNotifier {
     return response;
   }
 
-  void setNotificationsList(jsonNotifyList) {
+  void setNotificationsList(jsonNotifyList, context) {
     List<Widget> dummyList = [];
     for (var item in jsonNotifyList) {
-      Widget newCard = Card(
-        child: ListTile(
-          leading: const FlutterLogo(size: 50.0),
-          title: const Text('Ahmed Mostafa'),
-          subtitle: Text(item['message']),
-          trailing: const Icon(Icons.more_vert),
-          isThreeLine: true,
-        ),
-      );
+      // Provider.of<UserProvider>(context, listen: false)
+      //     .fetchUserByUserId(item['_id'])
+      //     .then((user) {
+      //   log(item['_id']);
 
-      dummyList.add(newCard);
+        Widget newCard = Card(
+          child: ListTile(
+            // leading: ,
+            title: Text(''),
+            subtitle: Text(item['message']),
+            isThreeLine: true,
+
+          ),
+        );
+
+        dummyList.add(newCard);
+      // });
     }
     _notificationsList = dummyList;
     notifyListeners();
