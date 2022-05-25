@@ -23,6 +23,7 @@ import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 import 'package:twitter/screens/welcome_screen/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'constants.dart';
 import 'providers/user_provider.dart';
 
 // Other imports
@@ -47,6 +48,7 @@ void main() async {
   print("*************************");
   print(fcmToken);
   print("*************************");
+  Auth.fcmToken = fcmToken ?? '';
   runApp(TwitterApp());
 }
 
@@ -100,9 +102,11 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: ProfileScreen(userId: '626551f44d5786f437cbb25b',),
+        home: WelcomeScreen(),
         routes: routes,
       ),
     );
   }
 }
+
+// ProfileScreen(userId: '626551f44d5786f437cbb25b',),

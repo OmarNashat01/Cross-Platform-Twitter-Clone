@@ -136,6 +136,7 @@ class UserProvider with ChangeNotifier {
       body: jsonEncode({
         'email': _email,
         'password': _password,
+        'device_token': Auth.fcmToken,
       }),
     );
     return response;
@@ -171,7 +172,10 @@ class UserProvider with ChangeNotifier {
     final response = await http.put(
       Uri.parse('http://${Http().getBaseUrl()}/users/forgot_password'),
       headers: {"Content-Type": "application/json; charset=UTF-8"},
-      body: jsonEncode({'password': _newPassword}),
+      body: jsonEncode({
+        'email': _email,
+        'password': _newPassword,
+      }),
     );
     return response;
   }

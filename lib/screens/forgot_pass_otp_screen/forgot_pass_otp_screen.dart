@@ -53,9 +53,6 @@ class ForgotPassOtpScreenState extends State<ForgotPassOtpScreen> {
         } else {
           log('Expired OTP');
         }
-        //! MUST BE REMOVED
-         Navigator.of(context)
-              .pushReplacementNamed(ForgotPasswordScreen.routeName);
       });
     } else {
       log('Verification FAILED');

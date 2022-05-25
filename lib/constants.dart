@@ -10,13 +10,12 @@ bool isMock = false;
 bool isPasswordHashed = false;
 
 /// Base URL of the real backend
-/// 
+///
 // 45.79.245.94:5000
 const String kBaseUrl = '54.91.86.151:5000'; // without https:// or http://
 
 /// Mock server base URL
 const String kMockBaseUrl = '10.0.2.2:8000';
-
 
 const String backendUrl = "http://54.91.86.151:5000";
 const String androidMobileBaseUrl = "http://192.168.1.8:8000";
@@ -25,6 +24,7 @@ const String androidMobileBaseUrl = "http://192.168.1.8:8000";
 class Auth {
   static String token =
       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4NDc5MDMxNH0.axaRtOFjFV9lMF0WjfRhjmuVp5adpJo9dZZ4SGjlaws';
+  static String fcmToken = '';
   // static String refreshToken = '';
   static String userId = '626551f44d5786f437cbb25b';
   static String email = '';
