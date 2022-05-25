@@ -4,11 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:twitter/dummy/timeline_list.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
 
+import '../../../models/tweet_complete_model.dart';
+import '../../../providers/tweets_view_model.dart';
 import 'custom_page_route.dart';
 class RetweetScreen extends StatelessWidget {
-  RetweetScreen({required this.index,required this.doOrUndo});
+  RetweetScreen({required this.index,required this.doOrUndo,required this.tweet});
   String doOrUndo;
   int index;
+  TweetMain tweet;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,11 +26,11 @@ class RetweetScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             //retweet or undo retweet button
-            GestureDetector(
-              onTap: ()
+            InkWell(
+              onTap: ()async
               {
                 // doOrUndo=='do'?Provider.of<TweetsViewModel>(context,listen: false).retweet(index):Provider.of<TweetsViewModel>(context,listen: false).undoRetweet(index);
-                Navigator.pop(context);
+                await Provider.of<TweetsViewModel>(context, listen: false).Retweet(quoted: false,tweetIID:tweet.outerTweet.tweetId,context: context);
               },
               child: Row(
                 children: [
@@ -47,13 +50,15 @@ class RetweetScreen extends StatelessWidget {
             GestureDetector(
               onTap: ()
               {
+                Navigator.pop(context);
                 Navigator.of(context).push(
                   CustomPageRoute
                     (child:AddTweetScreen(
-                     hintText: '', tweetOrReply: '',
+                     hintText: 'Add a comment', tweetOrReply: 'tweet',tweet: tweet,
                   ),beginX: 0,beginY: 1),
 
                 );
+
 
               },
               child: Row(

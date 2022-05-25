@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:twitter/models/retweet_complete_model.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/models/tweet_model.dart';
 import 'package:twitter/models/comment_model.dart';
@@ -10,6 +11,8 @@ import '../constants.dart';
 import '../models/image_model.dart';
 import '../models/likers_model.dart';
 import '../models/reply_model.dart';
+import '../models/retweet_model.dart';
+import '../models/tweet_refrenced.dart';
 import '../models/video_model.dart';
 
 class TweetsApi {
@@ -17,8 +20,7 @@ class TweetsApi {
     final Uri uri = Uri.parse('$backendUrl/tweets/all/me');
     http.Response response = await http.get(uri, headers: {
       "x-access-token":
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
-    });
+      Auth.token    });
     String data = response.body;
     var de = jsonDecode(data);
     var jsonData = jsonDecode(data)["tweets"];
@@ -26,7 +28,7 @@ class TweetsApi {
     List<dynamic> tweetsList = [];
 
     //see if comments in this
-    tweetsList = jsonData.map((e) => Tweet.fromJson(e)).toList(); //[2],[3]
+    tweetsList = jsonData.map((e) => Tweet.fromJson(e,"simpleTweetWithType")).toList(); //[2],[3]
     //----------------------------------------------------------------------
     List<TweetMain> tweetsMain = [];
     List<dynamic> comments = [];
@@ -60,7 +62,7 @@ class TweetsApi {
         videos = tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
       }
       TweetMain tweetIMain = TweetMain(
-          tweet: tweetsList[i],
+          outerTweet: tweetsList[i],
           comments: comments,
           likers: likers,
           videos: videos,
@@ -74,14 +76,13 @@ class TweetsApi {
     final Uri uri = Uri.parse('$backendUrl/tweets/all?Id=$userId');
     http.Response response = await http.get(uri, headers: {
       "x-access-token":
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
-    });
+      Auth.token    });
     String data = response.body;
     var jsonData = jsonDecode(data)["tweets"];
     List<dynamic> tweetsList = [];
 
     //see if comments in this
-    tweetsList = jsonData.map((e) => Tweet.fromJson(e)).toList(); //[2],[3]
+    tweetsList = jsonData.map((e) => Tweet.fromJson(e,"simpleTweetWithType")).toList(); //[2],[3]
     //----------------------------------------------------------------------
     List<TweetMain> tweetsMain = [];
     List<dynamic> comments = [];
@@ -108,7 +109,7 @@ class TweetsApi {
         videos = tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
       }
       TweetMain tweetIMain = TweetMain(
-          tweet: tweetsList[i],
+          outerTweet: tweetsList[i],
           comments: comments,
           likers: likers,
           videos: videos,
@@ -130,8 +131,7 @@ class TweetsApi {
       uri,
       headers: {
         "x-access-token":
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
-      },
+        Auth.token      },
     );
     String data = response.body;
     var de = jsonDecode(data);
@@ -139,7 +139,7 @@ class TweetsApi {
       var jsonData = jsonDecode(data)["tweets"];
       List<dynamic> tweetsList = [];
       //see if comments in this
-      tweetsList = jsonData.map((e) => Tweet.fromJson(e)).toList(); //[2],[3]
+      tweetsList = jsonData.map((e) => Tweet.fromJson(e,"simpleTweetWithType")).toList(); //[2],[3]
       //----------------------------------------------------------------------
       List<TweetMain> tweetsMain = [];
       List<dynamic> comments = [];
@@ -172,7 +172,7 @@ class TweetsApi {
           videos = tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
         }
         TweetMain tweetIMain = TweetMain(
-            tweet: tweetsList[i],
+            outerTweet: tweetsList[i],
             comments: comments,
             likers: likers,
             videos: videos,
@@ -184,71 +184,22 @@ class TweetsApi {
     return null;
   }
 
-  // Future<List<TweetMain>> fetchTweetsOfCertainUser(String userId) async {
-  //   final queryParameters = {
-  //     'user_id': userId,
-  //     //'token': _email,
-  //   };
-  //   final uri =
-  //   Uri.http(Http().getMobileBaseUrl(), '/tweets/all', queryParameters);
-  //   // final Uri url = Uri.parse('http://192.168.1.8:8000/tweets/all');
-  //   http.Response response = await http.get(uri);
-  //   String data = response.body;
-  //   var jsonData = jsonDecode(data);
-  //   List<dynamic> tweetsList = [];
-  //
-  //   //see if comments in this
-  //   tweetsList = jsonData.map((e) => Tweet.fromJson(e)).toList(); //[2],[3]
-  //   //----------------------------------------------------------------------
-  //   List<TweetMain> tweetsMain = [];
-  //   List<dynamic> comments = [];
-  //   List<dynamic> likers = [];
-  //   List<dynamic> images = [];
-  //   List<dynamic> videos = [];
-  //   //--------------------------------------------------------------------------
-  //   for (int i = 0; i < tweetsList.length; i++) {
-  //     images = [];
-  //     comments = [];
-  //     likers = [];
-  //     videos = [];
-  //     if (tweetsList[i].comments.length > 0) {
-  //       comments = tweetsList[i].comments.toList();
-  //     }
-  //     if (tweetsList[i].likerIds.length > 0) {
-  //       likers = tweetsList[i].likerIds..map((e) => Likers.fromJson(e)).toList();
-  //     }
-  //     if (tweetsList[i].images.length > 0) {
-  //       images = tweetsList[i].images.map((e) => Imagei.fromJson(e)).toList();
-  //     }
-  //     if (tweetsList[i].videos.length > 0) {
-  //       videos = tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
-  //     }
-  //     TweetMain tweetIMain = TweetMain(
-  //         tweet: tweetsList[i],
-  //         comments: comments,
-  //         likers: likers,
-  //         videos: videos,
-  //         images: images);
-  //     tweetsMain.add(tweetIMain);
-  //   }
-  //   return tweetsMain;
-  // }
+
 
   Future<List<TweetMain>?> fetchTweetByTweetId(String tweetId) async {
     final Uri uri = Uri.parse('$backendUrl/tweets/tweet?Id=$tweetId');
     http.Response response = await http.get(uri, headers: {
       "x-access-token":
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
-    });
+      Auth.token    });
     String data = response.body;
     var jsonData = jsonDecode(data)["tweet"];
     List<dynamic> d = [];
     d.add(jsonData);
     List<dynamic> tweetsList = [];
-
+    print(jsonData);
     //see if comments in this
 
-    tweetsList = d.map((e) => Tweet.fromJson(e)).toList(); //[2],[3]
+    tweetsList = d.map((e) => Tweet.fromJson(e,"simpleTweetWithoutType")).toList(); //[2],[3]
     //----------------------------------------------------------------------
     List<TweetMain> tweetsMain = [];
     List<dynamic> comments = [];
@@ -281,7 +232,7 @@ class TweetsApi {
         videos = tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
       }
       TweetMain tweetIMain = TweetMain(
-          tweet: tweetsList[i],
+          outerTweet: tweetsList[i],
           comments: comments,
           likers: likers,
           videos: videos,
@@ -290,19 +241,144 @@ class TweetsApi {
     }
     return tweetsMain;
   }
+  Future<List<TweetMain>?> fetchQuotedRetweet(String retweetId) async {
+    final Uri uri = Uri.parse('$backendUrl/tweets/retweets/retweet?Id=$retweetId');
+    http.Response response = await http.get(uri, headers: {
+      "x-access-token":
+      Auth.token    });
+    String data = response.body;
+    var jsonData = jsonDecode(data)["tweet"];
+    List<dynamic> d = [];
+    print(jsonData);
+    d.add(jsonData);
+    List<dynamic> tweetsList = [];
 
+    //see if comments in this
+    tweetsList = d.map((e) => Tweet.fromJson(e,"retweet")).toList(); //[2],[3]
+    print(tweetsList);
+    //----------------------------------------------------------------------
+    List<TweetMain> tweetsMain = [];
+    List<dynamic> comments = [];
+    List<dynamic> likers = [];
+    List<dynamic> images = [];
+    List<dynamic> videos = [];
+    List<dynamic> tweetReferenced=[];
+    //--------------------------------------------------------------------------
+
+    for (int i = 0; i < tweetsList.length; i++) {
+      images = [];
+      comments = [];
+      likers = [];
+      videos = [];
+      List<dynamic> s = [];
+      s.add(tweetsList[i].tweetReferenced);
+      tweetReferenced=s.map((e) => Tweet.fromJson(e,"referencedTweet")).toList();
+      // print(tweetsList[i]);
+      // print(tweetReferenced[i]);
+      tweetsList[i].tweetReferenced=tweetReferenced;
+      if (tweetsList[i].comments.length > 0) {
+        comments = tweetsList[i].comments.toList();
+      }
+      if (tweetsList[i].likerIds.length > 0) {
+        likers = tweetsList[i].likerIds.map((e) => Likers.fromJson(e)).toList();
+        for (int j = 0; j < likers.length; j++) {
+          if (likers[j].likerId == Auth.userId) {
+            tweetsList[i].isLiked = true;
+            break;
+          }
+        }
+      }
+      if (tweetsList[i].images.length > 0) {
+        images = tweetsList[i].images.toList();
+      }
+      if (tweetsList[i].videos.length > 0) {
+        videos = tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
+      }
+      TweetMain tweetMain = TweetMain(
+          outerTweet: tweetsList[i],
+          innerTweet: tweetReferenced[i],
+          comments: comments,
+          likers: likers,
+          videos: videos,
+          images: images);
+      tweetsMain.add(tweetMain);
+    }
+    return tweetsMain;
+  }
+  Future<List<TweetMain>?> fetchRetweet(String retweetId) async {
+    final Uri uri = Uri.parse('$backendUrl/tweets/retweets/retweet?Id=$retweetId');
+    http.Response response = await http.get(uri, headers: {
+      "x-access-token":
+      Auth.token    });
+    String data = response.body;
+    var jsonData = jsonDecode(data)["tweet"];
+    List<dynamic> d = [];
+    print(jsonData);
+    d.add(jsonData);
+    List<dynamic> tweetsList = [];
+
+    //see if comments in this
+    tweetsList = d.map((e) => Tweet.fromJson(e,"retweet")).toList(); //[2],[3]
+    print(tweetsList);
+    //----------------------------------------------------------------------
+    List<TweetMain> tweetsMain = [];
+    List<dynamic> comments = [];
+    List<dynamic> likers = [];
+    List<dynamic> images = [];
+    List<dynamic> videos = [];
+    List<dynamic> tweetReferenced=[];
+    //--------------------------------------------------------------------------
+
+    for (int i = 0; i < tweetsList.length; i++) {
+      images = [];
+      comments = [];
+      likers = [];
+      videos = [];
+      List<dynamic> s = [];
+      s.add(tweetsList[i].tweetReferenced);
+      tweetReferenced=s.map((e) => Tweet.fromJson(e,"referencedTweet")).toList();
+      tweetReferenced[i].quoted=false;
+      // print(tweetsList[i]);
+      // print(tweetReferenced[i]);
+      tweetsList[i].tweetReferenced=tweetReferenced;
+      if (tweetsList[i].comments.length > 0) {
+        comments = tweetsList[i].comments.toList();
+      }
+      if (tweetsList[i].likerIds.length > 0) {
+        likers = tweetsList[i].likerIds.map((e) => Likers.fromJson(e)).toList();
+        for (int j = 0; j < likers.length; j++) {
+          if (likers[j].likerId == Auth.userId) {
+            tweetsList[i].isLiked = true;
+            break;
+          }
+        }
+      }
+      if (tweetsList[i].images.length > 0) {
+        images = tweetsList[i].images.toList();
+      }
+      if (tweetsList[i].videos.length > 0) {
+        videos = tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
+      }
+      TweetMain tweetMain = TweetMain(
+          outerTweet:  tweetReferenced[i],
+          comments: comments,
+          likers: likers,
+          videos: videos,
+          images: images);
+      tweetsMain.add(tweetMain);
+    }
+    print(tweetsMain[0].outerTweet.text);
+    return tweetsMain;
+  }
   //add tweet is done using mock server for now as testing in backend stop
 
-  Future<void> addTweet(
-      {required String text,
-      required List<dynamic> images,
-      required List<dynamic> videos}) async {
+  Future<String> addTweet({required String text, required List<dynamic> images, required List<dynamic> videos}) async {
     var headers = {
       'x-access-token':
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4'
+          Auth.token
     };
     var request = http.MultipartRequest(
-        'POST', Uri.parse('http://45.79.245.94:5000/tweets'));
+        'POST', Uri.parse('$backendUrl/tweets'));
     request.fields.addAll({'text': text});
     for (int i = 0; i < images.length; i++) {
       request.files.add(await http.MultipartFile.fromPath('img', images[i]));
@@ -312,23 +388,91 @@ class TweetsApi {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
+      String data =await response.stream.bytesToString();
+      var jsonData = jsonDecode(data)["200"];
+      String tweetId="";
+      int idx = jsonData.indexOf(":");
+      for (int i = 0; i < jsonData.length; i++) {
+        if (jsonData[i] == ':') {
+            tweetId=jsonData.substring(idx + 1).trim();
+          break;
+        }
+      }
+      return tweetId;
+
     } else {
       print(response.reasonPhrase);
+      return "";
+    }
+  }
+  Future<String> addQuotedRetweet({required bool quoted,required String tweetId,required String text, required List<dynamic> images, required List<dynamic> videos}) async {
+    var headers = {
+      'x-access-token':
+      Auth.token    };
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('$backendUrl/users/retweets'));
+    request.fields.addAll({'text': text,"vid":"","quoted":"True","tweet_id":tweetId});
+    for (int i = 0; i < images.length; i++) {
+      request.files.add(await http.MultipartFile.fromPath('img', images[i]));
+    }
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String data =await response.stream.bytesToString();
+      print(data);
+      var jsonData = jsonDecode(data)["200"];
+      String tweetId="";
+      int idx = jsonData.indexOf(":");
+      for (int i = 0; i < jsonData.length; i++) {
+        if (jsonData[i] == ':') {
+          tweetId=jsonData.substring(idx + 1).trim();
+          break;
+        }
+      }
+      return tweetId;
+
+    } else {
+      print(response.reasonPhrase);
+      return "";
+    }
+  }
+  Future<String> Retweet({required bool quoted,required String tweetId}) async {
+    var headers = {
+      'x-access-token':
+      Auth.token    };
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('$backendUrl/users/retweets'));
+    request.fields.addAll({"quoted":"False","tweet_id":tweetId});
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String data =await response.stream.bytesToString();
+      var jsonData = jsonDecode(data)["200"];
+      String tweetId="";
+      int idx = jsonData.indexOf(":");
+      for (int i = 0; i < jsonData.length; i++) {
+        if (jsonData[i] == ':') {
+          tweetId=jsonData.substring(idx + 1).trim();
+          break;
+        }
+      }
+      return tweetId;
+
+    } else {
+      print(response.reasonPhrase);
+      return "";
     }
   }
 
-  Future<void> addComment(
-      {required String text,
-      required List<dynamic> images,
-      required List<dynamic> videos,
-      required tweetId}) async {
+  Future<void> addComment({required String text, required List<dynamic> images, required List<dynamic> videos, required tweetId}) async {
     var headers = {
       'x-access-token':
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4'
-    };
+      Auth.token    };
     var request = http.MultipartRequest(
-        'POST', Uri.parse('http://45.79.245.94:5000/users/comments'));
+        'POST', Uri.parse('$backendUrl/users/comments'));
     request.fields.addAll({
       'text': text,
       'tweet_id': tweetId,
@@ -355,10 +499,9 @@ class TweetsApi {
   Future<void> deleteTweet({required String tweetId}) async {
     var headers = {
       'x-access-token':
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4'
-    };
+      Auth.token    };
     var request = http.Request(
-        'DELETE', Uri.parse('http://45.79.245.94:5000/tweets?Id=$tweetId'));
+        'DELETE', Uri.parse('$backendUrl/tweets?Id=$tweetId'));
 
     request.headers.addAll(headers);
 
@@ -371,26 +514,24 @@ class TweetsApi {
     }
   }
 
-  Future<void> likeUnlike(
-      {required String tweetId, required TweetMain tweet}) async {
+  Future<void> likeUnlike({required String tweetId, required TweetMain tweet}) async {
     var headers = {
       'x-access-token':
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4',
-      'Content-Type': 'application/json'
+      Auth.token,      'Content-Type': 'application/json'
     };
     var request =
-        http.Request('POST', Uri.parse('http://45.79.245.94:5000/users/likes'));
+        http.Request('POST', Uri.parse('$backendUrl/users/likes'));
     request.body = json.encode({"tweet_id": tweetId});
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      tweet.tweet.isLiked = true;
+      tweet.outerTweet.isLiked = true;
       print(await response.stream.bytesToString());
     } else if (response.statusCode == 406) {
       await deleteLike(tweetId: tweetId);
-      tweet.tweet.isLiked = false;
+      tweet.outerTweet.isLiked = false;
     } else {
       print(response.reasonPhrase);
     }
@@ -422,11 +563,10 @@ class TweetsApi {
   Future<void> deleteLike({required String tweetId}) async {
     var headers = {
       'x-access-token':
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4',
-      'Content-Type': 'application/json'
+      Auth.token   ,   'Content-Type': 'application/json'
     };
     var request = http.Request('DELETE',
-        Uri.parse('http://45.79.245.94:5000/users/likes?Id=$tweetId'));
+        Uri.parse('$backendUrl/users/likes?Id=$tweetId'));
     request.body = json.encode({"tweet_id": "628a3d2885a8cfe478cb8bd5"});
     request.headers.addAll(headers);
 

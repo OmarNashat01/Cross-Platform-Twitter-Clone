@@ -6,7 +6,6 @@ class TimelineProvider extends ChangeNotifier {
    dynamic timelineList = [];
    updateMyTimeline(dynamic data) {
     if (data != null) {
-      print(data[0].tweet.text);
       for (int i =0; i <data.length; i++) {
         timelineList.add(data[i]);
       }
@@ -14,8 +13,8 @@ class TimelineProvider extends ChangeNotifier {
     notifyListeners();
   }
    addTweetToMyTimeline(dynamic data) {
+     print(data);
      if (data != null) {
-
          timelineList.insert(0,data);
      }
      notifyListeners();
@@ -25,8 +24,8 @@ class TimelineProvider extends ChangeNotifier {
      notifyListeners();
    }
    updateLikeInfoOfTweet(int index,int likeCount,bool isLiked) {
-     timelineList[index].tweet.likeCount=likeCount;
-     timelineList[index].tweet.isLiked=isLiked;
+     timelineList[index].outerTweet.likeCount=likeCount;
+     timelineList[index].outerTweet.isLiked=isLiked;
      notifyListeners();
    }
    updateMyTimelineDuringPagination(dynamic data) {

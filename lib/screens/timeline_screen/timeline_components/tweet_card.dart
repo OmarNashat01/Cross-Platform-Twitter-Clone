@@ -33,7 +33,9 @@ class TweetCard extends StatefulWidget {
       required this.tweetPage,
         this.shiftTweets,
         required this.userId,
+        this.isTweetInner
       });
+  bool? isTweetInner=false;
   String userId="";
   int index;
   bool tweetPage;
@@ -229,7 +231,7 @@ class _TweetCardState extends State<TweetCard> {
                                           listen: false)
                                       .deleteTweet(
                                           context,
-                                          widget.tweet.tweet.tweetId,
+                                          widget.tweet.outerTweet.tweetId,
                                           widget.index);
                                   Navigator.pop(context);
                                 },
@@ -265,8 +267,8 @@ class _TweetCardState extends State<TweetCard> {
   void toggleTweetsInfo(bool isLiked,int likesCount)
   {
     setState(() {
-      widget.tweet.tweet.likeCount=likesCount;
-      widget.tweet.tweet.isLiked=isLiked;
+      widget.tweet.outerTweet.likeCount=likesCount;
+      widget.tweet.outerTweet.isLiked=isLiked;
     });
   }
 
@@ -300,7 +302,10 @@ String username="";
   dynamic isMuted;
   @override
   Widget build(BuildContext context) {
-
+    if(widget.tweet.outerTweet.quoted==false)
+      {
+        print(widget.tweet.outerTweet.text);
+      }
     if (widget.tweet.videos.isNotEmpty &&
         widget.videoPlayerController != null) {
       isMuted = widget.videoPlayerController.value.volume;
@@ -308,15 +313,17 @@ String username="";
     return InkWell(
 
       onTap: ()async {
-        widget.userId=widget.tweet.tweet.userId;
+        widget.userId=widget.tweet.outerTweet.userId;
         if(widget.tweetPage==false)
        {
          username=widget.userId;
        }
-        dynamic tweeta=await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(widget.tweet.tweet.tweetId);
+        dynamic tweeta=widget.tweet.innerTweet==null?await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(widget.tweet.outerTweet.tweetId):widget.tweet.outerTweet.quoted==true?await Provider.of<TweetsViewModel>(context,listen: false).fetchQuotedRetweetByRetweetId(widget.tweet.outerTweet.tweetId,context):await Provider.of<TweetsViewModel>(context,listen: false).fetchNotQuotedRetweetByRetweetId(widget.tweet.outerTweet.tweetId,context);
+        print(tweeta[0].outerTweet.text);
+        print("sfwqeqwe");
         setState(() {
           widget.tweet=tweeta[0];
-          widget.tweet.tweet.likeCount=tweeta[0].tweet.likeCount;
+          widget.tweet.outerTweet.likeCount=tweeta[0].outerTweet.likeCount;
         });
         widget.tweetPage == false
             ? Navigator.of(context).push(
@@ -324,24 +331,37 @@ String username="";
                     child: TweetPage(
                       shiftTweets:true,
                       tweetCard: TweetCard(
+                        isTweetInner: false,
                         userId: "",
                         shiftTweets: false,
                           index: widget.index,
                           tweet: tweeta[0],
                           tweetPage: true),
                       tweet: tweeta[0],
-                      userId:widget.tweet.tweet.username,
+                      userId:widget.tweet.outerTweet.username,
                     ),
                     beginX: 0,
                     beginY: 1),
               )
             : print("");
       },
-      child: Column(
+      //outer tweet look
+      child: widget.isTweetInner==false?Column(
         children: [
           const SizedBox(
             height: 8,
           ),
+          widget.tweet.outerTweet.quoted==false?
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Row(
+                  children: [
+                    Icon(FontAwesomeIcons.retweet,color: Colors.grey,),
+
+                    Text(" You Retweeted",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w500),),
+                  ],
+                ),
+              ):SizedBox.shrink(),
           Padding(
             padding: const EdgeInsets.only(left: 26, right: 15),
             child: Column(
@@ -365,7 +385,7 @@ String username="";
                               // );
                             },
                             profilePictureImage:
-                                widget.tweet.getTweetprofilePicUrl(),
+                                widget.tweet.outerTweet.profilePicUrl,
                             profilePictureSize: navigationDrawerProfilePicSize),
 
                         Padding(
@@ -374,13 +394,15 @@ String username="";
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               //here is the name and title of the one who tweeted
-                              Text(widget.tweet.getname(), style: boldName),
+                              (widget.isTweetInner==false&&widget.tweet.outerTweet.name!=null)?
+                              Text(widget.tweet.outerTweet.name!, style: boldName):SizedBox.shrink(),
                               Text(widget.tweet.getusername()),
                             ],
                           ),
                         ),
                       ],
                     ),
+                    widget.isTweetInner==false?
                     IconButton(
                       key: threeDotsKey,
                       splashColor: Colors.transparent,
@@ -402,21 +424,21 @@ String username="";
                             .getTweetThreeDotsColor(widget.tweet),
                         size: 16,
                       ),
-                    )
+                    ):SizedBox.shrink()
                   ],
                 ),
 
                 //--for decoration sized box
                  SizedBox(
-                  height: widget.tweetPage==false?5:20,
+                  height: widget.tweetPage==false?10:20,
                 ),
                 //--here is the text of the tweet
-                widget.tweet.getTweettext() != ""
+                widget.tweet.outerTweet.text! != ""
                     ? (widget.shiftTweets==false)?Row(
                         children: [
                           Expanded(
                             child: Text(
-                              widget.tweet.getTweettext(),
+                              widget.tweet.outerTweet.text!,
                               softWrap: false,
                               overflow: TextOverflow.ellipsis,
                               //max lines of writing a tweet is 8 like in the main twitter
@@ -452,7 +474,7 @@ String username="";
                             children: [
                           Expanded(
                             child: Text(
-                               widget.tweet.getTweettext(),
+                              widget.tweet.outerTweet.text!,
                               softWrap: false,
                               overflow: TextOverflow.ellipsis,
                               //max lines of writing a tweet is 8 like in the main twitter
@@ -471,7 +493,7 @@ String username="";
           ),
           //--for decoration sized box
           const SizedBox(
-            height: 5,
+            height: 15,
           ),
 
           //--here is the video of the tweet
@@ -530,7 +552,324 @@ String username="";
           //here if the tweetCard is being just shown in the timeline this data wont be shown
           widget.tweetPage == false
               ? SizedBox.shrink()
-              : Padding(
+              : Column(
+                children: [
+                  widget.tweet.innerTweet!=null?
+                  TweetCard(index: widget.index, tweet: TweetMain(outerTweet: widget.tweet.innerTweet!, comments: [], images: [], videos: [], likers: []), tweetPage: false, userId: "",
+                    shiftTweets: false,isTweetInner: true,):
+                  SizedBox.shrink(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 26, right: 15),
+                    child: Row(
+                      children: [Text(widget.tweet.outerTweet.createdAt)],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 26, right: 15),
+                    child: const Divider(
+                      height: 25,
+                      thickness: 1.5,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 26, right: 15),
+                    child: Row(
+                      children: [
+                        Text(
+                          widget.tweet.outerTweet.retweetCount.toString() + " ",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Retweets ",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        Text(
+                          0.toString() + " ",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Quotes Tweets ",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        Text(
+                          widget.tweet.outerTweet.likeCount.toString() + " ",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        GestureDetector(
+                          onTap: ()async
+                          {
+                            // dynamic twet=await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(widget.tweet.tweet.tweetId);
+                            // setState(() {
+                            //   widget.tweet.tweet.likeCount=twet[0].tweet.likeCount;
+                            // });
+                          },
+                          child: Text(
+                            "Likes ",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(
+                    height: 25,
+                    thickness: 1.5,
+                  ),
+                ],
+              ),
+          (widget.tweet.innerTweet!=null&&widget.tweetPage==false)?
+          TweetCard(index: widget.index, tweet: TweetMain(outerTweet: widget.tweet.innerTweet!, comments: widget.tweet.innerTweet!.comments, images:widget.tweet.innerTweet!.images, videos: widget.tweet.innerTweet!.videos, likers: widget.tweet.innerTweet!.likerIds), tweetPage: false, userId: "",
+              shiftTweets: false,isTweetInner: true,):
+          SizedBox.shrink(),
+          //here is the TweetBottom bar
+          //the row of icons for your reactions on the tweet
+          widget.isTweetInner==false?
+          widget.shiftTweets==false?
+          TweetBottomBar(
+            tweet: widget.tweet,
+            index: widget.index,
+            iconsBoundry: Colors.grey.shade600,
+            likeInfoCallBack:toggleTweetsInfo,
+          ):
+          Padding(
+            padding: const EdgeInsets.only(left: 50),
+            child: TweetBottomBar(
+              tweet: widget.tweet,
+              index: widget.index,
+              iconsBoundry: Colors.grey.shade600,
+              likeInfoCallBack:toggleTweetsInfo,
+            ),
+          ):SizedBox.shrink(),
+
+          //decoration of tweet at the bottom (divider)
+          const SizedBox(
+            height: 5,
+          ),
+          //decoration of tweet at the bottom (divider)
+          widget.isTweetInner==false?
+          const Divider(
+            height: 0,
+            thickness: 1.5,
+          ):SizedBox.shrink(),
+        ],
+      ):
+          //inner tweet look
+      ClipRRect(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 25,right: 25),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white60,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.white60, //New
+                      blurRadius: 10,
+                      offset: Offset(0, 1))
+                ],
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(10))
+            ),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 8,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 26, right: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              //--here is the profile picture of the one who tweeted
+
+                              ProfilePicture(
+                                  profilePictureFunctionality: () {
+                                    // Navigator.of(context).push(
+                                    //   CustomPageRoute(
+                                    //       child: (UsersProfile(
+                                    //           userId: widget.tweet.tweet.userId)),
+                                    //       beginX: 1,
+                                    //       beginY: 0),
+                                    // );
+                                  },
+                                  profilePictureImage:
+                                  widget.tweet.outerTweet.profilePicUrl,
+                                  profilePictureSize: 10),
+
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    //here is the name and title of the one who tweeted
+                                    (widget.isTweetInner==false&&widget.tweet.outerTweet.name!=null)?
+                                    Text(widget.tweet.outerTweet.name!, style: boldName):SizedBox.shrink(),
+                                    Text(widget.tweet.getusername()),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          widget.isTweetInner==false?
+                          IconButton(
+                            key: threeDotsKey,
+                            splashColor: Colors.transparent,
+                            onPressed: () {
+                              Provider.of<UIColorProvider>(context, listen: false)
+                                  .changeTweetThreeDotsColor(
+                                  widget.tweet, Colors.blue);
+                              RenderBox box = threeDotsKey.currentContext
+                                  ?.findRenderObject() as RenderBox;
+                              Offset position = box.localToGlobal(
+                                  Offset.zero); //this is global position
+                              double y = position.dy;
+                              double x = position.dx;
+                              _showPopupMenu(x, y);
+                            },
+                            icon: Icon(
+                              FontAwesomeIcons.ellipsis,
+                              color: Provider.of<UIColorProvider>(context)
+                                  .getTweetThreeDotsColor(widget.tweet),
+                              size: 16,
+                            ),
+                          ):SizedBox.shrink()
+                        ],
+                      ),
+
+                      //--for decoration sized box
+                      SizedBox(
+                        height: widget.tweetPage==false?10:20,
+                      ),
+                      //--here is the text of the tweet
+                      widget.tweet.outerTweet.text! != ""
+                          ? (widget.shiftTweets==false)?Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.tweet.outerTweet.text!,
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                              //max lines of writing a tweet is 8 like in the main twitter
+                              maxLines: 8,
+                              style: widget.tweetPage==false?tweetsTexts:innerTweetsTexts,
+                            ),
+                          ),
+                        ],
+                      )
+                          : Column(
+                        children: [
+                          widget.userId!=""?
+                          Padding(padding: EdgeInsets.only(left: 50),
+                              child:InkWell(
+                                onTap: (){
+                                  ///here i should call the user profile on the person i am replying to
+                                  print("loool");
+                                },
+                                child: Row(
+                                  children: [
+                                    Text("Replying to  ",style: TextStyle(color: Colors.blueGrey),),
+                                    Text(widget.userId,style: TextStyle(color: Colors.blue),),
+                                  ],
+                                ),
+                              )
+                          )
+                              :
+                          SizedBox.shrink(),
+                          widget.userId!=""?SizedBox(height: 10,):SizedBox.shrink(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 50),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    widget.tweet.outerTweet.text!,
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                    //max lines of writing a tweet is 8 like in the main twitter
+                                    maxLines: 8,
+                                    style: widget.tweetPage==false?tweetsTexts:innerTweetsTexts,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                          :const SizedBox.shrink(),
+                    ],
+                  ),
+                ),
+                //--for decoration sized box
+                const SizedBox(
+                  height: 15,
+                ),
+
+                //--here is the video of the tweet
+
+                widget.tweet.videos.isNotEmpty && widget.videoPlayerController != null
+                    ? GestureDetector(
+                    onTap: () {
+                      if (widget.videoPlayerController != null) {
+                        widget.videoPlayerController.setVolume(1.0);
+                      }
+                      Navigator.of(context).push(
+                        CustomPageRoute(
+                            child: (ImageVideoDetailScreen(
+                              videoPlayerController: widget.videoPlayerController,
+                              isMuted: isMuted,
+                              image: false,
+                              video: true,
+                              tweet: widget.tweet,
+                              index: widget.index,
+                            )),
+                            beginX: 0,
+                            beginY: 1),
+                      );
+                    },
+                    child: SizedBox.shrink())
+                    : SizedBox.shrink(),
+                //--here is the image of the tweet
+                widget.tweet.images.isNotEmpty
+                    ? GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(PageRouteBuilder(
+                      opaque: false,
+                      pageBuilder: (_, __, ___) => ImageVideoDetailScreen(
+                        videoPlayerController: widget.videoPlayerController,
+                        isMuted: isMuted,
+                        image: true,
+                        video: false,
+                        tweet: widget.tweet,
+                        index: widget.index,
+                      ),
+                    ));
+                  },
+                  // child: CachedNetworkImage(
+                  //   imageUrl: widget.tweet.images[0].url,
+                  //   placeholder: (context, url) {
+                  //     return CircularProgressIndicator(
+                  //       color: Colors.black38,
+                  //     );
+                  //   },
+                  //   errorWidget: (context, url, error) => Text("a7aaa"),
+                  // ),
+                  child: SizedBox.shrink(),
+                )
+                    : SizedBox.shrink(),
+
+                //here if the tweetCard is being just shown in the timeline this data wont be shown
+                widget.tweetPage == false
+                    ? SizedBox.shrink()
+                    : Padding(
                   padding: const EdgeInsets.only(left: 26, right: 15),
                   child: Column(
                     children: [
@@ -538,7 +877,7 @@ String username="";
                         height: 20,
                       ),
                       Row(
-                        children: [Text(widget.tweet.tweet.createdAt)],
+                        children: [Text(widget.tweet.outerTweet.createdAt)],
                       ),
                       const Divider(
                         height: 25,
@@ -547,7 +886,7 @@ String username="";
                       Row(
                         children: [
                           Text(
-                            widget.tweet.tweet.retweetCount.toString() + " ",
+                            widget.tweet.outerTweet.retweetCount.toString() + " ",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Text(
@@ -563,7 +902,7 @@ String username="";
                             style: TextStyle(color: Colors.grey),
                           ),
                           Text(
-                            widget.tweet.tweet.likeCount.toString() + " ",
+                            widget.tweet.outerTweet.likeCount.toString() + " ",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           GestureDetector(
@@ -588,34 +927,44 @@ String username="";
                     ],
                   ),
                 ),
-          //here is the TweetBottom bar
-          //the row of icons for your reactions on the tweet
-          widget.shiftTweets==false?
-          TweetBottomBar(
-            tweet: widget.tweet,
-            index: widget.index,
-            iconsBoundry: Colors.grey.shade600,
-            likeInfoCallBack:toggleTweetsInfo,
-          ):
-          Padding(
-            padding: const EdgeInsets.only(left: 50),
-            child: TweetBottomBar(
-              tweet: widget.tweet,
-              index: widget.index,
-              iconsBoundry: Colors.grey.shade600,
-              likeInfoCallBack:toggleTweetsInfo,
+                (widget.tweet.innerTweet!=null&&widget.tweetPage==false)?
+                TweetCard(index: widget.index, tweet: TweetMain(outerTweet: widget.tweet.innerTweet!, comments: [], images: [], videos: [], likers: []), tweetPage: false, userId: "",
+                  shiftTweets: false,isTweetInner: true,):
+                SizedBox.shrink(),
+                //here is the TweetBottom bar
+                //the row of icons for your reactions on the tweet
+                widget.isTweetInner==false?
+                widget.shiftTweets==false?
+                TweetBottomBar(
+                  tweet: widget.tweet,
+                  index: widget.index,
+                  iconsBoundry: Colors.grey.shade600,
+                  likeInfoCallBack:toggleTweetsInfo,
+                ):
+                Padding(
+                  padding: const EdgeInsets.only(left: 50),
+                  child: TweetBottomBar(
+                    tweet: widget.tweet,
+                    index: widget.index,
+                    iconsBoundry: Colors.grey.shade600,
+                    likeInfoCallBack:toggleTweetsInfo,
+                  ),
+                ):SizedBox.shrink(),
+
+                //decoration of tweet at the bottom (divider)
+                const SizedBox(
+                  height: 5,
+                ),
+                //decoration of tweet at the bottom (divider)
+                widget.isTweetInner==false?
+                const Divider(
+                  height: 0,
+                  thickness: 1.5,
+                ):SizedBox.shrink(),
+              ],
             ),
           ),
-          //decoration of tweet at the bottom (divider)
-          const SizedBox(
-            height: 5,
-          ),
-          //decoration of tweet at the bottom (divider)
-          const Divider(
-            height: 0,
-            thickness: 1.5,
-          ),
-        ],
+        ),
       ),
     );
   }

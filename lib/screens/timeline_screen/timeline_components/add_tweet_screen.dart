@@ -9,6 +9,7 @@ import 'package:twitter/constants.dart';
 import 'package:twitter/models/tweet_complete_model.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
 
 class AddTweetScreen extends StatefulWidget {
   AddTweetScreen(
@@ -127,20 +128,25 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
                     var formatter = DateFormat('yyyy-MM-dd');
                     String formattedDate = formatter.format(now);
                     //if i am adding a tweet from scratch do this without showing the inner tweet
-                    if(widget.tweetOrReply=="tweet") {
+                    if(widget.hintText=='Add a comment')
+                      {
+                        await Provider.of<TweetsViewModel>(context, listen: false)
+                            .addQuotedRetweet(quoted: true,tweetIID: widget.tweet!.outerTweet.tweetId,
+                            text: parts[0], images: imagesPaths, videos: video1,context: context);
+                      }
+                      else if (widget.tweetOrReply=="tweet")
+                        {
                       await Provider.of<TweetsViewModel>(context, listen: false)
                           .addTweet(
-                          text: parts[0], images: imagesPaths, videos: video1);
-                      await Provider.of<TweetsViewModel>(context, listen: false)
-                          .getAddedTweet(context);
+                          text: parts[0], images: imagesPaths, videos: video1,context: context);
                     }
                     else
                       {
                         await Provider.of<TweetsViewModel>(context, listen: false)
                             .addComment(
-                            text: parts[0], images: imagesPaths, videos: video1,tweetId:widget.tweet!.tweet.tweetId,context: context);
+                            text: parts[0], images: imagesPaths, videos: video1,tweetId:widget.tweet!.outerTweet.tweetId,context: context);
                         setState(() {
-                          widget.tweet!.tweet.commentCount++;
+                          widget.tweet!.outerTweet.commentCount++;
                         });                      }
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: const Duration(milliseconds: 1000),
@@ -247,11 +253,12 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
                         profilePictureSize: navigationDrawerProfilePicSize),
                   ),
                   Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Column(
-                        children: [
-                          TextField(
+                    child: Column(
+                      children: [
+
+                        Padding(
+                          padding: const EdgeInsets.only(left: 24),
+                          child: TextField(
                             decoration: InputDecoration(
                               hintText: widget.hintText,
                             ),
@@ -263,54 +270,59 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
                             maxLines: null,
                             onChanged: (value) => title = value,
                           ),
-                          // file==null?SizedBox.shrink():Image.file(file)
-                          SizedBox(
-                            height: imageFileList.length>1?230:400,
-                            width: double.infinity,
-                            child: ListView.builder(
-                                itemCount: imageFileList.length,
-                                scrollDirection: Axis.horizontal,
-                                physics: BouncingScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Stack(
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 15),
-                                        child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            child: Image.file(File(
-                                                imageFileList[index].path))),
-                                      ),
-                                      Positioned(
-                                        top: 8,
-                                        right: 20,
-                                        child: CircleAvatar(
-                                          child: IconButton(
-                                              icon: Icon(
-                                                Icons.clear,
-                                                color: Colors.white,
-                                                size: 17,
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  imageFileList.removeAt(index);
-                                                });
-                                              }),
-                                          backgroundColor: Colors.black54,
-                                          radius: 17,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                }),
-                          )
+                        ),
+                        // file==null?SizedBox.shrink():Image.file(file)
+                        widget.hintText=='Add a comment'?
+                        TweetCard(index: 0, tweet: widget.tweet!, tweetPage: false, userId: "",
+                          shiftTweets: false,isTweetInner: true,):SizedBox.shrink(),
+                        SizedBox(
+                          height: imageFileList.length>1?230:400,
+                          width: double.infinity,
+                          child: ListView.builder(
+                              itemCount: imageFileList.length,
+                              scrollDirection: Axis.horizontal,
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                return Stack(
+                                  children: [
 
-                          //here will be the difference as if i qoute a tweet i will have the other user tweet here to quote it
-                          // TweetCard(index:index!)
-                        ],
-                      ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 15),
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Image.file(File(
+                                              imageFileList[index].path))),
+                                    ),
+                                    Positioned(
+                                      top: 8,
+                                      right: 20,
+                                      child: CircleAvatar(
+                                        child: IconButton(
+                                            icon: Icon(
+                                              Icons.clear,
+                                              color: Colors.white,
+                                              size: 17,
+                                            ),
+                                            onPressed: () {
+                                              setState(() {
+                                                imageFileList.removeAt(index);
+                                              });
+                                            }),
+                                        backgroundColor: Colors.black54,
+                                        radius: 17,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                        ),
+
+                        //here will be the difference as if i qoute a tweet i will have the other user tweet here to quote it
+                        // TweetCard(index:index!)
+
+                      ],
                     ),
                   ),
                 ],

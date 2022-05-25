@@ -125,6 +125,7 @@ class _TweetPageState extends State<TweetPage> {
                         //   return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
                         // }
                         return TweetCard(
+                          isTweetInner: false,
                           userId: widget.userId,
                           shiftTweets: true,
                           index: index,

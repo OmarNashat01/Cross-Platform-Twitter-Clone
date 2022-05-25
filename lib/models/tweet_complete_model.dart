@@ -3,8 +3,9 @@ import 'dart:ui';
 import 'package:twitter/models/tweet_model.dart';
 class TweetMain
 {
-  TweetMain({required this.tweet, required this.comments,required this.images,required this.videos, required this.likers});
-  Tweet tweet;
+  TweetMain({required this.outerTweet, required this.comments,required this.images,required this.videos, required this.likers,this.innerTweet});
+  Tweet outerTweet;
+  Tweet?innerTweet;
   List<dynamic>comments;
   List<dynamic>likers;
   List<dynamic>images;
@@ -15,59 +16,47 @@ class TweetMain
   //get tweet id
   String getTweetId()
   {
-    return tweet.tweetId;
+    return outerTweet.tweetId;
   }
   //get user id of user who made the tweet
   String getuserId()
   {
-    return tweet.userId;
+    return outerTweet.userId;
   }
   //get name of user who made the tweet
-  String getname()
-  {
-    return tweet.name;
-  }
   //get username of user who made the tweet
   String getusername()
   {
-    return tweet.username;
+    return outerTweet.username;
   }
   //get profilePicUrl of user who made the tweet
   String getTweetprofilePicUrl()
   {
-    return tweet.profilePicUrl;
+    return outerTweet.profilePicUrl;
   }
   //get text  tweet
-  String getTweettext()
-  {
-    return tweet.text;
-  }
+  // String getTweettext()
+  // {
+  //   return outerTweet.text;
+  // }
   //get bio of user who made the tweet
-  String? getTweetbio()
-  {
-    return tweet.bio;
-  }
+  // String? getTweetbio()
+  // {
+  //   return outerTweet.bio;
+  // }
   //get followingCount of user who made the tweet
-  int getfollowingCount()
-  {
-    return tweet.followingCount;
-  }
-  //get followersCount of user who made the tweet
-  int getfollowersCount()
-  {
-    return tweet.followersCount;
-  }
+
   //comments getters-------------------------------------
   int getCommentCount()
 {
-  return tweet.commentCount;
+  return outerTweet.commentCount;
 }
   int getRetweetCount()
   {
-    return tweet.retweetCount;
+    return outerTweet.retweetCount;
   }
   int getLikesCount()
   {
-    return tweet.likeCount;
+    return outerTweet.likeCount;
   }
 }

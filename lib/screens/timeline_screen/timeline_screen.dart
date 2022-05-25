@@ -43,8 +43,10 @@ class _TimelineScreenState extends State<TimelineScreen> {
   void initState() {
     // TODO: implement initState
     if(widget.firstTime==true) {
-      Provider.of<TweetsViewModel>(context, listen: false).fetchMyTweets(
-          context);
+      Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(
+          context,Provider.of<TweetsViewModel>(context,listen: false).pageNumber);
+      // Provider.of<TweetsViewModel>(context, listen: false).fetchMyTweets(
+      //     context);
     }
     super.initState();
     controller = ScrollController();
@@ -151,12 +153,12 @@ class _TimelineScreenState extends State<TimelineScreen> {
                                    return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
                                 }
                                 return TweetCard(
+                                  isTweetInner: false,
                                   userId: "",
                                   shiftTweets: false,
                                   tweetPage:false,
                                   index: index,
                                   tweet: Provider.of<TimelineProvider>(context).timelineList[index],
-                                  videoPlayerController: videoPlayerController,
                                 );
 
                             },

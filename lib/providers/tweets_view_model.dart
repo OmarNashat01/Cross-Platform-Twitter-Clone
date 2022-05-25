@@ -49,6 +49,26 @@ class TweetsViewModel extends ChangeNotifier {
     // Provider.of<CommentsProvider>(context,listen: false).updateTweetCommentList(addedDataToStream);
     // notifyListeners();
   }
+  Future<dynamic> fetchNotQuotedRetweetByRetweetId(String tweetId,BuildContext context) async
+  {
+    addedDataToStream =await TweetsApi().fetchRetweet(tweetId);
+    // Provider.of<TimelineProvider>(context,listen: false).updateMyTimeline(
+    //     addedDataToStream);
+    // print(addedDataToStream[0]);
+    return addedDataToStream;
+    // Provider.of<CommentsProvider>(context,listen: false).updateTweetCommentList(addedDataToStream);
+    // notifyListeners();
+  }
+  Future<dynamic> fetchQuotedRetweetByRetweetId(String tweetId,BuildContext context) async
+  {
+    addedDataToStream =await TweetsApi().fetchQuotedRetweet(tweetId);
+    // Provider.of<TimelineProvider>(context,listen: false).updateMyTimeline(
+    //     addedDataToStream);
+    // print(addedDataToStream[0]);
+    return addedDataToStream;
+    // Provider.of<CommentsProvider>(context,listen: false).updateTweetCommentList(addedDataToStream);
+    // notifyListeners();
+  }
   Future<void> fetchTweetByTweetIdForTweetComments(BuildContext context, String tweetId) async
   {
     addedDataToStream= await TweetsApi().fetchTweetByTweetId(tweetId);
@@ -60,17 +80,46 @@ class TweetsViewModel extends ChangeNotifier {
   Future<void> addTweet(
       {required String text,
       required List<dynamic> images,
-      required List<dynamic> videos}) async {
-    await TweetsApi().addTweet(text: text, images: images, videos: videos);
+      required List<dynamic> videos,required BuildContext context}) async {
+    String tweetId=await TweetsApi().addTweet(text: text, images: images, videos: videos);
+    await getAddedTweet(context, tweetId);
     notifyListeners();
   }
-  Future<void>getAddedTweet(BuildContext context)async
+  Future<void> addQuotedRetweet(
+      {required String text,
+        required List<dynamic> images,
+        required List<dynamic> videos,required BuildContext context,required bool quoted,required String tweetIID}) async {
+    String tweetId=await TweetsApi().addQuotedRetweet(text: text, images: images, videos: videos,quoted:quoted,tweetId: tweetIID );
+    await getAddedQuotedRetweet(context, tweetId);
+    notifyListeners();
+  }
+  Future<void> Retweet(
+      {required BuildContext context,required bool quoted,required String tweetIID}) async {
+    String tweetId=await TweetsApi().Retweet(quoted:quoted,tweetId: tweetIID );
+    await getAddedRetweet(context, tweetId);
+    notifyListeners();
+  }
+  Future<void>getAddedTweet(BuildContext context,String tweetId)async
   {
     //we need to know the tweet id of the tweet which got added recently
-   addedDataToStream= await TweetsApi().getAddedTweet();
-   await Provider.of<TimelineProvider>(context,listen: false).addTweetToMyTimeline(addedDataToStream);
-   print(addedDataToStream.tweet.text);
+   addedDataToStream= await TweetsApi().fetchTweetByTweetId(tweetId);
+   await Provider.of<TimelineProvider>(context,listen: false).addTweetToMyTimeline(addedDataToStream[0]);
      notifyListeners();
+  }
+  Future<void>getAddedQuotedRetweet(BuildContext context,String tweetId)async
+  {
+    //we need to know the tweet id of the tweet which got added recently
+    addedDataToStream= await TweetsApi().fetchQuotedRetweet(tweetId);
+    await Provider.of<TimelineProvider>(context,listen: false).addTweetToMyTimeline(addedDataToStream[0]);
+    notifyListeners();
+  }
+  Future<void>getAddedRetweet(BuildContext context,String tweetId)async
+  {
+    //we need to know the tweet id of the tweet which got added recently
+    addedDataToStream= await TweetsApi().fetchRetweet(tweetId);
+    print(addedDataToStream);
+    await Provider.of<TimelineProvider>(context,listen: false).addTweetToMyTimeline(addedDataToStream[0]);
+    notifyListeners();
   }
   Future<void> addComment(
       {required String text,

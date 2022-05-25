@@ -55,7 +55,7 @@ class _TweetBottomBarState extends State<TweetBottomBar> {
                         tweetOrReply: "reply",
                         replying: true,
                         tweet: widget.tweet,
-                        name: widget.tweet.tweet.username),
+                        name: widget.tweet.outerTweet.username),
                     beginX: 0,
                     beginY: 1),
               );
@@ -83,7 +83,7 @@ class _TweetBottomBarState extends State<TweetBottomBar> {
           GestureDetector(
             onTap: () {
               // Provider.of<TweetsViewModel>(context,listen: false).getTweetsList()[index].isRetweeted==false?showModalBottomSheet(context: context, builder: (context)=>RetweetScreen(index: index,doOrUndo: 'do',),)
-              showModalBottomSheet(context: context, builder: (context)=>RetweetScreen(index: widget.index,doOrUndo: 'undo',),);
+              showModalBottomSheet(context: context, builder: (context)=>RetweetScreen(tweet:widget.tweet,index: widget.index,doOrUndo: 'do',),);
             },
             child: Row(
               children: [
@@ -110,8 +110,8 @@ class _TweetBottomBarState extends State<TweetBottomBar> {
           Row(
             children: [
               LikeButton(
-                isLiked: widget.tweet.tweet.isLiked,
-                likeCount:widget.tweet.tweet.likeCount,
+                isLiked: widget.tweet.outerTweet.isLiked,
+                likeCount:widget.tweet.outerTweet.likeCount,
                 likeBuilder: (isLiked) {
                   final color = isLiked ? Colors.red : Colors.transparent;
                   return Padding(
@@ -142,13 +142,13 @@ class _TweetBottomBarState extends State<TweetBottomBar> {
                 },
                 onTap: (isLiked) async {
 
-                  await Provider.of<TweetsViewModel>(context,listen: false).likeUnlike(widget.tweet.tweet.tweetId,widget.tweet);
-                  dynamic tweeta=await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(widget.tweet.tweet.tweetId);
-                    Provider.of<TimelineProvider>(context,listen: false).updateLikeInfoOfTweet(widget.index,tweeta[0].tweet.likeCount,widget.tweet.tweet.isLiked);
+                  await Provider.of<TweetsViewModel>(context,listen: false).likeUnlike(widget.tweet.outerTweet.tweetId,widget.tweet);
+                  dynamic tweeta=await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(widget.tweet.outerTweet.tweetId);
+                    Provider.of<TimelineProvider>(context,listen: false).updateLikeInfoOfTweet(widget.index,tweeta[0].outerTweet.likeCount,widget.tweet.outerTweet.isLiked);
                     setState(() {
-                    widget.tweet.tweet.likeCount=tweeta[0].tweet.likeCount;
-                    widget.tweet.tweet.isLiked=widget.tweet.tweet.isLiked;
-                    widget.likeInfoCallBack!(widget.tweet.tweet.isLiked,widget.tweet.tweet.likeCount,);
+                    widget.tweet.outerTweet.likeCount=tweeta[0].outerTweet.likeCount;
+                    widget.tweet.outerTweet.isLiked=widget.tweet.outerTweet.isLiked;
+                    widget.likeInfoCallBack!(widget.tweet.outerTweet.isLiked,widget.tweet.outerTweet.likeCount,);
                     });
 
                     // isLiked==true?isLiked=false:isLiked=true;

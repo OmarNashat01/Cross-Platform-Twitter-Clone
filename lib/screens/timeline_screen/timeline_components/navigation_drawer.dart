@@ -93,7 +93,7 @@ class NavigationDrawer extends StatelessWidget {
                     child: NavigationDrawerLabels(
                       jumpToProfile: true,
                       widget: Text(
-                        UsersData.getMyData().name,
+                        Auth.name,
                         style: boldName,
                       ),
                     ),
@@ -105,7 +105,7 @@ class NavigationDrawer extends StatelessWidget {
                     child: NavigationDrawerLabels(
                       jumpToProfile: true,
                       widget: Text(
-                        UsersData.getMyData().title,
+                        Auth.username,
                         style: titleName,
                       ),
                     ),
