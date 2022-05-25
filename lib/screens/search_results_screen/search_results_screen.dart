@@ -86,8 +86,7 @@ class SearchResultsScreen_state extends State<SearchResultsScreen> {
                 tweetPage: false,
                 index: index,
                 tweet: TweetMain(
-                  tweet: Tweet(
-                    bio: searchTweet.bio,
+                  outerTweet: Tweet(
                     commentCount: searchTweet.commentCount,
                     comments: searchTweet.comments,
                     createdAt: searchTweet.createdAt,
@@ -108,7 +107,7 @@ class SearchResultsScreen_state extends State<SearchResultsScreen> {
                   comments: searchTweet.comments,
                   images: searchTweet.images ?? [],
                   likers: searchTweet.likedByIds,
-                  videos: searchTweet.videos ?? [],
+                  videos: searchTweet.videos ?? [], 
                 ),
               );
 
