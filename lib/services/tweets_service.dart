@@ -118,7 +118,52 @@ class TweetsApi {
     }
     return tweetsMain;
   }
+  Future<List<TweetMain>?> fetchLikedUserTweets(String userId) async {
+    final Uri uri = Uri.parse('$backendUrl/tweets/all/liked?Id=$userId');
+    http.Response response = await http.get(uri, headers: {
+      "x-access-token":
+      Auth.token    });
+    String data = response.body;
+    var jsonData = jsonDecode(data)["tweets"];
+    List<dynamic> tweetsList = [];
 
+    //see if comments in this
+    tweetsList = jsonData.map((e) => Tweet.fromJson(e,"simpleTweetWithType")).toList(); //[2],[3]
+    //----------------------------------------------------------------------
+    List<TweetMain> tweetsMain = [];
+    List<dynamic> comments = [];
+    List<dynamic> likers = [];
+    List<dynamic> images = [];
+    List<dynamic> videos = [];
+    //--------------------------------------------------------------------------
+    for (int i = 0; i < tweetsList.length; i++) {
+      images = [];
+      comments = [];
+      likers = [];
+      videos = [];
+      if (tweetsList[i].comments.length > 0) {
+        comments = tweetsList[i].comments.toList();
+      }
+      if (tweetsList[i].likerIds.length > 0) {
+        likers = tweetsList[i].likerIds
+          ..map((e) => Likers.fromJson(e)).toList();
+      }
+      if (tweetsList[i].images.length > 1) {
+        images = tweetsList[i].images.toList();
+      }
+      if (tweetsList[i].videos.length > 0) {
+        videos = tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
+      }
+      TweetMain tweetIMain = TweetMain(
+          outerTweet: tweetsList[i],
+          comments: comments,
+          likers: likers,
+          videos: videos,
+          images: images);
+      tweetsMain.add(tweetIMain);
+    }
+    return tweetsMain;
+  }
   Future<List<TweetMain>?> fetchRandomTweetsOfRandomUsers(int page) async {
     final queryParameters = {
       'page': page,
@@ -182,6 +227,95 @@ class TweetsApi {
       return tweetsMain;
     }
     return null;
+  }
+  Future<List<TweetMain>?> fetchHomeUserTweets(String userId) async {
+    final Uri uri = Uri.parse('$backendUrl/tweets/retweets/all?Id=$userId');
+    http.Response response = await http.get(uri, headers: {
+      "x-access-token":
+      Auth.token    });
+    String data = response.body;
+    var jsonData = jsonDecode(data)["retweets"];
+    List<dynamic> tweetsList = [];
+    print(jsonData[0]);
+    tweetsList = jsonData.map((e) => Tweet.fromJson(e,"retweet")).toList(); //[2],[3]
+    //----------------------------------------------------------------------
+    print(tweetsList);
+    //----------------------------------------------------------------------
+    List<TweetMain> tweetsMain = [];
+    List<dynamic> comments = [];
+    List<dynamic> likers = [];
+    List<dynamic> images = [];
+    List<dynamic> videos = [];
+    List<dynamic> tweetReferenced=[];
+    //--------------------------------------------------------------------------
+
+    for (int i = 0; i < tweetsList.length; i++) {
+      images = [];
+      comments = [];
+      likers = [];
+      videos = [];
+      List<dynamic> tweetReferenced=[];
+      if (tweetsList[i].comments.length > 0) {
+        comments = tweetsList[i].comments.toList();
+      }
+      if (tweetsList[i].likerIds.length > 0) {
+        likers = tweetsList[i].likerIds.map((e) => Likers.fromJson(e)).toList();
+        for (int j = 0; j < likers.length; j++) {
+          if (likers[j].likerId == Auth.userId) {
+            tweetsList[i].isLiked = true;
+            break;
+          }
+        }
+      }
+      if (tweetsList[i].images.length > 0) {
+        images = tweetsList[i].images.toList();
+      }
+      if (tweetsList[i].videos.length > 0) {
+        videos = tweetsList[i].videos.map((e) => Video.fromJson(e)).toList();
+      }
+      List<dynamic> s = [];
+      s.add(tweetsList[i].tweetReferenced);
+      if(tweetsList[i].tweetReferenced!="None"&&tweetsList[i].quoted==true) {
+        tweetReferenced =
+            s.map((e) => Tweet.fromJson(e, "referencedTweet")).toList();
+        tweetReferenced[i].quoted = false;
+        tweetsList[i].tweetReferenced = tweetReferenced;
+        TweetMain tweetMain = TweetMain(
+            outerTweet: tweetsList[i],
+            innerTweet: tweetReferenced[i],
+            comments: comments,
+            likers: likers,
+            videos: videos,
+            images: images);
+        tweetsMain.add(tweetMain);
+      }
+      else if(tweetsList[i].tweetReferenced!="None"&&tweetsList[i].quoted==false)
+        {
+          tweetReferenced =
+              s.map((e) => Tweet.fromJson(e, "referencedTweet")).toList();
+          tweetReferenced[i].quoted = false;
+          tweetsList[i].tweetReferenced = tweetReferenced;
+          TweetMain tweetMain = TweetMain(
+              outerTweet: tweetReferenced[i],
+              comments: comments,
+              likers: likers,
+              videos: videos,
+              images: images);
+          tweetsMain.add(tweetMain);
+        }
+      else
+        {
+          TweetMain tweetMain = TweetMain(
+              outerTweet: tweetsList[i],
+              comments: comments,
+              likers: likers,
+              videos: videos,
+              images: images);
+          tweetsMain.add(tweetMain);
+        }
+    }
+    print(tweetsMain[0].outerTweet.text);
+    return tweetsMain;
   }
 
 

@@ -26,7 +26,7 @@ class User {
   String gender;
   String creationDate;
   String? bio;
-  String location;
+  String? location;
   String? website;
   bool admin;
   List<dynamic> followers;

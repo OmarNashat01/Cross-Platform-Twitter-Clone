@@ -14,8 +14,10 @@ import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/custom_page_route.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/tweet_card.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 import '../../models/user_model.dart';
+import '../../providers/tweets_view_model.dart';
 import '../../providers/user_provider.dart';
 import '../../themes.dart';
 import '../timeline_screen/timeline_components/profile_picture.dart';
@@ -27,8 +29,9 @@ import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bot
 // gilany: 626894b7137ec6c6db13b24a
 
 class OthersProfileScreen extends StatefulWidget {
+  OthersProfileScreen({required this.userId});
   static const routeName = '/others-profile-screen';
-  String _userId = '626551f44d5786f437cbb25b';
+  String userId;
 
   @override
   State<StatefulWidget> createState() {
@@ -53,7 +56,7 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
 
   late Future<User> user;
   late ScrollController _scrollController;
-
+  List<dynamic>tweetsList=[];
   // bool _isFollowPressed = false;
 
   late TabController _tabController =
@@ -73,7 +76,7 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
 
   void sendFollowRequest(context, snapshot) {
     Provider.of<UserProvider>(context, listen: false)
-        .sendFollowRequest(widget._userId)
+        .sendFollowRequest(widget.userId)
         .then((res) async {
       if (res.statusCode == 200) {
         log('GOOD: Send follow request Successfully');
@@ -87,7 +90,7 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
 
   void sendUnfollowRequest(context, snapshot) {
     Provider.of<UserProvider>(context, listen: false)
-        .sendUnfollowRequest(widget._userId)
+        .sendUnfollowRequest(widget.userId)
         .then((res) async {
       if (res.statusCode == 200) {
         log('GOOD: Send unfollow request Successfully');
@@ -113,7 +116,16 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
 
   Future<User> _getUser() {
     return Provider.of<UserProvider>(context, listen: false)
-        .fetchUserByUserId(widget._userId);
+        .fetchUserByUserId(widget.userId);
+  }
+  Future<dynamic> getTimelineList() {
+    return Provider.of<TweetsViewModel>(context, listen: false).fetchUserTweets(widget.userId);
+  }
+  Future<dynamic> getUserLikedTweets() {
+    return Provider.of<TweetsViewModel>(context, listen: false).fetchLikedUserTweets(widget.userId);
+  }
+  Future<dynamic> getHomeRetweets() {
+    return Provider.of<TweetsViewModel>(context, listen: false).fetchHomeUserRetweets(widget.userId);
   }
 
   final controller = ScrollController();
@@ -158,18 +170,53 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
                   DefaultTabController(
                     length: 4,
                     child: CustomNestedScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        overscrollType: CustomOverscroll.outer,
-                        controller: _scrollController,
-                        headerSliverBuilder: (context, innerBoxIsScrolled) {
-                          return [
-                            SliverAppBar(
-                              stretch: true,
-                              elevation: 0,
-                              expandedHeight: 120,
-                              collapsedHeight: 80,
-                              backgroundColor: Colors.black,
-                              leading: Container(
+                      physics: const BouncingScrollPhysics(),
+                      overscrollType: CustomOverscroll.outer,
+                      controller: _scrollController,
+                      headerSliverBuilder: (context, innerBoxIsScrolled) {
+                        return [
+                          SliverAppBar(
+                            stretch: true,
+                            elevation: 0,
+                            expandedHeight: 120,
+                            collapsedHeight: 80,
+                            backgroundColor: Colors.black,
+                            leading: Container(
+                              height: 90,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return TimelineScreen(
+                                          firstTime: false,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: const CircleBorder(),
+                                  maximumSize: const Size(30, 30),
+                                  minimumSize: const Size(30, 30),
+
+                                  padding: const EdgeInsets.all(0),
+                                  primary: Colors.black
+                                      .withOpacity(0.5), // <-- Button color
+                                  onPrimary: Colors.blue, // <-- Splash color
+                                ),
+                                child: const Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                            actions: [
+                              Container(
                                 height: 90,
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 15),
@@ -179,9 +226,7 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return TimelineScreen(
-                                            firstTime: false,
-                                          );
+                                          return SearchScreen();
                                         },
                                       ),
                                     );
@@ -197,555 +242,440 @@ class OthersProfileScreenState extends State<OthersProfileScreen>
                                     onPrimary: Colors.blue, // <-- Splash color
                                   ),
                                   child: const Icon(
-                                    Icons.arrow_back,
+                                    Icons.search,
                                     color: Colors.white,
                                     size: 20,
                                   ),
                                 ),
                               ),
-                              actions: [
-                                Container(
-                                  height: 90,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return SearchScreen();
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      shape: const CircleBorder(),
-                                      maximumSize: const Size(30, 30),
-                                      minimumSize: const Size(30, 30),
-
-                                      padding: const EdgeInsets.all(0),
-                                      primary: Colors.black
-                                          .withOpacity(0.5), // <-- Button color
-                                      onPrimary:
-                                          Colors.blue, // <-- Splash color
-                                    ),
-                                    child: const Icon(
-                                      Icons.search,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                              pinned: true,
-                              flexibleSpace: LayoutBuilder(
-                                builder: (context, constraints) {
-                                  top = constraints.biggest.height;
-                                  return FlexibleSpaceBar(
-                                    stretchModes: const [
-                                      StretchMode.blurBackground,
-                                      StretchMode.zoomBackground,
-                                    ],
-                                    centerTitle: true,
-                                    title: AnimatedOpacity(
-                                        duration:
-                                            const Duration(milliseconds: 200),
-                                        opacity: top <= 100 ? 1.0 : 0.0,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              snapshot.data.name,
-                                              style: header_titleName,
-                                            ),
-                                            Text(
-                                              snapshot.data.tweetCount
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: AppColor.white),
-                                            ),
-                                          ],
-                                        )),
-                                    background: Stack(
-                                      children: [
-                                        SizedBox(
-                                          width: double.infinity,
-                                          child: Image.network(
-                                            snapshot.data.coverPicUrl,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            SliverToBoxAdapter(
-                              child: Container(
-                                transform: Matrix4.translationValues(0, -20, 0),
-                                width: double.infinity,
-                                color: Colors.green[600],
-                                child: Container(
-                                  color: Colors.white,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
+                            ],
+                            pinned: true,
+                            flexibleSpace: LayoutBuilder(
+                              builder: (context, constraints) {
+                                top = constraints.biggest.height;
+                                return FlexibleSpaceBar(
+                                  stretchModes: const [
+                                    StretchMode.blurBackground,
+                                    StretchMode.zoomBackground,
+                                  ],
+                                  centerTitle: true,
+                                  title: AnimatedOpacity(
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      opacity: top <= 100 ? 1.0 : 0.0,
+                                      child: Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
+                                            MainAxisAlignment.end,
                                         children: [
-                                          Transform(
-                                            transform: Matrix4.identity()
-                                              ..scale(
-                                                  getOffset() < 35 ? 0.0 : 0.7),
-                                            alignment: Alignment.bottomCenter,
+                                          Text(
+                                            snapshot.data.name,
+                                            style: header_titleName,
+                                          ),
+                                          Text(
+                                            snapshot.data.tweetCount.toString(),
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColor.white),
+                                          ),
+                                        ],
+                                      )),
+                                  background: Stack(
+                                    children: [
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Image.network(
+                                          snapshot.data.coverPicUrl,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Container(
+                              transform: Matrix4.translationValues(0, -20, 0),
+                              width: double.infinity,
+                              color: Colors.green[600],
+                              child: Container(
+                                color: Colors.white,
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Transform(
+                                          transform: Matrix4.identity()
+                                            ..scale(
+                                                getOffset() < 35 ? 0.0 : 0.7),
+                                          alignment: Alignment.bottomCenter,
+                                          child: CircleAvatar(
+                                            radius: 45,
+                                            backgroundColor: AppColor.white,
                                             child: CircleAvatar(
-                                              radius: 45,
-                                              backgroundColor: AppColor.white,
-                                              child: CircleAvatar(
-                                                radius: 40,
-                                                child: ProfilePicture(
-                                                  profilePictureFunctionality:
-                                                      () {
-                                                    Scaffold.of(context)
-                                                        .openDrawer();
-                                                  },
-                                                  profilePictureImage: snapshot
-                                                      .data.profilePicUrl,
-                                                  profilePictureSize: 40,
-                                                ),
+                                              radius: 40,
+                                              child: ProfilePicture(
+                                                profilePictureFunctionality:
+                                                    () {
+                                                  Scaffold.of(context)
+                                                      .openDrawer();
+                                                },
+                                                profilePictureImage:
+                                                    snapshot.data.profilePicUrl,
+                                                profilePictureSize: 40,
                                               ),
                                             ),
                                           ),
-                                          //! Follow BUTTON
-                                          GestureDetector(
-                                            onTap: () {
-                                              setState(() {});
-                                              if (isMyProfile) {
-                                                Navigator.of(context).pushNamed(
-                                                    EditProfileScreen
-                                                        .routeName);
-                                              } else if (isFollower(
-                                                  context, snapshot)) {
-                                                sendUnfollowRequest(
-                                                    context, snapshot);
-                                              } else {
-                                                sendFollowRequest(
-                                                    context, snapshot);
-                                              }
-                                            },
-                                            child: Container(
-                                              width: 100,
-                                              height: 35,
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 10),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 10,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: isMyProfile
-                                                    ? TwitterColor.white
+                                        ),
+                                        //! Follow BUTTON
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {});
+                                            if (isMyProfile) {
+                                              Navigator.of(context).pushNamed(
+                                                  EditProfileScreen.routeName);
+                                            } else if (isFollower(
+                                                context, snapshot)) {
+                                              sendUnfollowRequest(
+                                                  context, snapshot);
+                                            } else {
+                                              sendFollowRequest(
+                                                  context, snapshot);
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 100,
+                                            height: 35,
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 10,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: isMyProfile
+                                                  ? TwitterColor.white
+                                                  : isFollower(
+                                                          context, snapshot)
+                                                      ? TwitterColor.white
+                                                      : TwitterColor.black,
+                                              border: Border.all(
+                                                  color: isMyProfile
+                                                      ? Colors.black87
+                                                          .withAlpha(180)
+                                                      : Colors.black,
+                                                  width: 1),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                isMyProfile
+                                                    ? 'Edit'
                                                     : isFollower(
                                                             context, snapshot)
-                                                        ? TwitterColor.white
-                                                        : TwitterColor.black,
-                                                border: Border.all(
-                                                    color: isMyProfile
-                                                        ? Colors.black87
-                                                            .withAlpha(180)
-                                                        : Colors.black,
-                                                    width: 1),
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  isMyProfile
-                                                      ? 'Edit'
+                                                        ? 'Unfollow'
+                                                        : 'Follow',
+                                                style: TextStyle(
+                                                  fontSize: 17,
+                                                  color: isMyProfile
+                                                      ? Colors.black87
+                                                          .withAlpha(180)
                                                       : isFollower(
                                                               context, snapshot)
-                                                          ? 'Unfollow'
-                                                          : 'Follow',
-                                                  style: TextStyle(
-                                                    fontSize: 17,
-                                                    color: isMyProfile
-                                                        ? Colors.black87
-                                                            .withAlpha(180)
-                                                        : isFollower(context,
-                                                                snapshot)
-                                                            ? TwitterColor.black
-                                                            : TwitterColor
-                                                                .white,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                                                          ? TwitterColor.black
+                                                          : TwitterColor.white,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        snapshot.data.name,
-                                        style: bio_titleName,
-                                      ),
-                                      Text(
-                                        '@${snapshot.data.username ?? 'No username to show'}',
-                                        style: bio_UserName,
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Text(
-                                        snapshot.data.bio ?? 'No bio to show',
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          children: [
-                                            const WidgetSpan(
-                                              child: Icon(
-                                                Icons.location_on_outlined,
-                                                size: 14,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: snapshot.data.location ==
-                                                          null ||
-                                                      snapshot.data.location ==
-                                                          ''
-                                                  ? 'No location to show'
-                                                  : snapshot.data.location,
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          children: [
-                                            const WidgetSpan(
-                                              child: Icon(
-                                                Icons
-                                                    .sports_basketball_outlined,
-                                                size: 14,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text:
-                                                  ' Born ${snapshot.data.dateOfBirth}',
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      RichText(
-                                        text: TextSpan(
-                                          children: [
-                                            const WidgetSpan(
-                                              child: Icon(
-                                                Icons.calendar_month_outlined,
-                                                size: 14,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text:
-                                                  " Joined ${snapshot.data.creationDate}",
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black54),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                snapshot.data.followingCount
-                                                    .toString(),
-                                                style: boldName,
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) {
-                                                        return FollowingScreen(
-                                                          userId:
-                                                              widget._userId,
-                                                        );
-                                                      },
-                                                    ),
-                                                  );
-                                                },
-                                                child: followingString,
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                snapshot.data.followersCount
-                                                    .toString(),
-                                                style: boldName,
-                                              ),
-
-                                              //!----
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) {
-                                                        return FollowersScreen(
-                                                          userId:
-                                                              widget._userId,
-                                                        );
-                                                      },
-                                                    ),
-                                                  );
-                                                },
-                                                child: followersString,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SliverPersistentHeader(
-                              pinned: true,
-                              delegate: _SliverAppBarDelegate(
-                                minHeight: 50,
-                                maxHeight: 50,
-                                child: Container(
-                                  color: Colors.white,
-                                  child: AppBar(
-                                    bottom: TabBar(
-                                      indicator: const UnderlineTabIndicator(
-                                        borderSide: BorderSide(
-                                            width: 4.0, color: Colors.blue),
-                                      ),
-                                      controller: _tabController,
-                                      isScrollable: true,
-                                      labelColor: Colors.black,
-                                      unselectedLabelColor: Colors.black54,
-                                      indicatorWeight: 2,
-                                      indicatorColor: Colors.blue,
-                                      tabs: const [
-                                        Tab(
-                                          text: 'Tweets',
-                                        ),
-                                        Tab(
-                                          text: 'Tweets & replies',
-                                        ),
-                                        Tab(
-                                          text: 'Media',
-                                        ),
-                                        Tab(
-                                          text: 'Likes',
                                         ),
                                       ],
                                     ),
-                                    shape: const Border(
-                                      bottom: BorderSide(
-                                          color: Colors.black12, width: 1),
+                                    const SizedBox(
+                                      height: 10,
                                     ),
-                                    backgroundColor: Colors.white,
-                                    elevation: 0,
-                                  ),
+                                    Text(
+                                      snapshot.data.name,
+                                      style: bio_titleName,
+                                    ),
+                                    Text(
+                                      '@${snapshot.data.username ?? 'No username to show'}',
+                                      style: bio_UserName,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      snapshot.data.bio ?? 'No bio to show',
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          const WidgetSpan(
+                                            child: Icon(
+                                              Icons.location_on_outlined,
+                                              size: 14,
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: snapshot.data.location ==
+                                                        null ||
+                                                    snapshot.data.location == ''
+                                                ? 'No location to show'
+                                                : snapshot.data.location,
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          const WidgetSpan(
+                                            child: Icon(
+                                              Icons.sports_basketball_outlined,
+                                              size: 14,
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                ' Born ${snapshot.data.dateOfBirth}',
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          const WidgetSpan(
+                                            child: Icon(
+                                              Icons.calendar_month_outlined,
+                                              size: 14,
+                                              color: Colors.black54,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                " Joined ${snapshot.data.creationDate}",
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.black54),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              snapshot.data.followingCount
+                                                  .toString(),
+                                              style: boldName,
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) {
+                                                      return FollowingScreen(
+                                                        userId: widget.userId,
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                              child: followingString,
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              snapshot.data.followersCount
+                                                  .toString(),
+                                              style: boldName,
+                                            ),
+
+                                            //!----
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) {
+                                                      return FollowersScreen(
+                                                        userId: widget.userId,
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                              child: followersString,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ];
-                        },
-                        body: Text('')
-                        // Container(
-                        //   child: TabBarView(
-                        //     controller: _tabController,
-                        //     children: const [
-                        //     StreamBuilder(
-                        //         stream: Provider.of<StreamControllerProvider>(context).stream,
-                        //         builder: (BuildContext context,AsyncSnapshot snapshot,)
-                        //         {
-                        //
-                        //           switch(snapshot.connectionState)
-                        //           {
-                        //             case ConnectionState.none:
-                        //               return Text('press button to start');
-                        //             case ConnectionState.waiting:
-                        //               return Text("waiting");
-                        //             default:
-                        //               if(snapshot.hasError)
-                        //               {
-                        //                 return Text('error');
-                        //               }
-                        //               else
-                        //               {
-                        //                 return Scrollbar(
-                        //                   radius: Radius.circular(30),
-                        //                   isAlwaysShown: true,
-                        //                   child: ListView.builder(
-                        //                     physics: const BouncingScrollPhysics(),
-                        //                     itemBuilder: (context, index){
-                        //                       return TweetCard(index: index,tweet: snapshot.data[index],);
-                        //                     },
-                        //                     itemCount:snapshot.data.length,
-                        //                   ),
-                        //                 );
-                        //               }
-                        //           }
-                        //
-                        //         }
-                        //     ),
-                        // StreamBuilder(
-                        //     stream: Provider.of<StreamControllerProvider>(context).stream,
-                        //     builder: (BuildContext context,AsyncSnapshot snapshot,)
-                        //     {
-                        //
-                        //       switch(snapshot.connectionState)
-                        //       {
-                        //         case ConnectionState.none:
-                        //           return Text('press button to start');
-                        //         case ConnectionState.waiting:
-                        //           return Text("waiting");
-                        //         default:
-                        //           if(snapshot.hasError)
-                        //           {
-                        //             return Text('error');
-                        //           }
-                        //           else
-                        //           {
-                        //             return Scrollbar(
-                        //               radius: Radius.circular(30),
-                        //               isAlwaysShown: true,
-                        //               child: ListView.builder(
-                        //                 physics: const BouncingScrollPhysics(),
-                        //                 itemBuilder: (context, index){
-                        //                   return TweetCard(index: index,tweet: snapshot.data[index],);
-                        //                 },
-                        //                 itemCount:snapshot.data.length,
-                        //               ),
-                        //             );
-                        //           }
-                        //       }
-                        //
-                        //     }
-                        // ),
-                        //     StreamBuilder(
-                        //         stream: Provider.of<StreamControllerProvider>(context).stream,
-                        //         builder: (BuildContext context,AsyncSnapshot snapshot,)
-                        //         {
-                        //
-                        //           switch(snapshot.connectionState)
-                        //           {
-                        //             case ConnectionState.none:
-                        //               return Text('press button to start');
-                        //             case ConnectionState.waiting:
-                        //               return Text("waiting");
-                        //             default:
-                        //               if(snapshot.hasError)
-                        //               {
-                        //                 return Text('error');
-                        //               }
-                        //               else
-                        //               {
-                        //                 return Scrollbar(
-                        //                   radius: Radius.circular(30),
-                        //                   isAlwaysShown: true,
-                        //                   child: ListView.builder(
-                        //                     physics: const BouncingScrollPhysics(),
-                        //                     itemBuilder: (context, index){
-                        //                       return TweetCard(index: index,tweet: snapshot.data[index],);
-                        //                     },
-                        //                     itemCount:snapshot.data.length,
-                        //                   ),
-                        //                 );
-                        //               }
-                        //           }
-                        //
-                        //         }
-                        //     ),
-                        //     StreamBuilder(
-                        //         stream: Provider.of<StreamControllerProvider>(context).stream,
-                        //         builder: (BuildContext context,AsyncSnapshot snapshot,)
-                        //         {
-                        //
-                        //           switch(snapshot.connectionState)
-                        //           {
-                        //             case ConnectionState.none:
-                        //               return Text('press button to start');
-                        //             case ConnectionState.waiting:
-                        //               return Text("waiting");
-                        //             default:
-                        //               if(snapshot.hasError)
-                        //               {
-                        //                 return Text('error');
-                        //               }
-                        //               else
-                        //               {
-                        //                 return Scrollbar(
-                        //                   radius: Radius.circular(30),
-                        //                   isAlwaysShown: true,
-                        //                   child: ListView.builder(
-                        //                     physics: const BouncingScrollPhysics(),
-                        //                     itemBuilder: (context, index){
-                        //                       return TweetCard(index: index,tweet: snapshot.data[index],);
-                        //                     },
-                        //                     itemCount:snapshot.data.length,
-                        //                   ),
-                        //                 );
-                        //               }
-                        //           }
-                        //
-                        //         }
-                        //     ),
-                        // ],
-                        // ),
-                        // ),
+                          ),
+                          SliverPersistentHeader(
+                            pinned: true,
+                            delegate: _SliverAppBarDelegate(
+                              minHeight: 50,
+                              maxHeight: 50,
+                              child: Container(
+                                color: Colors.white,
+                                child: AppBar(
+                                  bottom: TabBar(
+                                    indicator: const UnderlineTabIndicator(
+                                      borderSide: BorderSide(
+                                          width: 4.0, color: Colors.blue),
+                                    ),
+                                    controller: _tabController,
+                                    isScrollable: true,
+                                    labelColor: Colors.black,
+                                    unselectedLabelColor: Colors.black54,
+                                    indicatorWeight: 2,
+                                    indicatorColor: Colors.blue,
+                                    tabs: const [
+                                      Tab(
+                                        text: 'Tweets',
+                                      ),
+                                      Tab(
+                                        text: 'Tweets & replies',
+                                      ),
+                                      Tab(
+                                        text: 'Media',
+                                      ),
+                                      Tab(
+                                        text: 'Likes',
+                                      ),
+                                    ],
+                                  ),
+                                  shape: const Border(
+                                    bottom: BorderSide(
+                                        color: Colors.black12, width: 1),
+                                  ),
+                                  backgroundColor: Colors.white,
+                                  elevation: 0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ];
+                      },
+                      body: Container(
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            FutureBuilder(
+                                future: getTimelineList(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
+                                  if (snapshot.data == null) {
+                                    return CircularLoader();
+                                  }
+                                  return ListView.builder(itemBuilder: (BuildContext context, int index) {
+                                    return TweetCard(realUserId: "",
+                                      isTweetInner: false,
+                                      userId: "",
+                                      shiftTweets: false,
+                                      tweetPage:false,
+                                      index: index,
+                                      tweet: snapshot.data[index],);
+                                  },
+                                    itemCount: snapshot.data.length,
+                                  );
+                                }),
+                            FutureBuilder(
+                                future: getTimelineList(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
+                                  if (snapshot.data == null) {
+                                    return CircularLoader();
+                                  }
+                                  return ListView.builder(itemBuilder: (BuildContext context, int index) {
+                                    return TweetCard(realUserId: "",
+                                      isTweetInner: false,
+                                      userId: "",
+                                      shiftTweets: false,
+                                      tweetPage:false,
+                                      index: index,
+                                      tweet: snapshot.data[index],);
+                                  },
+                                    itemCount: snapshot.data.length,
+                                  );
+                                }),
+                            FutureBuilder(
+                                future: _getUser(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
+                                  if (snapshot.data == null) {
+                                    return Center(child: Text("No liked Tweets"));
+                                  }
+                                  return Text('');
+                                }),
+                            FutureBuilder(
+                                future: getUserLikedTweets(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<dynamic> snapshot) {
+                                  if (snapshot.data == null) {
+                                    return Center(child: Text("No liked Tweets"));
+                                  }
+                                  return ListView.builder(itemBuilder: (BuildContext context, int index) {
+                                    return TweetCard(realUserId: "",
+                                      isTweetInner: false,
+                                      userId: "",
+                                      shiftTweets: false,
+                                      tweetPage:false,
+                                      index: index,
+                                      tweet: snapshot.data[index],);
+                                  },
+                                    itemCount: snapshot.data.length,
+                                  );
+                                }),
+                          ],
                         ),
+                      ),
+                    ),
                   ),
                   buildPic(snapshot as AsyncSnapshot<User>),
                   /*Row(

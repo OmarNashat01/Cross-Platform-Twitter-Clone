@@ -153,6 +153,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                                    return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
                                 }
                                 return TweetCard(
+                                  realUserId: "",
                                   isTweetInner: false,
                                   userId: "",
                                   shiftTweets: false,

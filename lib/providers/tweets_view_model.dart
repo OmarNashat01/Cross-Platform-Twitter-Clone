@@ -24,13 +24,21 @@ class TweetsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> fetchUserTweets(
-  //     BuildContext context, int streamControllerIndex, String userId) async {
-  //   addedDataToStream = await TweetsApi().fetchUserTweets(userId);
-  //   TimelineProvider.updateUserStreamController(
-  //       addedDataToStream, streamControllerIndex);
-  //   notifyListeners();
-  // }
+  Future<dynamic>fetchUserTweets(String userId) async {
+    addedDataToStream = await TweetsApi().fetchUserTweets(userId);
+    return addedDataToStream;
+    notifyListeners();
+  }
+  Future<dynamic>fetchLikedUserTweets(String userId) async {
+    addedDataToStream = await TweetsApi().fetchLikedUserTweets(userId);
+    return addedDataToStream;
+    notifyListeners();
+  }
+  Future<dynamic>fetchHomeUserRetweets(String userId) async {
+    addedDataToStream = await TweetsApi().fetchHomeUserTweets(userId);
+    return addedDataToStream;
+    notifyListeners();
+  }
   void updateRandomTweetsPageNumber()
   {
     pageNumber=pageNumber+1;

@@ -34,7 +34,10 @@ class TweetPage extends StatefulWidget {
       {required this.tweetCard,
       required this.tweet,
       required this.shiftTweets,
-      required this.userId});
+      required this.userId,
+        required this.realUserId,
+      });
+  String realUserId;
   TweetMain tweet;
   TweetCard tweetCard;
   bool shiftTweets = false;
@@ -119,13 +122,10 @@ class _TweetPageState extends State<TweetPage> {
                   physics: const BouncingScrollPhysics(),
                   childrenDelegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        // if(index==Provider.of<CommentsProvider>(context,listen: false).commentsList.length-1)
-                        // {
-                        //   Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
-                        //   return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
-                        // }
+
                         return TweetCard(
                           isTweetInner: false,
+                          realUserId: widget.userId,
                           userId: widget.userId,
                           shiftTweets: true,
                           index: index,

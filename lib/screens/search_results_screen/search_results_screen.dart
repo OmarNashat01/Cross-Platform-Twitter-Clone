@@ -81,6 +81,7 @@ class SearchResultsScreen_state extends State<SearchResultsScreen> {
             itemBuilder: (context, index) {
               SearchTweet searchTweet = snapshot.data[index];
               return TweetCard(
+                realUserId: "",
                 userId: searchTweet.userId,
                 shiftTweets: false,
                 tweetPage: false,

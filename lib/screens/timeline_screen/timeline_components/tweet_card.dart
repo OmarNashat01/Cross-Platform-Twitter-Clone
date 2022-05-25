@@ -9,6 +9,7 @@ import 'package:twitter/providers/comments_provider.dart';
 import 'package:twitter/providers/timeline_provider.dart';
 import 'package:twitter/providers/tweets_view_model.dart';
 import 'package:twitter/providers/ui_colors_provider.dart';
+import 'package:twitter/screens/others_profile_screen/others_profile_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_bottom_bar.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/tweet_page.dart';
@@ -33,8 +34,9 @@ class TweetCard extends StatefulWidget {
       required this.tweetPage,
         this.shiftTweets,
         required this.userId,
-        this.isTweetInner
+        this.isTweetInner, required this.realUserId
       });
+  String realUserId="";
   bool? isTweetInner=false;
   String userId="";
   int index;
@@ -319,8 +321,6 @@ String username="";
          username=widget.userId;
        }
         dynamic tweeta=widget.tweet.innerTweet==null?await Provider.of<TweetsViewModel>(context,listen: false).fetchTweetByTweetId(widget.tweet.outerTweet.tweetId):widget.tweet.outerTweet.quoted==true?await Provider.of<TweetsViewModel>(context,listen: false).fetchQuotedRetweetByRetweetId(widget.tweet.outerTweet.tweetId,context):await Provider.of<TweetsViewModel>(context,listen: false).fetchNotQuotedRetweetByRetweetId(widget.tweet.outerTweet.tweetId,context);
-        print(tweeta[0].outerTweet.text);
-        print("sfwqeqwe");
         setState(() {
           widget.tweet=tweeta[0];
           widget.tweet.outerTweet.likeCount=tweeta[0].outerTweet.likeCount;
@@ -333,12 +333,14 @@ String username="";
                       tweetCard: TweetCard(
                         isTweetInner: false,
                         userId: "",
+                        realUserId:"",
                         shiftTweets: false,
                           index: widget.index,
                           tweet: tweeta[0],
                           tweetPage: true),
                       tweet: tweeta[0],
                       userId:widget.tweet.outerTweet.username,
+                      realUserId:widget.tweet.outerTweet.userId,
                     ),
                     beginX: 0,
                     beginY: 1),
@@ -376,13 +378,13 @@ String username="";
 
                         ProfilePicture(
                             profilePictureFunctionality: () {
-                              // Navigator.of(context).push(
-                              //   CustomPageRoute(
-                              //       child: (UsersProfile(
-                              //           userId: widget.tweet.tweet.userId)),
-                              //       beginX: 1,
-                              //       beginY: 0),
-                              // );
+                              Navigator.of(context).push(
+                                CustomPageRoute(
+                                    child: (OthersProfileScreen(
+                                        userId: widget.tweet.outerTweet.userId)),
+                                    beginX: 1,
+                                    beginY: 0),
+                              );
                             },
                             profilePictureImage:
                                 widget.tweet.outerTweet.profilePicUrl,
@@ -454,8 +456,13 @@ String username="";
                         Padding(padding: EdgeInsets.only(left: 50),
                             child:InkWell(
                               onTap: (){
-                                ///here i should call the user profile on the person i am replying to
-                                print("loool");
+                                Navigator.of(context).push(
+                                  CustomPageRoute(
+                                      child: (OthersProfileScreen(
+                                          userId: widget.realUserId)),
+                                      beginX: 1,
+                                      beginY: 0),
+                                );
                               },
                               child: Row(
                                 children: [
@@ -555,7 +562,7 @@ String username="";
               : Column(
                 children: [
                   widget.tweet.innerTweet!=null?
-                  TweetCard(index: widget.index, tweet: TweetMain(outerTweet: widget.tweet.innerTweet!, comments: [], images: [], videos: [], likers: []), tweetPage: false, userId: "",
+                  TweetCard(index: widget.index, tweet: TweetMain(outerTweet: widget.tweet.innerTweet!, comments: [], images: [], videos: [], likers: []), tweetPage: false, userId: "",realUserId: "",
                     shiftTweets: false,isTweetInner: true,):
                   SizedBox.shrink(),
                   SizedBox(
@@ -621,7 +628,7 @@ String username="";
                 ],
               ),
           (widget.tweet.innerTweet!=null&&widget.tweetPage==false)?
-          TweetCard(index: widget.index, tweet: TweetMain(outerTweet: widget.tweet.innerTweet!, comments: widget.tweet.innerTweet!.comments, images:widget.tweet.innerTweet!.images, videos: widget.tweet.innerTweet!.videos, likers: widget.tweet.innerTweet!.likerIds), tweetPage: false, userId: "",
+          TweetCard(index: widget.index, tweet: TweetMain(outerTweet: widget.tweet.innerTweet!, comments: widget.tweet.innerTweet!.comments, images:widget.tweet.innerTweet!.images, videos: widget.tweet.innerTweet!.videos, likers: widget.tweet.innerTweet!.likerIds), tweetPage: false, userId: "",realUserId: "",
               shiftTweets: false,isTweetInner: true,):
           SizedBox.shrink(),
           //here is the TweetBottom bar
@@ -771,8 +778,14 @@ String username="";
                           Padding(padding: EdgeInsets.only(left: 50),
                               child:InkWell(
                                 onTap: (){
-                                  ///here i should call the user profile on the person i am replying to
-                                  print("loool");
+                                  print(widget.realUserId);
+                                  Navigator.of(context).push(
+                                    CustomPageRoute(
+                                        child: (OthersProfileScreen(
+                                            userId: widget.realUserId)),
+                                        beginX: 1,
+                                        beginY: 0),
+                                  );
                                 },
                                 child: Row(
                                   children: [
@@ -928,7 +941,7 @@ String username="";
                   ),
                 ),
                 (widget.tweet.innerTweet!=null&&widget.tweetPage==false)?
-                TweetCard(index: widget.index, tweet: TweetMain(outerTweet: widget.tweet.innerTweet!, comments: [], images: [], videos: [], likers: []), tweetPage: false, userId: "",
+                TweetCard(index: widget.index, tweet: TweetMain(outerTweet: widget.tweet.innerTweet!, comments: [], images: [], videos: [], likers: []), tweetPage: false, userId: "",realUserId: "",
                   shiftTweets: false,isTweetInner: true,):
                 SizedBox.shrink(),
                 //here is the TweetBottom bar

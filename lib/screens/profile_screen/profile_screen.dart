@@ -503,6 +503,7 @@ class ProfileScreenState extends State<ProfileScreen>
                                     return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
                                   }
                                   return TweetCard(
+                                    realUserId: "",
                                     userId: "",
                                     shiftTweets: false,
                                     tweetPage:false,
@@ -531,6 +532,7 @@ class ProfileScreenState extends State<ProfileScreen>
                                     return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
                                   }
                                   return TweetCard(
+                                    realUserId: "",
                                     userId: "",
                                     shiftTweets: false,
                                     tweetPage:false,
@@ -559,6 +561,7 @@ class ProfileScreenState extends State<ProfileScreen>
                                     return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
                                   }
                                   return TweetCard(
+                                    realUserId: "",
                                     userId: "",
                                     shiftTweets: false,
                                     tweetPage:false,
@@ -587,6 +590,7 @@ class ProfileScreenState extends State<ProfileScreen>
                                     return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
                                   }
                                   return TweetCard(
+                                    realUserId: "",
                                     userId: "",
                                     shiftTweets: false,
                                     tweetPage:false,

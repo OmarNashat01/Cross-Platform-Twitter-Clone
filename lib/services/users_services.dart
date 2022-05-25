@@ -18,10 +18,11 @@ class UsersApi {
     // final uri = Uri.http(
     //     Http().getBackendBaseUrl(), '/tweets/random', queryParameters);
     http.Response response = await http.get(uri, headers: {
-      "x-access-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI2MjY1NTFmNDRkNTc4NmY0MzdjYmIyNWIiLCJhZG1pbiI6ZmFsc2UsImV4cCI6MTY4MjM0MzQ5MX0.8xbJXtfITqlxM1YwdaRV1kr1qXRtvQJ3glhjxNdOPD4"
+      "x-access-token": Auth.token
     },);
     String data = response.body;
     var jsonData = jsonDecode(data)["user"];
+    print(jsonData);
     List<dynamic>j=[];
     j.add(jsonData);
     List<dynamic> userList = j.map((e) => User.fromJson(e)).toList();
@@ -31,13 +32,13 @@ class UsersApi {
 
     //--------------------------------------------------------------------------
 
-    followersList =
-        userList[0].followers.map((e) => SmallUser.fromJson(e)).toList();
+    followersList = userList[0].followers.map((e) => SmallUser.fromJson(e)).toList();
+    print("hollaaa");
 
     //check if the you the auth are from the likers of the this specific tweet to let the tweet stay liked
 
     followingList = userList[0].following.map((e) => SmallUser.fromJson(e)).toList();
-
+    print("hollaaa");
     User user = User(username: userList[0].username,
         name: userList[0].name,
         followingCount: userList[0].followingCount,

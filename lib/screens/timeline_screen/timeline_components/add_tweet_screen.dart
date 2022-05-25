@@ -273,7 +273,7 @@ class _AddTweetScreenState extends State<AddTweetScreen> {
                         ),
                         // file==null?SizedBox.shrink():Image.file(file)
                         widget.hintText=='Add a comment'?
-                        TweetCard(index: 0, tweet: widget.tweet!, tweetPage: false, userId: "",
+                        TweetCard(index: 0, tweet: widget.tweet!, tweetPage: false, userId: "",realUserId: "",
                           shiftTweets: false,isTweetInner: true,):SizedBox.shrink(),
                         SizedBox(
                           height: imageFileList.length>1?230:400,
