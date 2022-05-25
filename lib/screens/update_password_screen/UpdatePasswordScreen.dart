@@ -63,7 +63,7 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
 
       userProvider.updatePassword().then((res) async {
         if (res.statusCode == 200) {
-          // TODO: add snack bar for successful update
+   
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('Your password has been updated successfully'),
           ));

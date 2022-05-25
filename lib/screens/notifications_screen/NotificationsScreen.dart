@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:twitter/screens/settings_screen/settings_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/custom_page_route.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
@@ -130,9 +131,7 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
-                                      return TimelineScreen(
-                                        firstTime: false,
-                                      );
+                                      return SettingsScreen();
                                     },
                                   ),
                                 );
@@ -181,7 +180,8 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                           child: Consumer<NotificationsProvider>(
                             builder: (context, val, child) =>
                                 val.notificationsList.isEmpty
-                                    ? const Text('There are no notifications to show')
+                                    ? const Text(
+                                        'You don\'t have any notifications yet')
                                     : ListView.builder(
                                         itemCount: val.notificationsList.length,
                                         itemBuilder: (context, index) {

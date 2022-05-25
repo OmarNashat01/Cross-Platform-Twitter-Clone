@@ -22,10 +22,9 @@ class SettingsScreen extends StatelessWidget {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
-
-    Navigator.of(context)
-      ..pop()
-      ..pushReplacementNamed(AuthWelcomeScreen.routeName);
+    Navigator.popUntil(
+        context, ModalRoute.withName(AuthWelcomeScreen.routeName));
+    Navigator.of(context).pushNamed(AuthWelcomeScreen.routeName);
   }
 
   void _pressChangePasswordButton(context) {
@@ -42,8 +41,11 @@ class SettingsScreen extends StatelessWidget {
           children: [
             const Text('Your account'),
             Text(
-              '@${Auth.username}',
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
+              Auth.username.isEmpty
+                  ? 'You don\'t have a username yet'
+                  : '@${Auth.username}',
+              style:
+                  const TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
             ),
           ],
         ),
