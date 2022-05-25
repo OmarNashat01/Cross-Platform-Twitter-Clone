@@ -21,12 +21,34 @@ import 'package:twitter/screens/settings_screen/settings_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/users_profiles.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 import 'package:twitter/screens/welcome_screen/welcome_screen.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'providers/user_provider.dart';
+
 // Other imports
 import 'routes.dart';
 
-void main() => runApp(TwitterApp());
+// To handle the background notifications
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+}
+
+//void main() => runApp(TwitterApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  // Handling backgroung notification
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  print("*************************");
+  print(fcmToken);
+  print("*************************");
+  runApp(TwitterApp());
+}
 
 class TwitterApp extends StatelessWidget {
   @override
