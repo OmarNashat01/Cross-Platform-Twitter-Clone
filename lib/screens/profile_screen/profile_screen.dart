@@ -12,11 +12,15 @@ import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/users_data.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 import '../../models/user_model.dart';
+import '../../providers/timeline_provider.dart';
+import '../../providers/tweets_view_model.dart';
 import '../../providers/user_provider.dart';
 import '../../themes.dart';
 import '../timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/profile_screen/edit_profile_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
+
+import '../timeline_screen/timeline_components/tweet_card.dart';
 
 // hazemId: 62686629137ec6c6db13b245
 // mohamedId: 626551f44d5786f437cbb25b
@@ -37,6 +41,7 @@ class ProfileScreen extends StatefulWidget {
 class ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   var top = 0.0;
+  dynamic videoPlayerController;
 
   double getOffset() {
     double o;
@@ -482,150 +487,127 @@ class ProfileScreenState extends State<ProfileScreen>
                             ),
                           ];
                         },
-                        body: Text('sssssssssshittt')
-                        // Container(
-                        //   child: TabBarView(
-                        //     controller: _tabController,
-                        //     children: const [
-                        //     StreamBuilder(
-                        //         stream: Provider.of<StreamControllerProvider>(context).stream,
-                        //         builder: (BuildContext context,AsyncSnapshot snapshot,)
-                        //         {
-                        //
-                        //           switch(snapshot.connectionState)
-                        //           {
-                        //             case ConnectionState.none:
-                        //               return Text('press button to start');
-                        //             case ConnectionState.waiting:
-                        //               return Text("waiting");
-                        //             default:
-                        //               if(snapshot.hasError)
-                        //               {
-                        //                 return Text('error');
-                        //               }
-                        //               else
-                        //               {
-                        //                 return Scrollbar(
-                        //                   radius: Radius.circular(30),
-                        //                   isAlwaysShown: true,
-                        //                   child: ListView.builder(
-                        //                     physics: const BouncingScrollPhysics(),
-                        //                     itemBuilder: (context, index){
-                        //                       return TweetCard(index: index,tweet: snapshot.data[index],);
-                        //                     },
-                        //                     itemCount:snapshot.data.length,
-                        //                   ),
-                        //                 );
-                        //               }
-                        //           }
-                        //
-                        //         }
-                        //     ),
-                        // StreamBuilder(
-                        //     stream: Provider.of<StreamControllerProvider>(context).stream,
-                        //     builder: (BuildContext context,AsyncSnapshot snapshot,)
-                        //     {
-                        //
-                        //       switch(snapshot.connectionState)
-                        //       {
-                        //         case ConnectionState.none:
-                        //           return Text('press button to start');
-                        //         case ConnectionState.waiting:
-                        //           return Text("waiting");
-                        //         default:
-                        //           if(snapshot.hasError)
-                        //           {
-                        //             return Text('error');
-                        //           }
-                        //           else
-                        //           {
-                        //             return Scrollbar(
-                        //               radius: Radius.circular(30),
-                        //               isAlwaysShown: true,
-                        //               child: ListView.builder(
-                        //                 physics: const BouncingScrollPhysics(),
-                        //                 itemBuilder: (context, index){
-                        //                   return TweetCard(index: index,tweet: snapshot.data[index],);
-                        //                 },
-                        //                 itemCount:snapshot.data.length,
-                        //               ),
-                        //             );
-                        //           }
-                        //       }
-                        //
-                        //     }
-                        // ),
-                        //     StreamBuilder(
-                        //         stream: Provider.of<StreamControllerProvider>(context).stream,
-                        //         builder: (BuildContext context,AsyncSnapshot snapshot,)
-                        //         {
-                        //
-                        //           switch(snapshot.connectionState)
-                        //           {
-                        //             case ConnectionState.none:
-                        //               return Text('press button to start');
-                        //             case ConnectionState.waiting:
-                        //               return Text("waiting");
-                        //             default:
-                        //               if(snapshot.hasError)
-                        //               {
-                        //                 return Text('error');
-                        //               }
-                        //               else
-                        //               {
-                        //                 return Scrollbar(
-                        //                   radius: Radius.circular(30),
-                        //                   isAlwaysShown: true,
-                        //                   child: ListView.builder(
-                        //                     physics: const BouncingScrollPhysics(),
-                        //                     itemBuilder: (context, index){
-                        //                       return TweetCard(index: index,tweet: snapshot.data[index],);
-                        //                     },
-                        //                     itemCount:snapshot.data.length,
-                        //                   ),
-                        //                 );
-                        //               }
-                        //           }
-                        //
-                        //         }
-                        //     ),
-                        //     StreamBuilder(
-                        //         stream: Provider.of<StreamControllerProvider>(context).stream,
-                        //         builder: (BuildContext context,AsyncSnapshot snapshot,)
-                        //         {
-                        //
-                        //           switch(snapshot.connectionState)
-                        //           {
-                        //             case ConnectionState.none:
-                        //               return Text('press button to start');
-                        //             case ConnectionState.waiting:
-                        //               return Text("waiting");
-                        //             default:
-                        //               if(snapshot.hasError)
-                        //               {
-                        //                 return Text('error');
-                        //               }
-                        //               else
-                        //               {
-                        //                 return Scrollbar(
-                        //                   radius: Radius.circular(30),
-                        //                   isAlwaysShown: true,
-                        //                   child: ListView.builder(
-                        //                     physics: const BouncingScrollPhysics(),
-                        //                     itemBuilder: (context, index){
-                        //                       return TweetCard(index: index,tweet: snapshot.data[index],);
-                        //                     },
-                        //                     itemCount:snapshot.data.length,
-                        //                   ),
-                        //                 );
-                        //               }
-                        //           }
-                        //
-                        //         }
-                        //     ),
-                        // ],
-                        // ),
-                        // ),
+                        body:
+                        Container(
+                          child: TabBarView(
+                            controller: _tabController,
+                            children:  [
+                              ListView.custom(
+
+                                physics: const BouncingScrollPhysics(),
+                                childrenDelegate:SliverChildBuilderDelegate ((context, index) {
+                                  print(Provider.of<TimelineProvider>(context).timelineList.length);
+                                  if(index==Provider.of<TimelineProvider>(context,listen: false).timelineList.length-1)
+                                  {
+                                    Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
+                                    return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
+                                  }
+                                  return TweetCard(
+                                    userId: "",
+                                    shiftTweets: false,
+                                    tweetPage:false,
+                                    index: index,
+                                    tweet: Provider.of<TimelineProvider>(context).timelineList[index],
+                                    videoPlayerController: videoPlayerController,
+                                  );
+
+                                },
+                                    childCount: Provider.of<TimelineProvider>(context).timelineList.length,
+                                    findChildIndexCallback: (Key key) {
+                                      final ValueKey  valueKey = key as ValueKey ;
+                                      final String data = valueKey.value;
+                                      return Provider.of<TimelineProvider>(context).timelineList.indexOf(data);
+                                    }
+                                ),
+                              ),
+                              ListView.custom(
+
+                                physics: const BouncingScrollPhysics(),
+                                childrenDelegate:SliverChildBuilderDelegate ((context, index) {
+                                  print(Provider.of<TimelineProvider>(context).timelineList.length);
+                                  if(index==Provider.of<TimelineProvider>(context,listen: false).timelineList.length-1)
+                                  {
+                                    Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
+                                    return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
+                                  }
+                                  return TweetCard(
+                                    userId: "",
+                                    shiftTweets: false,
+                                    tweetPage:false,
+                                    index: index,
+                                    tweet: Provider.of<TimelineProvider>(context).timelineList[index],
+                                    videoPlayerController: videoPlayerController,
+                                  );
+
+                                },
+                                    childCount: Provider.of<TimelineProvider>(context).timelineList.length,
+                                    findChildIndexCallback: (Key key) {
+                                      final ValueKey  valueKey = key as ValueKey ;
+                                      final String data = valueKey.value;
+                                      return Provider.of<TimelineProvider>(context).timelineList.indexOf(data);
+                                    }
+                                ),
+                              ),
+                              ListView.custom(
+
+                                physics: const BouncingScrollPhysics(),
+                                childrenDelegate:SliverChildBuilderDelegate ((context, index) {
+                                  print(Provider.of<TimelineProvider>(context).timelineList.length);
+                                  if(index==Provider.of<TimelineProvider>(context,listen: false).timelineList.length-1)
+                                  {
+                                    Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
+                                    return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
+                                  }
+                                  return TweetCard(
+                                    userId: "",
+                                    shiftTweets: false,
+                                    tweetPage:false,
+                                    index: index,
+                                    tweet: Provider.of<TimelineProvider>(context).timelineList[index],
+                                    videoPlayerController: videoPlayerController,
+                                  );
+
+                                },
+                                    childCount: Provider.of<TimelineProvider>(context).timelineList.length,
+                                    findChildIndexCallback: (Key key) {
+                                      final ValueKey  valueKey = key as ValueKey ;
+                                      final String data = valueKey.value;
+                                      return Provider.of<TimelineProvider>(context).timelineList.indexOf(data);
+                                    }
+                                ),
+                              ),
+                              ListView.custom(
+
+                                physics: const BouncingScrollPhysics(),
+                                childrenDelegate:SliverChildBuilderDelegate ((context, index) {
+                                  print(Provider.of<TimelineProvider>(context).timelineList.length);
+                                  if(index==Provider.of<TimelineProvider>(context,listen: false).timelineList.length-1)
+                                  {
+                                    Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
+                                    return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
+                                  }
+                                  return TweetCard(
+                                    userId: "",
+                                    shiftTweets: false,
+                                    tweetPage:false,
+                                    index: index,
+                                    tweet: Provider.of<TimelineProvider>(context).timelineList[index],
+                                    videoPlayerController: videoPlayerController,
+                                  );
+
+                                },
+                                    childCount: Provider.of<TimelineProvider>(context).timelineList.length,
+                                    findChildIndexCallback: (Key key) {
+                                      final ValueKey  valueKey = key as ValueKey ;
+                                      final String data = valueKey.value;
+                                      return Provider.of<TimelineProvider>(context).timelineList.indexOf(data);
+                                    }
+                                ),
+                              ),
+
+                        ],
+                        ),
+                        ),
                         ),
                   ),
                   buildPic(snapshot as AsyncSnapshot<User>),
