@@ -38,13 +38,15 @@ class ForgotPassEmailScreeState extends State<ForgotPassEmailScreen> {
       userProvider.forgotPassEmail().then((res) async {
         if (res.statusCode == 200) {
           log('Forgot password email SUCCESS : OTP: ${res.body}');
+          Navigator.of(context)
+              .pushReplacementNamed(ForgotPassOtpScreen.routeName);
         } else {
           log('Bad Forgot password email NOT FOUND');
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Sorry, we could not find your account.'),
+          ));
         }
-        Navigator.of(context)
-            .pushReplacementNamed(ForgotPassOtpScreen.routeName);
       });
-
     } else {
       log('Forgot password FAILED');
     }

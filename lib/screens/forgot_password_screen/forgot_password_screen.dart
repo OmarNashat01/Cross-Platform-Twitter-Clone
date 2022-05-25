@@ -47,14 +47,16 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       _formKey.currentState!.save(); //? Password is saved in user provider
 
       userProvider.forgotPassword().then((res) async {
-        // TODO: is to be implemented
         if (res.statusCode == 200) {
           log('Forgot password success');
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Password is updated successfully.'),
+          ));
+          Navigator.of(context)
+              .pushReplacementNamed(ReturnToTwitterScreen.routeName);
         } else {
           log('Forgot password Bad');
         }
-        Navigator.of(context)
-            .pushReplacementNamed(ReturnToTwitterScreen.routeName);
       });
     } else {
       log('forgot Password FAILED');
@@ -105,8 +107,8 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           style: const TextStyle(fontSize: 20),
                           validator: validatePassword1,
                           controller: _passwordFieldController1,
-                          onSaved: (pass) =>
-                              userProvider.newPassword = hashToMd5(pass as String),
+                          onSaved: (pass) => userProvider.newPassword =
+                              hashToMd5(pass as String),
                           onFieldSubmitted: (_) =>
                               _pressResetPasswordButton(context),
                           keyboardType: TextInputType.visiblePassword,

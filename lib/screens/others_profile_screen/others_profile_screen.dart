@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:custom_nested_scroll_view/custom_nested_scroll_view.dart';
 import 'package:provider/provider.dart';
 import 'package:twitter/models/small_user_model.dart';
+import 'package:twitter/screens/followers_screen/followers_screen.dart';
+import 'package:twitter/screens/following_screen/following_screen.dart';
 import 'package:twitter/screens/search_screen/SearchScreen.dart';
 
 import 'package:flutter/material.dart';
@@ -10,38 +12,34 @@ import 'dart:math' as math;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter/constants.dart';
 import 'package:twitter/dummy/users_data.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/add_tweet_screen.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/custom_page_route.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 import '../../models/user_model.dart';
-import '../../providers/timeline_provider.dart';
-import '../../providers/tweets_view_model.dart';
 import '../../providers/user_provider.dart';
 import '../../themes.dart';
 import '../timeline_screen/timeline_components/profile_picture.dart';
 import 'package:twitter/screens/profile_screen/edit_profile_screen.dart';
 import 'package:twitter/screens/timeline_screen/timeline_components/timeline_bottom_bar.dart';
 
-import '../timeline_screen/timeline_components/tweet_card.dart';
-
 // hazemId: 62686629137ec6c6db13b245
 // mohamedId: 626551f44d5786f437cbb25b
 // gilany: 626894b7137ec6c6db13b24a
 
-class ProfileScreen extends StatefulWidget {
-  static const routeName = '/profile-screen';
-  // String userId = '626551f44d5786f437cbb25b';
-  String userId;
-  ProfileScreen({required this.userId});
+class OthersProfileScreen extends StatefulWidget {
+  static const routeName = '/others-profile-screen';
+  String _userId = '626551f44d5786f437cbb25b';
 
   @override
   State<StatefulWidget> createState() {
-    return ProfileScreenState();
+    return OthersProfileScreenState();
   }
 }
 
-class ProfileScreenState extends State<ProfileScreen>
+class OthersProfileScreenState extends State<OthersProfileScreen>
     with SingleTickerProviderStateMixin {
+  bool isMyProfile = false;
   var top = 0.0;
-  dynamic videoPlayerController;
 
   double getOffset() {
     double o;
@@ -56,20 +54,66 @@ class ProfileScreenState extends State<ProfileScreen>
   late Future<User> user;
   late ScrollController _scrollController;
 
+  // bool _isFollowPressed = false;
+
   late TabController _tabController =
       TabController(initialIndex: 0, length: 4, vsync: this);
+
+  // Search if you are a follower to this userId
+  bool isFollower(context, snapshot) {
+    List<dynamic> followersList = (snapshot.data!.followers);
+    for (var follower in followersList) {
+      if (follower.userId == Auth.userId) {
+        log('You are a follower');
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void sendFollowRequest(context, snapshot) {
+    Provider.of<UserProvider>(context, listen: false)
+        .sendFollowRequest(widget._userId)
+        .then((res) async {
+      if (res.statusCode == 200) {
+        log('GOOD: Send follow request Successfully');
+      } else if (res.statusCode == 401) {
+        log('BAD: Unauthorized FOLLOW request');
+      } else {
+        log('BAD: NOT FOUND FOLLOW (already followed) request');
+      }
+    });
+  }
+
+  void sendUnfollowRequest(context, snapshot) {
+    Provider.of<UserProvider>(context, listen: false)
+        .sendUnfollowRequest(widget._userId)
+        .then((res) async {
+      if (res.statusCode == 200) {
+        log('GOOD: Send unfollow request Successfully');
+      } else if (res.statusCode == 401) {
+        log('BAD: Unauthorized UNFOLLOW request');
+      } else {
+        log('BAD: NOT FOUND UNFOLLOW request');
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(initialIndex: 0, length: 4, vsync: this);
     _scrollController = ScrollController();
-    user = Provider.of<UserProvider>(context, listen: false)
-        .fetchUserByUserId(widget.userId);
+    _getUser();
 
     _scrollController.addListener(() {
       setState(() {});
     });
+  }
+
+  Future<User> _getUser() {
+    return Provider.of<UserProvider>(context, listen: false)
+        .fetchUserByUserId(widget._userId);
   }
 
   final controller = ScrollController();
@@ -86,7 +130,16 @@ class ProfileScreenState extends State<ProfileScreen>
         contextt: context,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            CustomPageRoute(
+              child: AddTweetScreen(
+                  hintText: "What's happening?", tweetOrReply: "tweet"),
+              beginX: 0,
+              beginY: 1,
+            ),
+          );
+        },
         backgroundColor: Colors.blue,
         child: const Icon(
           FontAwesomeIcons.plus,
@@ -96,7 +149,7 @@ class ProfileScreenState extends State<ProfileScreen>
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       body: FutureBuilder(
-          future: user,
+          future: _getUser(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.data == null) return const CircularLoader();
             return SafeArea(
@@ -277,8 +330,19 @@ class ProfileScreenState extends State<ProfileScreen>
                                           //! Follow BUTTON
                                           GestureDetector(
                                             onTap: () {
-                                              Navigator.of(context).pushNamed(
-                                                  EditProfileScreen.routeName);
+                                              setState(() {});
+                                              if (isMyProfile) {
+                                                Navigator.of(context).pushNamed(
+                                                    EditProfileScreen
+                                                        .routeName);
+                                              } else if (isFollower(
+                                                  context, snapshot)) {
+                                                sendUnfollowRequest(
+                                                    context, snapshot);
+                                              } else {
+                                                sendFollowRequest(
+                                                    context, snapshot);
+                                              }
                                             },
                                             child: Container(
                                               width: 100,
@@ -291,21 +355,39 @@ class ProfileScreenState extends State<ProfileScreen>
                                                 horizontal: 10,
                                               ),
                                               decoration: BoxDecoration(
-                                                color: TwitterColor.white,
+                                                color: isMyProfile
+                                                    ? TwitterColor.white
+                                                    : isFollower(
+                                                            context, snapshot)
+                                                        ? TwitterColor.white
+                                                        : TwitterColor.black,
                                                 border: Border.all(
-                                                    color: Colors.black87
-                                                        .withAlpha(180),
+                                                    color: isMyProfile
+                                                        ? Colors.black87
+                                                            .withAlpha(180)
+                                                        : Colors.black,
                                                     width: 1),
                                                 borderRadius:
                                                     BorderRadius.circular(20),
                                               ),
                                               child: Center(
                                                 child: Text(
-                                                  'Edit',
+                                                  isMyProfile
+                                                      ? 'Edit'
+                                                      : isFollower(
+                                                              context, snapshot)
+                                                          ? 'Unfollow'
+                                                          : 'Follow',
                                                   style: TextStyle(
                                                     fontSize: 17,
-                                                    color: Colors.black87
-                                                        .withAlpha(180),
+                                                    color: isMyProfile
+                                                        ? Colors.black87
+                                                            .withAlpha(180)
+                                                        : isFollower(context,
+                                                                snapshot)
+                                                            ? TwitterColor.black
+                                                            : TwitterColor
+                                                                .white,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
@@ -421,7 +503,22 @@ class ProfileScreenState extends State<ProfileScreen>
                                                     .toString(),
                                                 style: boldName,
                                               ),
-                                              followingString,
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return FollowingScreen(
+                                                          userId:
+                                                              widget._userId,
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                                child: followingString,
+                                              ),
                                             ],
                                           ),
                                           Row(
@@ -431,7 +528,24 @@ class ProfileScreenState extends State<ProfileScreen>
                                                     .toString(),
                                                 style: boldName,
                                               ),
-                                              followersString,
+
+                                              //!----
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) {
+                                                        return FollowersScreen(
+                                                          userId:
+                                                              widget._userId,
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                                child: followersString,
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -487,127 +601,150 @@ class ProfileScreenState extends State<ProfileScreen>
                             ),
                           ];
                         },
-                        body:
-                        Container(
-                          child: TabBarView(
-                            controller: _tabController,
-                            children:  [
-                              ListView.custom(
-
-                                physics: const BouncingScrollPhysics(),
-                                childrenDelegate:SliverChildBuilderDelegate ((context, index) {
-                                  print(Provider.of<TimelineProvider>(context).timelineList.length);
-                                  if(index==Provider.of<TimelineProvider>(context,listen: false).timelineList.length-1)
-                                  {
-                                    Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
-                                    return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
-                                  }
-                                  return TweetCard(
-                                    userId: "",
-                                    shiftTweets: false,
-                                    tweetPage:false,
-                                    index: index,
-                                    tweet: Provider.of<TimelineProvider>(context).timelineList[index],
-                                    videoPlayerController: videoPlayerController,
-                                  );
-
-                                },
-                                    childCount: Provider.of<TimelineProvider>(context).timelineList.length,
-                                    findChildIndexCallback: (Key key) {
-                                      final ValueKey  valueKey = key as ValueKey ;
-                                      final String data = valueKey.value;
-                                      return Provider.of<TimelineProvider>(context).timelineList.indexOf(data);
-                                    }
-                                ),
-                              ),
-                              ListView.custom(
-
-                                physics: const BouncingScrollPhysics(),
-                                childrenDelegate:SliverChildBuilderDelegate ((context, index) {
-                                  print(Provider.of<TimelineProvider>(context).timelineList.length);
-                                  if(index==Provider.of<TimelineProvider>(context,listen: false).timelineList.length-1)
-                                  {
-                                    Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
-                                    return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
-                                  }
-                                  return TweetCard(
-                                    userId: "",
-                                    shiftTweets: false,
-                                    tweetPage:false,
-                                    index: index,
-                                    tweet: Provider.of<TimelineProvider>(context).timelineList[index],
-                                    videoPlayerController: videoPlayerController,
-                                  );
-
-                                },
-                                    childCount: Provider.of<TimelineProvider>(context).timelineList.length,
-                                    findChildIndexCallback: (Key key) {
-                                      final ValueKey  valueKey = key as ValueKey ;
-                                      final String data = valueKey.value;
-                                      return Provider.of<TimelineProvider>(context).timelineList.indexOf(data);
-                                    }
-                                ),
-                              ),
-                              ListView.custom(
-
-                                physics: const BouncingScrollPhysics(),
-                                childrenDelegate:SliverChildBuilderDelegate ((context, index) {
-                                  print(Provider.of<TimelineProvider>(context).timelineList.length);
-                                  if(index==Provider.of<TimelineProvider>(context,listen: false).timelineList.length-1)
-                                  {
-                                    Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
-                                    return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
-                                  }
-                                  return TweetCard(
-                                    userId: "",
-                                    shiftTweets: false,
-                                    tweetPage:false,
-                                    index: index,
-                                    tweet: Provider.of<TimelineProvider>(context).timelineList[index],
-                                    videoPlayerController: videoPlayerController,
-                                  );
-
-                                },
-                                    childCount: Provider.of<TimelineProvider>(context).timelineList.length,
-                                    findChildIndexCallback: (Key key) {
-                                      final ValueKey  valueKey = key as ValueKey ;
-                                      final String data = valueKey.value;
-                                      return Provider.of<TimelineProvider>(context).timelineList.indexOf(data);
-                                    }
-                                ),
-                              ),
-                              ListView.custom(
-
-                                physics: const BouncingScrollPhysics(),
-                                childrenDelegate:SliverChildBuilderDelegate ((context, index) {
-                                  print(Provider.of<TimelineProvider>(context).timelineList.length);
-                                  if(index==Provider.of<TimelineProvider>(context,listen: false).timelineList.length-1)
-                                  {
-                                    Provider.of<TweetsViewModel>(context, listen: false).fetchRandomTweetsOfRandomUsers(context,Provider.of<TweetsViewModel>(context).pageNumber);
-                                    return Center(child: Container(width:20,height:20,child: CircularProgressIndicator(color: Colors.grey,strokeWidth:2,)));
-                                  }
-                                  return TweetCard(
-                                    userId: "",
-                                    shiftTweets: false,
-                                    tweetPage:false,
-                                    index: index,
-                                    tweet: Provider.of<TimelineProvider>(context).timelineList[index],
-                                    videoPlayerController: videoPlayerController,
-                                  );
-
-                                },
-                                    childCount: Provider.of<TimelineProvider>(context).timelineList.length,
-                                    findChildIndexCallback: (Key key) {
-                                      final ValueKey  valueKey = key as ValueKey ;
-                                      final String data = valueKey.value;
-                                      return Provider.of<TimelineProvider>(context).timelineList.indexOf(data);
-                                    }
-                                ),
-                              ),
-
-                        ],
-                        ),
-                        ),
+                        body: Text('')
+                        // Container(
+                        //   child: TabBarView(
+                        //     controller: _tabController,
+                        //     children: const [
+                        //     StreamBuilder(
+                        //         stream: Provider.of<StreamControllerProvider>(context).stream,
+                        //         builder: (BuildContext context,AsyncSnapshot snapshot,)
+                        //         {
+                        //
+                        //           switch(snapshot.connectionState)
+                        //           {
+                        //             case ConnectionState.none:
+                        //               return Text('press button to start');
+                        //             case ConnectionState.waiting:
+                        //               return Text("waiting");
+                        //             default:
+                        //               if(snapshot.hasError)
+                        //               {
+                        //                 return Text('error');
+                        //               }
+                        //               else
+                        //               {
+                        //                 return Scrollbar(
+                        //                   radius: Radius.circular(30),
+                        //                   isAlwaysShown: true,
+                        //                   child: ListView.builder(
+                        //                     physics: const BouncingScrollPhysics(),
+                        //                     itemBuilder: (context, index){
+                        //                       return TweetCard(index: index,tweet: snapshot.data[index],);
+                        //                     },
+                        //                     itemCount:snapshot.data.length,
+                        //                   ),
+                        //                 );
+                        //               }
+                        //           }
+                        //
+                        //         }
+                        //     ),
+                        // StreamBuilder(
+                        //     stream: Provider.of<StreamControllerProvider>(context).stream,
+                        //     builder: (BuildContext context,AsyncSnapshot snapshot,)
+                        //     {
+                        //
+                        //       switch(snapshot.connectionState)
+                        //       {
+                        //         case ConnectionState.none:
+                        //           return Text('press button to start');
+                        //         case ConnectionState.waiting:
+                        //           return Text("waiting");
+                        //         default:
+                        //           if(snapshot.hasError)
+                        //           {
+                        //             return Text('error');
+                        //           }
+                        //           else
+                        //           {
+                        //             return Scrollbar(
+                        //               radius: Radius.circular(30),
+                        //               isAlwaysShown: true,
+                        //               child: ListView.builder(
+                        //                 physics: const BouncingScrollPhysics(),
+                        //                 itemBuilder: (context, index){
+                        //                   return TweetCard(index: index,tweet: snapshot.data[index],);
+                        //                 },
+                        //                 itemCount:snapshot.data.length,
+                        //               ),
+                        //             );
+                        //           }
+                        //       }
+                        //
+                        //     }
+                        // ),
+                        //     StreamBuilder(
+                        //         stream: Provider.of<StreamControllerProvider>(context).stream,
+                        //         builder: (BuildContext context,AsyncSnapshot snapshot,)
+                        //         {
+                        //
+                        //           switch(snapshot.connectionState)
+                        //           {
+                        //             case ConnectionState.none:
+                        //               return Text('press button to start');
+                        //             case ConnectionState.waiting:
+                        //               return Text("waiting");
+                        //             default:
+                        //               if(snapshot.hasError)
+                        //               {
+                        //                 return Text('error');
+                        //               }
+                        //               else
+                        //               {
+                        //                 return Scrollbar(
+                        //                   radius: Radius.circular(30),
+                        //                   isAlwaysShown: true,
+                        //                   child: ListView.builder(
+                        //                     physics: const BouncingScrollPhysics(),
+                        //                     itemBuilder: (context, index){
+                        //                       return TweetCard(index: index,tweet: snapshot.data[index],);
+                        //                     },
+                        //                     itemCount:snapshot.data.length,
+                        //                   ),
+                        //                 );
+                        //               }
+                        //           }
+                        //
+                        //         }
+                        //     ),
+                        //     StreamBuilder(
+                        //         stream: Provider.of<StreamControllerProvider>(context).stream,
+                        //         builder: (BuildContext context,AsyncSnapshot snapshot,)
+                        //         {
+                        //
+                        //           switch(snapshot.connectionState)
+                        //           {
+                        //             case ConnectionState.none:
+                        //               return Text('press button to start');
+                        //             case ConnectionState.waiting:
+                        //               return Text("waiting");
+                        //             default:
+                        //               if(snapshot.hasError)
+                        //               {
+                        //                 return Text('error');
+                        //               }
+                        //               else
+                        //               {
+                        //                 return Scrollbar(
+                        //                   radius: Radius.circular(30),
+                        //                   isAlwaysShown: true,
+                        //                   child: ListView.builder(
+                        //                     physics: const BouncingScrollPhysics(),
+                        //                     itemBuilder: (context, index){
+                        //                       return TweetCard(index: index,tweet: snapshot.data[index],);
+                        //                     },
+                        //                     itemCount:snapshot.data.length,
+                        //                   ),
+                        //                 );
+                        //               }
+                        //           }
+                        //
+                        //         }
+                        //     ),
+                        // ],
+                        // ),
+                        // ),
                         ),
                   ),
                   buildPic(snapshot as AsyncSnapshot<User>),

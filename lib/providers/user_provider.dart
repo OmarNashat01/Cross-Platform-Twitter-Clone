@@ -136,6 +136,7 @@ class UserProvider with ChangeNotifier {
       body: jsonEncode({
         'email': _email,
         'password': _password,
+        'device_token': Auth.fcmToken,
       }),
     );
     return response;
@@ -171,7 +172,10 @@ class UserProvider with ChangeNotifier {
     final response = await http.put(
       Uri.parse('http://${Http().getBaseUrl()}/users/forgot_password'),
       headers: {"Content-Type": "application/json; charset=UTF-8"},
-      body: jsonEncode({'password': _newPassword}),
+      body: jsonEncode({
+        'email': _email,
+        'password': _newPassword,
+      }),
     );
     return response;
   }
@@ -182,7 +186,7 @@ class UserProvider with ChangeNotifier {
     final queryParameters = {'password': _newPassword};
     final uri = Uri.http(
         Http().getBaseUrl(), '/users/change_password', queryParameters);
-    final response = await http.get(uri, headers: {
+    final response = await http.put(uri, headers: {
       "Content-Type": "application/json; charset=UTF-8",
       "x-access-token": Auth.token,
     });
@@ -218,5 +222,35 @@ class UserProvider with ChangeNotifier {
     User user = await UsersApi().fetchUserByUserId(userId);
     return user;
     notifyListeners();
+  }
+
+  Future<http.Response> sendFollowRequest(String targetUserId) async {
+    final response = await http.post(
+      Uri.parse('http://${Http().getBaseUrl()}/users/following'),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        "x-access-token": Auth.token,
+      },
+      body: jsonEncode({
+        "source_user_id": Auth.userId,
+        "target_user_id": targetUserId,
+      }),
+    );
+    return response;
+  }
+
+  Future<http.Response> sendUnfollowRequest(String targetUserId) async {
+    final queryParameters = {
+      'source_user_id': Auth.userId,
+      'target_user_id': targetUserId,
+    };
+
+    final uri =
+        Uri.http(Http().getBaseUrl(), '/users/following', queryParameters);
+    final response = await http.delete(uri, headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+      "x-access-token": Auth.token,
+    });
+    return response;
   }
 }

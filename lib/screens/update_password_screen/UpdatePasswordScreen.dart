@@ -74,6 +74,9 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
           log('Bad: Old password entered ');
         } else {
           log('Bad: Unauthorized ');
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Server is down, please try again later.'),
+          ));
           Navigator.of(context).pop();
         }
       });

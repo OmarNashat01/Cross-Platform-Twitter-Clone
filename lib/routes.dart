@@ -1,9 +1,14 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:twitter/screens/followers_screen/followers_screen.dart';
+import 'package:twitter/screens/others_profile_screen/others_profile_screen.dart';
+import 'package:twitter/screens/search_results_screen/search_results_screen.dart';
 import 'package:twitter/screens/welcome_screen/welcome_screen.dart';
 
+import 'constants.dart';
 import 'screens/auth_welcome_screen/auth_welcome_screen.dart';
+import 'screens/following_screen/following_screen.dart';
 import 'screens/signup_screen/signup_screen.dart';
 import 'screens/login_email_screen/login_email_screen.dart';
 import 'screens/login_password_screen/login_password_screen.dart';
@@ -35,7 +40,7 @@ Map<String, WidgetBuilder> routes = {
   ReturnToTwitterScreen.routeName: (context) => ReturnToTwitterScreen(),
   UpdatePasswordScreen.routeName: (context) => UpdatePasswordScreen(),
   TimelineScreen.routeName: (context) => TimelineScreen(firstTime: true,),
-  ProfileScreen.routeName: (context) => ProfileScreen(),
+  ProfileScreen.routeName: (context) => ProfileScreen(userId: Auth.userId),
   PasswordScreen.routeName: (context) => PasswordScreen(),
   ProfilePicScreen.routeName: (context) => ProfilePicScreen(),
   BioScreen.routeName: (context) => BioScreen(),
@@ -46,5 +51,9 @@ Map<String, WidgetBuilder> routes = {
   EditProfileScreen.routeName: (context) => EditProfileScreen(),
   SettingsScreen.routeName: (context) => SettingsScreen(),
   ForgotPassEmailScreen.routeName: (context) => ForgotPassEmailScreen(),
-  ForgotPassOtpScreen.routeName: (context) => ForgotPassOtpScreen()
+  ForgotPassOtpScreen.routeName: (context) => ForgotPassOtpScreen(),
+  OthersProfileScreen.routeName: (context) => OthersProfileScreen(),
+  SearchResultsScreen.routeName: (context) => SearchResultsScreen(),
+  FollowersScreen.routeName:(context) => FollowersScreen(userId: Auth.userId),
+  FollowingScreen.routeName: (context) => FollowingScreen(userId: Auth.userId)
 };
