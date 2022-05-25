@@ -181,7 +181,7 @@ class NotificationsScreen_state extends State<NotificationsScreen> {
                           child: Consumer<NotificationsProvider>(
                             builder: (context, val, child) =>
                                 val.notificationsList.isEmpty
-                                    ? const CircularLoader()
+                                    ? const Text('There are no notifications to show')
                                     : ListView.builder(
                                         itemCount: val.notificationsList.length,
                                         itemBuilder: (context, index) {

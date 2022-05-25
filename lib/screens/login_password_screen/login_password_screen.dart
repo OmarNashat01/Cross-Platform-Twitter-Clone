@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:twitter/screens/forgot_pass_email_screen/forgot_pass_email_screen.dart';
+import 'package:twitter/screens/timeline_screen/timeline_components/custom_page_route.dart';
 import 'package:twitter/screens/timeline_screen/timeline_screen.dart';
 
 import '../../providers/user_provider.dart';
@@ -58,8 +59,16 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
             log('email : ${Auth.email}');
             log('password : ${Auth.password}');
             Navigator.of(context)
-              ..pop()
-              ..pushReplacementNamed(TimelineScreen.routeName);
+            ..pop()
+            ..pushReplacement(
+              CustomPageRoute(
+                child: TimelineScreen(
+                  firstTime: true,
+                ),
+                beginX: 0,
+                beginY: 1,
+              ),
+            );
             break;
           case 400: // Wrong password
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -86,7 +95,6 @@ class LoginPasswordScreenState extends State<LoginPasswordScreen> {
   void _pressForgotPassButton(context) {
     // Todo
     Navigator.of(context).pushReplacementNamed(ForgotPassEmailScreen.routeName);
-
   }
 
   @override

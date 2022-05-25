@@ -102,7 +102,7 @@ class TwitterApp extends StatelessWidget {
             onSurface: Colors.black,
           ),
         ),
-        home: TimelineScreen(firstTime: true,),
+        home: WelcomeScreen(),
         routes: routes,
       ),
     );
