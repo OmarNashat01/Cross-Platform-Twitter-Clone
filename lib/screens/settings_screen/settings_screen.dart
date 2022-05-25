@@ -22,10 +22,9 @@ class SettingsScreen extends StatelessWidget {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
-
-    Navigator.of(context)
-      ..pop()
-      ..pushReplacementNamed(AuthWelcomeScreen.routeName);
+    Navigator.popUntil(
+        context, ModalRoute.withName(AuthWelcomeScreen.routeName));
+    Navigator.of(context).pushNamed(AuthWelcomeScreen.routeName);
   }
 
   void _pressChangePasswordButton(context) {
